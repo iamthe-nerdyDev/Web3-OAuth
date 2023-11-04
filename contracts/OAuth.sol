@@ -3,16 +3,14 @@
 pragma solidity >=0.7.0 <0.9.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
 contract OAuth is Ownable {
-    using Counters for Counters.Counter;
     using ECDSA for bytes32;
 
-    Counters.Counter private _totalCards;
-    Counters.Counter private _totalProviderDapp;
-    Counters.Counter private _totalSessionTokens;
+    uint256 private _totalCards;
+    uint256 private _totalProviderDapp;
+    uint256 private _totalSessionTokens;
 
     struct CardStruct {
         uint256 id;
@@ -88,6 +86,8 @@ contract OAuth is Ownable {
     mapping(address => uint256[]) userProviderDapps;
     mapping(address => uint256) userProviderDappCount;
 
+    constructor(address initialOwner) Ownable(initialOwner) {}
+
     function _time() private view returns (uint256) {
         return (block.timestamp * 1000) + 1000;
     }
@@ -107,9 +107,9 @@ contract OAuth is Ownable {
         require(bytes(_bio).length > 0, "Bio must not be empty");
 
         CardStruct memory card;
-        _totalCards.increment();
+        _totalCards++;
 
-        card.id = _totalCards.current();
+        card.id = _totalCards;
         card.username = _username;
         card.owner = msg.sender;
         card.pfp = _pfp;
@@ -196,9 +196,9 @@ contract OAuth is Ownable {
         );
 
         ProviderDappStruct memory providerDapp;
-        _totalProviderDapp.increment();
+        _totalProviderDapp++;
 
-        providerDapp.id = _totalProviderDapp.current();
+        providerDapp.id = _totalProviderDapp;
         providerDapp.domain = _domain;
         providerDapp.accessToken = _accessToken;
         providerDapp.owner = msg.sender;
@@ -350,9 +350,9 @@ contract OAuth is Ownable {
         bytes32 _token = keccak256(abi.encodePacked(_cardId, _user, _dappId));
 
         SessionTokenStruct memory sessionToken;
-        _totalSessionTokens.increment();
+        _totalSessionTokens++;
 
-        sessionToken.id = _totalSessionTokens.current();
+        sessionToken.id = _totalSessionTokens;
         sessionToken.cardId = _cardId;
         sessionToken.dappId = _dappId;
         sessionToken.owner = _user;
