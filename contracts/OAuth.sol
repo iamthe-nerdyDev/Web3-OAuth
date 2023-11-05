@@ -86,7 +86,7 @@ contract OAuth is Ownable {
     mapping(address => uint256[]) userProviderDapps;
     mapping(address => uint256) userProviderDappCount;
 
-    constructor(address initialOwner) Ownable(initialOwner) {}
+    constructor() Ownable(msg.sender) {}
 
     function _time() private view returns (uint256) {
         return (block.timestamp * 1000) + 1000;
@@ -107,9 +107,8 @@ contract OAuth is Ownable {
         require(bytes(_bio).length > 0, "Bio must not be empty");
 
         CardStruct memory card;
-        _totalCards++;
 
-        card.id = _totalCards;
+        card.id = ++_totalCards;
         card.username = _username;
         card.owner = msg.sender;
         card.pfp = _pfp;
@@ -166,7 +165,17 @@ contract OAuth is Ownable {
     function getUserCards(
         address _user
     ) public view returns (CardStruct[] memory Cards) {
-        Cards = new CardStruct[](userCardCount[_user]);
+        uint256 available;
+
+        for (uint256 i = 0; i < userCardCount[_user]; i++) {
+            uint256 _cardId = userCards[_user][i];
+
+            if (cards[_cardId].owner == _user && !cards[_cardId].isDeleted) {
+                available++;
+            }
+        }
+
+        Cards = new CardStruct[](available);
 
         uint256 index;
 
@@ -196,9 +205,8 @@ contract OAuth is Ownable {
         );
 
         ProviderDappStruct memory providerDapp;
-        _totalProviderDapp++;
 
-        providerDapp.id = _totalProviderDapp;
+        providerDapp.id = ++_totalProviderDapp;
         providerDapp.domain = _domain;
         providerDapp.accessToken = _accessToken;
         providerDapp.owner = msg.sender;
@@ -245,7 +253,20 @@ contract OAuth is Ownable {
     function getDapps(
         address _user
     ) public view returns (ProviderDappStruct[] memory Dapps) {
-        Dapps = new ProviderDappStruct[](userProviderDappCount[_user]);
+        uint256 available;
+
+        for (uint256 i = 0; i < userProviderDappCount[_user]; i++) {
+            uint256 _dappId = userProviderDapps[_user][i];
+
+            if (
+                providerDapps[_dappId].owner == _user &&
+                !providerDapps[_dappId].isDeleted
+            ) {
+                available++;
+            }
+        }
+
+        Dapps = new ProviderDappStruct[](available);
 
         uint256 index;
 
@@ -350,9 +371,8 @@ contract OAuth is Ownable {
         bytes32 _token = keccak256(abi.encodePacked(_cardId, _user, _dappId));
 
         SessionTokenStruct memory sessionToken;
-        _totalSessionTokens++;
 
-        sessionToken.id = _totalSessionTokens;
+        sessionToken.id = ++_totalSessionTokens;
         sessionToken.cardId = _cardId;
         sessionToken.dappId = _dappId;
         sessionToken.owner = _user;
