@@ -3,11 +3,8 @@
 pragma solidity >=0.7.0 <0.9.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
 contract OAuth is Ownable {
-    using ECDSA for bytes32;
-
     uint256 private _totalCards;
     uint256 private _totalProviderDapp;
     uint256 private _totalSessionTokens;
@@ -79,7 +76,7 @@ contract OAuth is Ownable {
     mapping(uint256 => uint256[]) dAppSessionTokens;
     mapping(uint256 => uint256) dAppSessionTokenCount;
 
-    mapping(uint256 => uint256[]) connectDappsToCard; //cardId mapping to dappId
+    mapping(uint256 => uint256[]) cardIdToDapps;
 
     mapping(uint256 => bool) doesProviderDappExist;
     mapping(uint256 => ProviderDappStruct) providerDapps;
@@ -164,7 +161,7 @@ contract OAuth is Ownable {
 
     function getUserCards(
         address _user
-    ) public view returns (CardStruct[] memory Cards) {
+    ) public view onlyOwner returns (CardStruct[] memory Cards) {
         uint256 available;
 
         for (uint256 i = 0; i < userCardCount[_user]; i++) {
@@ -190,7 +187,7 @@ contract OAuth is Ownable {
 
     function getUserCard(
         uint256 _cardId
-    ) public view returns (CardStruct memory Card) {
+    ) public view onlyOwner returns (CardStruct memory Card) {
         return cards[_cardId];
     }
 
@@ -288,6 +285,29 @@ contract OAuth is Ownable {
         return providerDapps[_dappId];
     }
 
+    function getDappsConnectedToCard(
+        address _user,
+        uint256 _cardId
+    ) public view returns (ProviderDappStruct[] memory dApps) {
+        uint256 available;
+
+        for (uint256 i = 0; i < cardIdToDapps[_cardId].length; i++) {
+            if (getActiveSessionId(_user, cardIdToDapps[_cardId][i]) != 0) {
+                available++;
+            }
+        }
+
+        dApps = new ProviderDappStruct[](available);
+
+        uint256 index;
+
+        for (uint256 i = 0; i < cardIdToDapps[_cardId].length; i++) {
+            if (getActiveSessionId(_user, cardIdToDapps[_cardId][i]) != 0) {
+                dApps[index++] = getDapp(cardIdToDapps[_cardId][i]);
+            }
+        }
+    }
+
     function deactivateSessionTokensForDapp(uint256 _dappId) private {
         for (uint256 i = 0; i < dAppSessionTokenCount[_dappId]; i++) {
             uint256 _sessionId = dAppSessionTokens[_dappId][i];
@@ -315,13 +335,52 @@ contract OAuth is Ownable {
     }
 
     function verify(
-        string memory hash,
+        string memory _message,
         address _signer,
         bytes memory _signature
-    ) private pure returns (bool) {
-        // address recoveredSigner = hash.recover(_signature);
-        // return _signer == recoveredSigner;
-        // return true;
+    ) public pure returns (bool) {
+        bytes32 messageHash = getMessageHash(_message);
+        bytes32 ethSignedMessageHash = getEthSignedMessageHash(messageHash);
+
+        return recover(ethSignedMessageHash, _signature) == _signer;
+    }
+
+    function getMessageHash(
+        string memory _message
+    ) private pure returns (bytes32) {
+        return keccak256(abi.encodePacked(_message));
+    }
+
+    function getEthSignedMessageHash(
+        bytes32 _messageHash
+    ) private pure returns (bytes32) {
+        return
+            keccak256(
+                abi.encodePacked(
+                    "\x19Ethereum Signed Message:\n32",
+                    _messageHash
+                )
+            );
+    }
+
+    function recover(
+        bytes32 _ethSignedMessageHash,
+        bytes memory _signature
+    ) private pure returns (address) {
+        (bytes32 r, bytes32 s, uint8 v) = _split(_signature);
+        return ecrecover(_ethSignedMessageHash, v, r, s);
+    }
+
+    function _split(
+        bytes memory _signature
+    ) private pure returns (bytes32 r, bytes32 s, uint8 v) {
+        require(_signature.length == 65, "Invalid signature length");
+
+        assembly {
+            r := mload(add(_signature, 32))
+            s := mload(add(_signature, 64))
+            v := byte(0, mload(add(_signature, 96)))
+        }
     }
 
     function triggerLogin(
@@ -329,7 +388,7 @@ contract OAuth is Ownable {
         uint256 _dappId,
         string memory _message,
         bytes memory _signature
-    ) public view returns (bytes32, CardStruct[] memory Cards) {
+    ) public view onlyOwner returns (bytes32, CardStruct[] memory Cards) {
         require(_signature.length == 65, "Invalid signature length");
         require(
             verify(_message, _user, _signature),
@@ -338,8 +397,12 @@ contract OAuth is Ownable {
 
         uint256 sessionId = getActiveSessionId(_user, _dappId);
 
-        if (sessionId == 0) return (0, getUserCards(_user));
-        else return (sessionTokens[sessionId].token, new CardStruct[](0));
+        if (sessionId == 0) {
+            return (
+                0x0000000000000000000000000000000000000000000000000000000000000000,
+                getUserCards(_user)
+            );
+        } else return (sessionTokens[sessionId].token, new CardStruct[](0));
     }
 
     function getActiveSessionId(
@@ -364,9 +427,17 @@ contract OAuth is Ownable {
     function createSession(
         uint256 _cardId,
         uint256 _dappId,
-        address _user
+        address _user,
+        string memory _message,
+        bytes memory _signature
     ) public onlyOwner returns (bytes32) {
         require(doesCardExist[_cardId], "Card does not exist");
+        require(cards[_cardId].owner == _user, "Access denied");
+        require(doesProviderDappExist[_dappId], "dApp not registered");
+        require(
+            verify(_message, _user, _signature),
+            "Unable to validate signature"
+        );
 
         bytes32 _token = keccak256(abi.encodePacked(_cardId, _user, _dappId));
 
@@ -386,7 +457,7 @@ contract OAuth is Ownable {
         dAppSessionTokens[_dappId].push(sessionToken.id);
         dAppSessionTokenCount[_dappId] += 1;
         tokenSessionTokenId[_token] = sessionToken.id;
-        connectDappsToCard[_cardId].push(_dappId);
+        cardIdToDapps[_cardId].push(_dappId);
 
         emit SessionTokenAction(
             sessionToken.id,
@@ -413,7 +484,7 @@ contract OAuth is Ownable {
         return 0;
     }
 
-    function deactivateSessionFromToken(bytes32 _token) public {
+    function deactivateSessionFromToken(bytes32 _token) public onlyOwner {
         require(
             getSessionIdFromToken(_token) != 0,
             "Invalid or Expired token provided"
