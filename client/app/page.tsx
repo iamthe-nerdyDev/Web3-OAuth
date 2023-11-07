@@ -1,113 +1,282 @@
-import Image from 'next/image'
+import Image from "next/image";
+import localFont from "next/font/local";
+import icon from "../public/arrow-right-solid.svg";
+import dots from "../public/Dot.svg";
+import profile from "../public/profile_sample.svg";
+import Creation from "../public/profile_picture.svg";
+import Update from "../public/website_update.svg";
+import Management from "../public/profile_management.svg";
+import Privacy from "../public/Privacy.svg";
+import Puzzle from "../public/puzzle.png";
+import Rating from "../public/Rating.svg";
 
 export default function Home() {
+//   const faqHeaders = document.querySelectorAll(".faqs-container .faq-header");
+
+// faqHeaders.forEach((header, i) => {
+//   header.addEventListener("click", () => {
+//     header.nextElementSibling.classList.toggle("active");
+
+//     const open = header.querySelector(".open");
+//     const close = header.querySelector(".close");
+
+//     if (header.nextElementSibling.classList.contains("active")) {
+//       open.classList.remove("active");
+//       close.classList.add("active");
+//     } else {
+//       open.classList.add("active");
+//       close.classList.remove("active");
+//     }
+//   });
+// });
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <div className="general_container">
+      <div className="group1">
+        <div className="nav">
+          <div className="nav-cont">
+            <a href="">web3 Oauth</a>
+            <div className="group2">
+              <ul>
+                <li className="nav_L">
+                  <a href="#about" className="link">
+                    What we offer
+                  </a>
+                </li>
+                <li className="nav_L">
+                  <a href="#work" className="link">
+                    Methodology
+                  </a>
+                </li>
+                <li className="nav_L">
+                  <a href="#contact" className="link">
+                    FAQ
+                  </a>
+                </li>
+                <li className="nav_L">
+                  <a href="#contact" className="link">
+                    Contact
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <ul>
+              <li className="nav_L">
+                <a href="#about" className="link">
+                  English
+                </a>
+              </li>
+              <li className="nav_L">
+                <a href="#work" className="link2">
+                  Connect wallet
+                  {/* <Image className="arrow" src={icon} alt="Icon" /> */}
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
+      <div className="group3">
+        <div className="dot">
+          <Image className="dots" src={dots} alt="Dots" />
+        </div>
+        <p>Seamless Experience</p>
+        <h2>
+          Simplifying user data management across websites. Seamless profile
+          updates. Blockchain-powered.
+        </h2>
+        <h5>Experience the future of web interaction.</h5>
+
+        <div className="button">
+          <a href="">Connect Wallet</a>
+          <a href="">Read Docs</a>
+        </div>
       </div>
 
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore the Next.js 13 playground.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+      <div className="group4">
+        <div className="image">
+          <Image className="profile" src={profile} alt="Profile" />
+        </div>
       </div>
-    </main>
-  )
+
+      <div className="group5">
+        <h3>What we offer</h3>
+        <div className="group_offers">
+          <div className="offer1">
+            <h3>Streamlined Profile Creation</h3>
+            <p>
+              Allow users to create and manage multiple profile card details for
+              different scenarios.
+            </p>
+            <Image src={Creation} alt="Creation" />
+          </div>
+
+          <div className="offer1">
+            <h3>Real-Time Website Updates</h3>
+            <p>
+              Instantly notify connected websites of any changes through webhook
+              integration.
+            </p>
+            <Image src={Update} alt="update" />
+          </div>
+
+          <div className="offer1">
+            <h3>Effortless Profile Picture Management</h3>
+            <p>
+              Enable users to effortlessly manage their profile pictures,
+              whether from existing NFTs or local device images.
+            </p>
+            <Image src={Management} alt="Management" />
+          </div>
+
+          <div className="offer1">
+            <h3>Secure and Privacy-Conscious Data Sharing</h3>
+            <p>Ensure safe and private data sharing with user consent.</p>
+            <Image src={Privacy} alt="Privacy" />
+          </div>
+        </div>
+      </div>
+
+      <div className="group5">
+        <h3>Methodology</h3>
+        <div className="group_offers">
+          <div className="offer2">
+            <Image src={Puzzle} alt="puzzle" />
+          </div>
+
+          <div className="offer2">
+            <h3>Development Approach:</h3>
+            <ul>
+              <li className="bullets">
+                Our system will be built on the blockchain, utilizing various
+                web3 libraries to ensure security and efficiency.
+              </li>
+            </ul>
+            {/* <Image src={Update} alt="update"/> */}
+          </div>
+
+          <div className="offer3">
+            <h3>Normal User:</h3>
+            <ul>
+              <li className="bullets">
+                Regular users will enjoy a seamless experience with a simple
+                landing page.
+              </li>
+              <li className="bullets">
+                To log in, users need to connect their web3 wallet; no other
+                details are required.
+              </li>
+              <li className="bullets">
+                After connecting their wallet,users gain access to their
+                dashboard.{" "}
+              </li>
+              <li className="bullets">
+                The dashboard displays a randomly generated profile picture,
+                username (unchangeable), a list of linked profile cards, and
+                associated websites.
+              </li>
+              <li className="bullets">
+                Users can also access JSON-format details for each profile card,
+                useful for developers who want to update information on their
+                websites.
+              </li>
+            </ul>
+            {/* <Image src={Management} alt="Management"/> */}
+          </div>
+
+          <div className="offer3">
+            <h3>Developer:</h3>
+            <ul>
+              <li className="bullets">
+                Developers, mainly website owners, can sign up for an API Key to
+                integrate their users into our system.
+              </li>
+              <li className="bullets">
+                Sign-up details include username, email address, password, and
+                organization details (if applicable).
+              </li>
+              <li className="bullets">
+                Sign-in allows access to the dashboard, where developers can
+                create API Keys, monitor usage, and manage their settings.
+              </li>
+            </ul>
+            {/* <Image src={Privacy} alt="Privacy" /> */}
+          </div>
+        </div>
+      </div>
+
+      <div className="group6">
+        <h3>Bonus Concept</h3>
+        <p>Developers can integrate our SDK into their websites, which activates a modal for a smooth user experience. The SDK file streamlines library integration for developers.</p>
+        <Image src={Rating} alt="rating"/>
+      </div>
+
+      <div className="group7">
+        <h3>Find Answers to Your Burning Questions about Profile Card Solutions</h3>
+        <div className="faqs-container">
+      <h2>Frequently Asked Questions</h2>
+
+      <div className="questions-container">
+        <div className="content-container">
+          <div className="faq-header">
+            <h3>How do I purchase a membership?</h3>
+            <span className="open active">+</span>
+            <span className="close">-</span>
+          </div>
+
+          <div className="content">
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet,
+              veniam!
+            </p>
+
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa
+              voluptatem voluptatibus temporibus nemo amet tempore aperiam
+              pariatur laboriosam qui vel!
+            </p>
+          </div>
+        </div>
+
+        <div className="content-container">
+          <div className="faq-header">
+            <h3>Which platforms are supported?</h3>
+            <span className="open active">+</span>
+            <span className="close">-</span>
+          </div>
+
+          <div className="content">
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa
+              voluptatem voluptatibus temporibus nemo amet tempore aperiam
+              pariatur laboriosam qui vel!
+            </p>
+          </div>
+        </div>
+
+        <div className="content-container">
+          <div className="faq-header">
+            <h3>How to cancel the subscription?</h3>
+            <span className="open active">+</span>
+            <span className="close">-</span>
+          </div>
+
+          <div className="content">
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet,
+              veniam!
+            </p>
+
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa
+              voluptatem voluptatibus temporibus nemo amet tempore aperiam
+              pariatur laboriosam qui vel!
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+      </div>
+    </div>
+  );
 }
