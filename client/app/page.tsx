@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Image from "next/image";
 import localFont from "next/font/local";
 import icon from "../public/arrow-right-solid.svg";
@@ -9,26 +10,65 @@ import Management from "../public/profile_management.svg";
 import Privacy from "../public/Privacy.svg";
 import Puzzle from "../public/puzzle.png";
 import Rating from "../public/Rating.svg";
+import button1 from "../public/Group.svg";
+import button2 from "../public/Store Buttons.svg";
+
+
 
 export default function Home() {
-//   const faqHeaders = document.querySelectorAll(".faqs-container .faq-header");
+  // const [openFaqs, setOpenFaqs] = useState([]);
 
-// faqHeaders.forEach((header, i) => {
-//   header.addEventListener("click", () => {
-//     header.nextElementSibling.classList.toggle("active");
+  // const toggleFAQ = (index) => {
+  //   const newOpenFaqs = [...openFaqs];
+  //   if (newOpenFaqs.includes(index)) {
+  //     newOpenFaqs.splice(newOpenFaqs.indexOf(index), 1);
+  //   } else {
+  //     newOpenFaqs.push(index);
+  //   }
+  //   setOpenFaqs(newOpenFaqs);
+  // };
 
-//     const open = header.querySelector(".open");
-//     const close = header.querySelector(".close");
+  // const faqs = [
+  //   {
+  //     question: 'How do I purchase a membership?',
+  //     answer: [
+  //       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet, veniam!',
+  //       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa voluptatem voluptatibus temporibus nemo amet tempore aperiam pariatur laboriosam qui vel!',
+  //     ],
+  //   },
+  //   {
+  //     question: 'Which platforms are supported?',
+  //     answer: [
+  //       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa voluptatem voluptatibus temporibus nemo amet tempore aperiam pariatur laboriosam qui vel!',
+  //     ],
+  //   },
+  //   {
+  //     question: 'How to cancel the subscription?',
+  //     answer: [
+  //       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet, veniam!',
+  //       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa voluptatem voluptatibus temporibus nemo amet tempore aperiam pariatur laboriosam qui vel!',
+  //     ],
+  //   },
+  // ];
 
-//     if (header.nextElementSibling.classList.contains("active")) {
-//       open.classList.remove("active");
-//       close.classList.add("active");
-//     } else {
-//       open.classList.add("active");
-//       close.classList.remove("active");
-//     }
-//   });
-// });
+  // const generateFAQs = () => {
+  //   return faqs.map((faq, index) => (
+  //     <div className="content-container" key={index}>
+  //       <div className="faq-header" onClick={() => toggleFAQ(index)}>
+  //         <h3>{faq.question}</h3>
+  //         <span className={`open ${openFaqs.includes(index) ? '' : 'active'}`}>+</span>
+  //         <span className={`close ${openFaqs.includes(index) ? 'active' : ''}>-</span>
+  //       </div>
+
+  //       <div className={`content ${openFaqs.includes(index) ? 'active' : ''}`}>
+  //         {faq.answer.map((answer, i) => (
+  //           <p key={i}>{answer}</p>
+  //         )}
+  //       </div>
+  //     </div>
+  //   ));
+  // };
+
   return (
     <div className="general_container">
       <div className="group1">
@@ -108,7 +148,7 @@ export default function Home() {
               Allow users to create and manage multiple profile card details for
               different scenarios.
             </p>
-            <Image src={Creation} alt="Creation" />
+            <Image className="image" src={Creation} alt="Creation" />
           </div>
 
           <div className="offer1">
@@ -117,7 +157,7 @@ export default function Home() {
               Instantly notify connected websites of any changes through webhook
               integration.
             </p>
-            <Image src={Update} alt="update" />
+            <Image className="image" src={Update} alt="update" />
           </div>
 
           <div className="offer1">
@@ -126,13 +166,13 @@ export default function Home() {
               Enable users to effortlessly manage their profile pictures,
               whether from existing NFTs or local device images.
             </p>
-            <Image src={Management} alt="Management" />
+            <Image className='image2' src={Management} alt="Management" />
           </div>
 
           <div className="offer1">
             <h3>Secure and Privacy-Conscious Data Sharing</h3>
             <p>Ensure safe and private data sharing with user consent.</p>
-            <Image src={Privacy} alt="Privacy" />
+            <Image className='image3' src={Privacy} alt="Privacy" />
           </div>
         </div>
       </div>
@@ -213,69 +253,56 @@ export default function Home() {
 
       <div className="group7">
         <h3>Find Answers to Your Burning Questions about Profile Card Solutions</h3>
-        <div className="faqs-container">
-      <h2>Frequently Asked Questions</h2>
+        {/* <div className="questions-container">{generateFAQs()}</div> */}
+      </div>
 
-      <div className="questions-container">
-        <div className="content-container">
-          <div className="faq-header">
-            <h3>How do I purchase a membership?</h3>
-            <span className="open active">+</span>
-            <span className="close">-</span>
-          </div>
-
-          <div className="content">
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet,
-              veniam!
-            </p>
-
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa
-              voluptatem voluptatibus temporibus nemo amet tempore aperiam
-              pariatur laboriosam qui vel!
-            </p>
-          </div>
-        </div>
-
-        <div className="content-container">
-          <div className="faq-header">
-            <h3>Which platforms are supported?</h3>
-            <span className="open active">+</span>
-            <span className="close">-</span>
-          </div>
-
-          <div className="content">
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa
-              voluptatem voluptatibus temporibus nemo amet tempore aperiam
-              pariatur laboriosam qui vel!
-            </p>
-          </div>
-        </div>
-
-        <div className="content-container">
-          <div className="faq-header">
-            <h3>How to cancel the subscription?</h3>
-            <span className="open active">+</span>
-            <span className="close">-</span>
-          </div>
-
-          <div className="content">
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet,
-              veniam!
-            </p>
-
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa
-              voluptatem voluptatibus temporibus nemo amet tempore aperiam
-              pariatur laboriosam qui vel!
-            </p>
-          </div>
+      <div className="group8">
+        <h3>Unlock Limitless Possibilities with Our New Card Solutions</h3>
+        <p>consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        <div className="flex">
+        <Image src={button1} alt="rating"/>
+        <Image src={button2} alt="rating"/>
         </div>
       </div>
-    </div>
+
+      <div className="group9">
+        <div className="flex2">
+          <div className="list">
+      <ul>
+                  <li className="nav_f">
+                  <a href="#about" className="linkL">
+                  web3 Oauth
+                  </a>
+                  </li>
+                <li className="nav_f">
+                  <a href="#about" className="links">
+                    About us
+                  </a>
+                </li>
+                <li className="nav_f">
+                  <a href="#work" className="links">
+                    Pricing
+                  </a>
+                </li>
+                <li className="nav_f">
+                  <a href="#contact" className="links">
+                    Contact us
+                  </a>
+                </li>
+                <li className="nav_f">
+                  <a href="#contact" className="links">
+                    Features
+                  </a>
+                </li>
+              </ul>
+              </div>
+
+              <div className="form">
+                <h5>Get latest update with our newsletter</h5>
+                <input type="email" /><br/>
+                <button>Subscribe</button>
+              </div>
+              </div>
       </div>
     </div>
   );
