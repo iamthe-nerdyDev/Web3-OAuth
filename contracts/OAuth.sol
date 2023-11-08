@@ -80,6 +80,8 @@ contract OAuth is Ownable {
 
     mapping(uint256 => bool) doesProviderDappExist;
     mapping(uint256 => ProviderDappStruct) providerDapps;
+
+    mapping(string => uint256) tokenProviderDapps;
     mapping(address => uint256[]) userProviderDapps;
     mapping(address => uint256) userProviderDappCount;
 
@@ -185,12 +187,6 @@ contract OAuth is Ownable {
         }
     }
 
-    function getUserCard(
-        uint256 _cardId
-    ) public view onlyOwner returns (CardStruct memory Card) {
-        return cards[_cardId];
-    }
-
     function registerDapp(
         string memory _domain,
         string memory _accessToken
@@ -212,6 +208,7 @@ contract OAuth is Ownable {
 
         providerDapps[providerDapp.id] = providerDapp;
         doesProviderDappExist[providerDapp.id] = true;
+        tokenProviderDapps[_accessToken] = providerDapp.id;
         userProviderDapps[msg.sender].push(providerDapp.id);
         userProviderDappCount[msg.sender] += 1;
 
@@ -285,6 +282,12 @@ contract OAuth is Ownable {
         return providerDapps[_dappId];
     }
 
+    function getDappFromToken(
+        string memory _token
+    ) public view onlyOwner returns (ProviderDappStruct memory Dapp) {
+        return getDapp(tokenProviderDapps[_token]);
+    }
+
     function getDappsConnectedToCard(
         address _user,
         uint256 _cardId
@@ -338,7 +341,7 @@ contract OAuth is Ownable {
         string memory _message,
         address _signer,
         bytes memory _signature
-    ) public pure returns (bool) {
+    ) private pure returns (bool) {
         bytes32 messageHash = getMessageHash(_message);
         bytes32 ethSignedMessageHash = getEthSignedMessageHash(messageHash);
 

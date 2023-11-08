@@ -1,15 +1,15 @@
-import { useEffect } from 'react';
+import { useEffect } from "react";
 import Image from "next/image";
 import localFont from "next/font/local";
 // import icon from "../public/arrow-right-solid.svg";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons'; 
-import { faFileLines } from '@fortawesome/free-solid-svg-icons'; 
-import { faChevronUp } from '@fortawesome/free-solid-svg-icons';
-import { faGithub } from '@fortawesome/free-brands-svg-icons';
-// import { faGithub } from '@fortawesome/free-solid-svg-icons'; 
-import { faLinkedin } from '@fortawesome/free-brands-svg-icons'; 
-import { faDiscord} from '@fortawesome/free-brands-svg-icons'; 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { faFileLines } from "@fortawesome/free-solid-svg-icons";
+import { faChevronUp } from "@fortawesome/free-solid-svg-icons";
+import { faGithub } from "@fortawesome/free-brands-svg-icons";
+// import { faGithub } from '@fortawesome/free-solid-svg-icons';
+import { faLinkedin } from "@fortawesome/free-brands-svg-icons";
+import { faDiscord } from "@fortawesome/free-brands-svg-icons";
 
 // import {faSomeIcon} from '@fortawesome/react-fontawesome'
 import dots from "../public/Dot.svg";
@@ -73,7 +73,11 @@ function Home() {
               <li className="nav_L">
                 <a href="#work" className="link2">
                   Connect wallet
-                  <FontAwesomeIcon icon={faArrowRight} beat style={{ width: '12px' }} />
+                  <FontAwesomeIcon
+                    icon={faArrowRight}
+                    beat
+                    style={{ width: "12px" }}
+                  />
                 </a>
               </li>
             </ul>
@@ -93,11 +97,14 @@ function Home() {
         <h5>Experience the future of web interaction.</h5>
 
         <div className="button">
-          <a href="">Connect Wallet
-          <FontAwesomeIcon icon={faArrowRight} style={{ width: '12px' }} />
+          <a href="">
+            Connect Wallet
+            <FontAwesomeIcon icon={faArrowRight} style={{ width: "12px" }} />
           </a>
-          <a href="">Read Docs
-          <FontAwesomeIcon icon={faFileLines}  style={{ width: '12px' }}/></a>
+          <a href="">
+            Read Docs
+            <FontAwesomeIcon icon={faFileLines} style={{ width: "12px" }} />
+          </a>
         </div>
       </div>
 
@@ -134,13 +141,13 @@ function Home() {
               Enable users to effortlessly manage their profile pictures,
               whether from existing NFTs or local device images.
             </p>
-            <Image className='image2' src={Management} alt="Management" />
+            <Image className="image2" src={Management} alt="Management" />
           </div>
 
           <div className="offer1">
             <h3>Secure and Privacy-Conscious Data Sharing</h3>
             <p>Ensure safe and private data sharing with user consent.</p>
-            <Image className='image3' src={Privacy} alt="Privacy" />
+            <Image className="image3" src={Privacy} alt="Privacy" />
           </div>
         </div>
       </div>
@@ -212,108 +219,147 @@ function Home() {
 
       <div className="group6">
         <h3>Bonus Concept</h3>
-        <p>Developers can integrate our SDK into their websites, which activates a modal for a smooth user experience. The SDK file streamlines library integration for developers.</p>
-        <Image src={Rating} alt="rating"/>
+        <p>
+          Developers can integrate our SDK into their websites, which activates
+          a modal for a smooth user experience. The SDK file streamlines library
+          integration for developers.
+        </p>
+        <Image src={Rating} alt="rating" />
       </div>
 
       <div className="group7">
-        <h3>Find Answers to Your Burning Questions about Profile Card Solutions</h3>
+        <h3>
+          Find Answers to Your Burning Questions about Profile Card Solutions
+        </h3>
         <div className="general_faq">
-        <div className="Faq">
-        <div className="question">
-          <h3>Can I use a UI Kit for commercial projects?</h3>
-          <FontAwesomeIcon icon={faChevronUp} style={{ width: '12px' }}/>
-        </div>
-        <div className="answer">
-          <p>Yes! Mode UI Kit is created for both personal and commercial use. However, it's essential to review the license or usage terms provided with the UI Kit to ensure compliance with the specific usage rights and any attribution requirements.</p>
-        </div>
-        </div>
+          <div className="Faq">
+            <div className="question">
+              <h3>Can I use a UI Kit for commercial projects?</h3>
+              <FontAwesomeIcon icon={faChevronUp} style={{ width: "12px" }} />
+            </div>
+            <div className="answer">
+              <p>
+                Yes! Mode UI Kit is created for both personal and commercial
+                use. However, it's essential to review the license or usage
+                terms provided with the UI Kit to ensure compliance with the
+                specific usage rights and any attribution requirements.
+              </p>
+            </div>
+          </div>
 
-        <div className="Faq">
-        <div className="question">
-          <h3>Can I use a UI Kit for commercial projects?</h3>
-          <FontAwesomeIcon icon={faChevronUp} style={{ width: '12px' }}/>
-        </div>
-        <div className="answer">
-          <p>Yes! Mode UI Kit is created for both personal and commercial use. However, it's essential to review the license or usage terms provided with the UI Kit to ensure compliance with the specific usage rights and any attribution requirements.</p>
-        </div>
-        </div>
+          <div className="Faq">
+            <div className="question">
+              <h3>Can I use a UI Kit for commercial projects?</h3>
+              <FontAwesomeIcon icon={faChevronUp} style={{ width: "12px" }} />
+            </div>
+            <div className="answer">
+              <p>
+                Yes! Mode UI Kit is created for both personal and commercial
+                use. However, it's essential to review the license or usage
+                terms provided with the UI Kit to ensure compliance with the
+                specific usage rights and any attribution requirements.
+              </p>
+            </div>
+          </div>
 
-        <div className="Faq">
-        <div className="question">
-          <h3>Can I use a UI Kit for commercial projects?</h3>
-          <FontAwesomeIcon icon={faChevronUp} style={{ width: '12px' }}/>
-        </div>
-        <div className="answer">
-          <p>Yes! Mode UI Kit is created for both personal and commercial use. However, it's essential to review the license or usage terms provided with the UI Kit to ensure compliance with the specific usage rights and any attribution requirements.</p>
-        </div>
-        </div>
+          <div className="Faq">
+            <div className="question">
+              <h3>Can I use a UI Kit for commercial projects?</h3>
+              <FontAwesomeIcon icon={faChevronUp} style={{ width: "12px" }} />
+            </div>
+            <div className="answer">
+              <p>
+                Yes! Mode UI Kit is created for both personal and commercial
+                use. However, it's essential to review the license or usage
+                terms provided with the UI Kit to ensure compliance with the
+                specific usage rights and any attribution requirements.
+              </p>
+            </div>
+          </div>
 
-        <div className="Faq">
-        <div className="question">
-          <h3>Can I use a UI Kit for commercial projects?</h3>
-          <FontAwesomeIcon icon={faChevronUp} style={{ width: '12px' }}/>
-        </div>
-        <div className="answer">
-          <p>Yes! Mode UI Kit is created for both personal and commercial use. However, it's essential to review the license or usage terms provided with the UI Kit to ensure compliance with the specific usage rights and any attribution requirements.</p>
-        </div>
-        </div>
+          <div className="Faq">
+            <div className="question">
+              <h3>Can I use a UI Kit for commercial projects?</h3>
+              <FontAwesomeIcon icon={faChevronUp} style={{ width: "12px" }} />
+            </div>
+            <div className="answer">
+              <p>
+                Yes! Mode UI Kit is created for both personal and commercial
+                use. However, it's essential to review the license or usage
+                terms provided with the UI Kit to ensure compliance with the
+                specific usage rights and any attribution requirements.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 
       <div className="group8">
         <h3>Unlock Limitless Possibilities with Our New Card Solutions</h3>
-        <p>consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        <p>
+          consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+          labore et dolore magna aliqua.
+        </p>
         <div className="flex">
-        <Image src={button1} alt="rating"/>
-        <Image src={button2} alt="rating"/>
+          <Image src={button1} alt="rating" />
+          <Image src={button2} alt="rating" />
         </div>
       </div>
 
       <div className="group9">
         <div className="flex2">
           <div className="list">
-      <ul>
-                  <li className="nav_f">
-                  <a href="#about" className="linkL">
+            <ul>
+              <li className="nav_f">
+                <a href="#about" className="linkL">
                   web3 Oauth
-                  </a>
-                  </li>
-                <li className="nav_f">
-                  <a href="#about" className="links">
-                    About us
-                  </a>
-                </li>
-                <li className="nav_f">
-                  <a href="#work" className="links">
-                    Pricing
-                  </a>
-                </li>
-                <li className="nav_f">
-                  <a href="#contact" className="links">
-                    Contact us
-                  </a>
-                </li>
-                <li className="nav_f">
-                  <a href="#contact" className="links">
-                    Features
-                  </a>
-                </li>
-              </ul>
-              </div>
+                </a>
+              </li>
+              <li className="nav_f">
+                <a href="#about" className="links">
+                  About us
+                </a>
+              </li>
+              <li className="nav_f">
+                <a href="#work" className="links">
+                  Pricing
+                </a>
+              </li>
+              <li className="nav_f">
+                <a href="#contact" className="links">
+                  Contact us
+                </a>
+              </li>
+              <li className="nav_f">
+                <a href="#contact" className="links">
+                  Features
+                </a>
+              </li>
+            </ul>
+          </div>
 
-              <div className="form">
-                <h5>Get latest update with our newsletter</h5>
-                <input type="email" /><br/>
-                <button>Subscribe</button>
-              </div>
-              </div>
+          <div className="form">
+            <h5>Get latest update with our newsletter</h5>
+            <input type="email" />
+            <br />
+            <button>Subscribe</button>
+          </div>
+        </div>
 
-              <div className="flex-socials">
-              <FontAwesomeIcon icon={faGithub} style={{ width: '20px', color: '#5A6475' }}/>
-              <FontAwesomeIcon icon={faLinkedin} style={{ width: '20px', color: '#5A6475' }}/>
-              <FontAwesomeIcon icon={faDiscord} style={{ width: '20px' , color: '#5A6475' }}/>
-              </div>
+        <div className="flex-socials">
+          <FontAwesomeIcon
+            icon={faGithub}
+            style={{ width: "20px", color: "#5A6475" }}
+          />
+          <FontAwesomeIcon
+            icon={faLinkedin}
+            style={{ width: "20px", color: "#5A6475" }}
+          />
+          <FontAwesomeIcon
+            icon={faDiscord}
+            style={{ width: "20px", color: "#5A6475" }}
+          />
+        </div>
       </div>
     </div>
   );
