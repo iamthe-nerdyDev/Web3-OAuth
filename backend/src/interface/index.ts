@@ -19,6 +19,7 @@ export interface IConfig {
 }
 
 export interface ISignIn {
+  cardId: number;
   user: string;
   accessToken: string;
   domain: string;

@@ -172,7 +172,6 @@ contract OAuth is Ownable {
     /**
      * @notice Splits the signature into r, s and v values
      * @param _signature Signature gotten from signing the message hash
-     * @return (bytes32 r, bytes32 s, uint8 v)
      */
     function _split(
         bytes memory _signature
@@ -281,10 +280,21 @@ contract OAuth is Ownable {
     }
 
     /**
+     * @notice Gets card for a particular cardId
+     * @param _cardId Card ID
+     * @return Card
+     */
+    function getUserCard(
+        uint256 _cardId
+    ) public view returns (CardStruct memory Card) {
+        return cards[_cardId];
+    }
+
+    /**
      * @notice Gets card for a particular address
      * @param _user User address
      * @dev Can be called by only contract owner
-     * @return CardStruct[]
+     * @return Cards
      */
     function getUserCards(
         address _user
@@ -391,7 +401,7 @@ contract OAuth is Ownable {
     /**
      * @notice Gets all registered dApps for a particular address
      * @param _user User address
-     * @return ProviderDappStruct[]
+     * @return dApps
      */
     function getDapps(
         address _user
@@ -409,7 +419,7 @@ contract OAuth is Ownable {
             }
         }
 
-        Dapps = new ProviderDappStruct[](available);
+        dApps = new ProviderDappStruct[](available);
 
         uint256 index;
 
@@ -420,7 +430,7 @@ contract OAuth is Ownable {
                 providerDapps[_dappId].owner == _user &&
                 !providerDapps[_dappId].isDeleted
             ) {
-                Dapps[index++] = providerDapps[_dappId];
+                dApps[index++] = providerDapps[_dappId];
             }
         }
     }
@@ -428,7 +438,7 @@ contract OAuth is Ownable {
     /**
      * @notice Gets single dApp details
      * @param _dappId ID of a registered dApp
-     * @return ProviderDappStruct
+     * @return dApp
      */
     function getDapp(
         uint256 _dappId
@@ -440,7 +450,7 @@ contract OAuth is Ownable {
      * @notice Gets dApp details from access token
      * @param _token dApp access token
      * @dev Can be called by only contract owner
-     * @return ProviderDappStruct
+     * @return dApp
      */
     function getDappFromToken(
         string memory _token
@@ -452,7 +462,7 @@ contract OAuth is Ownable {
      * @notice Gets dApps that can access a particular card
      * @param _user User address
      * @param _cardId Card ID
-     * @return ProviderDappStruct[]
+     * @return dApps
      */
     function getDappsConnectedToCard(
         address _user,
@@ -519,7 +529,7 @@ contract OAuth is Ownable {
      * @param _message Message signed by user
      * @param _signature Signature from signing message hash
      * @dev Can be called by only contract owner
-     * @return tuple(bytes32, CardStruct[])
+     * @return tuple(bytes32, Cards)
      */
     function triggerLogin(
         address _user,
@@ -661,7 +671,7 @@ contract OAuth is Ownable {
      * @notice Gets user info from their session token
      * @param _token session token
      * @dev Requires that token is not invalid or expired and card exists
-     * @return CardStruct
+     * @return Card
      */
     function fetchUserInfo(
         bytes32 _token

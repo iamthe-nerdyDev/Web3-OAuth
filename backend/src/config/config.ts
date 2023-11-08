@@ -43,8 +43,8 @@ const SERVER_PORT = process.env.SERVER_PORT
 
 const evm = "mainnet" ? EVM.mainnet : EVM.tesnet;
 const Provider = new ethers.providers.JsonRpcProvider(evm);
-const Contract = new ethers.Contract(contractAddress, contractABI, Provider);
 const Wallet = new ethers.Wallet(key, Provider);
+const Contract = new ethers.Contract(contractAddress, contractABI, Wallet);
 
 export const config: IConfig = {
   network: {

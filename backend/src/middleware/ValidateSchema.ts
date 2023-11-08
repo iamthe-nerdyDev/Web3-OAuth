@@ -28,5 +28,17 @@ export const Schemas = {
         .regex(/(0x)?[0-9a-fA-F]{130}/)
         .required(),
     }),
+    session: Joi.object<ISignIn>({
+      cardId: Joi.number().required(),
+      user: Joi.string()
+        .regex(/(0x)?[0-9a-fA-F]{40}/)
+        .required(),
+      accessToken: Joi.string().required(),
+      domain: Joi.string().required(),
+      message: Joi.string().required(),
+      signature: Joi.string()
+        .regex(/(0x)?[0-9a-fA-F]{130}/)
+        .required(),
+    }),
   },
 };
