@@ -7,11 +7,11 @@ import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { faFileLines } from "@fortawesome/free-solid-svg-icons";
 import { faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
-// import { faGithub } from '@fortawesome/free-solid-svg-icons';
+// import { faGithub } from &apos;@fortawesome/free-solid-svg-icons&apos;;
 import { faLinkedin } from "@fortawesome/free-brands-svg-icons";
 import { faDiscord } from "@fortawesome/free-brands-svg-icons";
 
-// import {faSomeIcon} from '@fortawesome/react-fontawesome'
+// import {faSomeIcon} from &apos;@fortawesome/react-fontawesome&apos;
 import dots from "../public/Dot.svg";
 import profile from "../public/profile_sample.svg";
 import Creation from "../public/profile_picture.svg";
@@ -240,7 +240,7 @@ function Home() {
             <div className="answer">
               <p>
                 Yes! Mode UI Kit is created for both personal and commercial
-                use. However, it's essential to review the license or usage
+                use. However, it&apos;s essential to review the license or usage
                 terms provided with the UI Kit to ensure compliance with the
                 specific usage rights and any attribution requirements.
               </p>
@@ -255,7 +255,7 @@ function Home() {
             <div className="answer">
               <p>
                 Yes! Mode UI Kit is created for both personal and commercial
-                use. However, it's essential to review the license or usage
+                use. However, it&apos;s essential to review the license or usage
                 terms provided with the UI Kit to ensure compliance with the
                 specific usage rights and any attribution requirements.
               </p>
@@ -270,7 +270,7 @@ function Home() {
             <div className="answer">
               <p>
                 Yes! Mode UI Kit is created for both personal and commercial
-                use. However, it's essential to review the license or usage
+                use. However, it&apos;s essential to review the license or usage
                 terms provided with the UI Kit to ensure compliance with the
                 specific usage rights and any attribution requirements.
               </p>
@@ -285,7 +285,7 @@ function Home() {
             <div className="answer">
               <p>
                 Yes! Mode UI Kit is created for both personal and commercial
-                use. However, it's essential to review the license or usage
+                use. However, it&apos;s essential to review the license or usage
                 terms provided with the UI Kit to ensure compliance with the
                 specific usage rights and any attribution requirements.
               </p>
