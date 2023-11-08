@@ -1,7 +1,17 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 import Image from "next/image";
 import localFont from "next/font/local";
-import icon from "../public/arrow-right-solid.svg";
+// import icon from "../public/arrow-right-solid.svg";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons'; 
+import { faFileLines } from '@fortawesome/free-solid-svg-icons'; 
+import { faChevronUp } from '@fortawesome/free-solid-svg-icons';
+import { faGithub } from '@fortawesome/free-brands-svg-icons';
+// import { faGithub } from '@fortawesome/free-solid-svg-icons'; 
+import { faLinkedin } from '@fortawesome/free-brands-svg-icons'; 
+import { faDiscord} from '@fortawesome/free-brands-svg-icons'; 
+
+// import {faSomeIcon} from '@fortawesome/react-fontawesome'
 import dots from "../public/Dot.svg";
 import profile from "../public/profile_sample.svg";
 import Creation from "../public/profile_picture.svg";
@@ -13,61 +23,16 @@ import Rating from "../public/Rating.svg";
 import button1 from "../public/Group.svg";
 import button2 from "../public/Store Buttons.svg";
 
+function Home() {
+  // useEffect(() => {
+  //   const faqs = document.querySelectorAll(".Faq");
 
-
-export default function Home() {
-  // const [openFaqs, setOpenFaqs] = useState([]);
-
-  // const toggleFAQ = (index) => {
-  //   const newOpenFaqs = [...openFaqs];
-  //   if (newOpenFaqs.includes(index)) {
-  //     newOpenFaqs.splice(newOpenFaqs.indexOf(index), 1);
-  //   } else {
-  //     newOpenFaqs.push(index);
-  //   }
-  //   setOpenFaqs(newOpenFaqs);
-  // };
-
-  // const faqs = [
-  //   {
-  //     question: 'How do I purchase a membership?',
-  //     answer: [
-  //       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet, veniam!',
-  //       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa voluptatem voluptatibus temporibus nemo amet tempore aperiam pariatur laboriosam qui vel!',
-  //     ],
-  //   },
-  //   {
-  //     question: 'Which platforms are supported?',
-  //     answer: [
-  //       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa voluptatem voluptatibus temporibus nemo amet tempore aperiam pariatur laboriosam qui vel!',
-  //     ],
-  //   },
-  //   {
-  //     question: 'How to cancel the subscription?',
-  //     answer: [
-  //       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet, veniam!',
-  //       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa voluptatem voluptatibus temporibus nemo amet tempore aperiam pariatur laboriosam qui vel!',
-  //     ],
-  //   },
-  // ];
-
-  // const generateFAQs = () => {
-  //   return faqs.map((faq, index) => (
-  //     <div className="content-container" key={index}>
-  //       <div className="faq-header" onClick={() => toggleFAQ(index)}>
-  //         <h3>{faq.question}</h3>
-  //         <span className={`open ${openFaqs.includes(index) ? '' : 'active'}`}>+</span>
-  //         <span className={`close ${openFaqs.includes(index) ? 'active' : ''}>-</span>
-  //       </div>
-
-  //       <div className={`content ${openFaqs.includes(index) ? 'active' : ''}`}>
-  //         {faq.answer.map((answer, i) => (
-  //           <p key={i}>{answer}</p>
-  //         )}
-  //       </div>
-  //     </div>
-  //   ));
-  // };
+  //   faqs.forEach((faq) => {
+  //     faq.addEventListener("click", () => {
+  //       faq.classList.toggle("active");
+  //     });
+  //   });
+  // }, []);
 
   return (
     <div className="general_container">
@@ -108,6 +73,7 @@ export default function Home() {
               <li className="nav_L">
                 <a href="#work" className="link2">
                   Connect wallet
+                  <FontAwesomeIcon icon={faArrowRight} beat style={{ width: '12px' }} />
                   {/* <Image className="arrow" src={icon} alt="Icon" /> */}
                 </a>
               </li>
@@ -128,8 +94,11 @@ export default function Home() {
         <h5>Experience the future of web interaction.</h5>
 
         <div className="button">
-          <a href="">Connect Wallet</a>
-          <a href="">Read Docs</a>
+          <a href="">Connect Wallet
+          <FontAwesomeIcon icon={faArrowRight} style={{ width: '12px' }} />
+          </a>
+          <a href="">Read Docs
+          <FontAwesomeIcon icon={faFileLines}  style={{ width: '12px' }}/></a>
         </div>
       </div>
 
@@ -253,7 +222,51 @@ export default function Home() {
 
       <div className="group7">
         <h3>Find Answers to Your Burning Questions about Profile Card Solutions</h3>
-        {/* <div className="questions-container">{generateFAQs()}</div> */}
+        <div className="general_faq">
+        <div className="Faq">
+        <div className="question">
+          <h3>Can I use a UI Kit for commercial projects?</h3>
+          <FontAwesomeIcon icon={faChevronUp} style={{ width: '12px' }}/>
+          {/* <hr/> */}
+        </div>
+        <div className="answer">
+          <p>Yes! Mode UI Kit is created for both personal and commercial use. However, it's essential to review the license or usage terms provided with the UI Kit to ensure compliance with the specific usage rights and any attribution requirements.</p>
+        </div>
+        </div>
+
+        <div className="Faq">
+        <div className="question">
+          <h3>Can I use a UI Kit for commercial projects?</h3>
+          <FontAwesomeIcon icon={faChevronUp} style={{ width: '12px' }}/>
+          {/* <hr/> */}
+        </div>
+        <div className="answer">
+          <p>Yes! Mode UI Kit is created for both personal and commercial use. However, it's essential to review the license or usage terms provided with the UI Kit to ensure compliance with the specific usage rights and any attribution requirements.</p>
+        </div>
+        </div>
+
+        <div className="Faq">
+        <div className="question">
+          <h3>Can I use a UI Kit for commercial projects?</h3>
+          <FontAwesomeIcon icon={faChevronUp} style={{ width: '12px' }}/>
+          {/* <hr/> */}
+        </div>
+        <div className="answer">
+          <p>Yes! Mode UI Kit is created for both personal and commercial use. However, it's essential to review the license or usage terms provided with the UI Kit to ensure compliance with the specific usage rights and any attribution requirements.</p>
+        </div>
+        </div>
+
+        <div className="Faq">
+        <div className="question">
+          <h3>Can I use a UI Kit for commercial projects?</h3>
+          <FontAwesomeIcon icon={faChevronUp} style={{ width: '12px' }}/>
+          {/* <hr/> */}
+        </div>
+        <div className="answer">
+          <p>Yes! Mode UI Kit is created for both personal and commercial use. However, it's essential to review the license or usage terms provided with the UI Kit to ensure compliance with the specific usage rights and any attribution requirements.</p>
+        </div>
+        </div>
+        </div>
       </div>
 
       <div className="group8">
@@ -303,7 +316,15 @@ export default function Home() {
                 <button>Subscribe</button>
               </div>
               </div>
+
+              <div className="flex-socials">
+              <FontAwesomeIcon icon={faGithub} style={{ width: '20px', color: '#5A6475' }}/>
+              <FontAwesomeIcon icon={faLinkedin} style={{ width: '20px', color: '#5A6475' }}/>
+              <FontAwesomeIcon icon={faDiscord} style={{ width: '20px' , color: '#5A6475' }}/>
+              </div>
       </div>
     </div>
   );
 }
+
+export default Home;
