@@ -74,7 +74,6 @@ function Home() {
                 <a href="#work" className="link2">
                   Connect wallet
                   <FontAwesomeIcon icon={faArrowRight} beat style={{ width: '12px' }} />
-                  {/* <Image className="arrow" src={icon} alt="Icon" /> */}
                 </a>
               </li>
             </ul>
@@ -161,7 +160,6 @@ function Home() {
                 web3 libraries to ensure security and efficiency.
               </li>
             </ul>
-            {/* <Image src={Update} alt="update"/> */}
           </div>
 
           <div className="offer3">
@@ -177,7 +175,7 @@ function Home() {
               </li>
               <li className="bullets">
                 After connecting their wallet,users gain access to their
-                dashboard.{" "}
+                dashboard.
               </li>
               <li className="bullets">
                 The dashboard displays a randomly generated profile picture,
@@ -190,7 +188,6 @@ function Home() {
                 websites.
               </li>
             </ul>
-            {/* <Image src={Management} alt="Management"/> */}
           </div>
 
           <div className="offer3">
@@ -209,7 +206,6 @@ function Home() {
                 create API Keys, monitor usage, and manage their settings.
               </li>
             </ul>
-            {/* <Image src={Privacy} alt="Privacy" /> */}
           </div>
         </div>
       </div>
@@ -227,7 +223,6 @@ function Home() {
         <div className="question">
           <h3>Can I use a UI Kit for commercial projects?</h3>
           <FontAwesomeIcon icon={faChevronUp} style={{ width: '12px' }}/>
-          {/* <hr/> */}
         </div>
         <div className="answer">
           <p>Yes! Mode UI Kit is created for both personal and commercial use. However, it's essential to review the license or usage terms provided with the UI Kit to ensure compliance with the specific usage rights and any attribution requirements.</p>
@@ -238,7 +233,6 @@ function Home() {
         <div className="question">
           <h3>Can I use a UI Kit for commercial projects?</h3>
           <FontAwesomeIcon icon={faChevronUp} style={{ width: '12px' }}/>
-          {/* <hr/> */}
         </div>
         <div className="answer">
           <p>Yes! Mode UI Kit is created for both personal and commercial use. However, it's essential to review the license or usage terms provided with the UI Kit to ensure compliance with the specific usage rights and any attribution requirements.</p>
@@ -249,7 +243,6 @@ function Home() {
         <div className="question">
           <h3>Can I use a UI Kit for commercial projects?</h3>
           <FontAwesomeIcon icon={faChevronUp} style={{ width: '12px' }}/>
-          {/* <hr/> */}
         </div>
         <div className="answer">
           <p>Yes! Mode UI Kit is created for both personal and commercial use. However, it's essential to review the license or usage terms provided with the UI Kit to ensure compliance with the specific usage rights and any attribution requirements.</p>
@@ -260,7 +253,6 @@ function Home() {
         <div className="question">
           <h3>Can I use a UI Kit for commercial projects?</h3>
           <FontAwesomeIcon icon={faChevronUp} style={{ width: '12px' }}/>
-          {/* <hr/> */}
         </div>
         <div className="answer">
           <p>Yes! Mode UI Kit is created for both personal and commercial use. However, it's essential to review the license or usage terms provided with the UI Kit to ensure compliance with the specific usage rights and any attribution requirements.</p>
