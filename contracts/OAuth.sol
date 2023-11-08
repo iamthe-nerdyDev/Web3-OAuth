@@ -4,11 +4,20 @@ pragma solidity >=0.7.0 <0.9.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 
+/**
+ * @title OAuth
+ * @author ~NerdyDev🥀 & lolodusiji
+ * @dev A Solidity contract for managing user cards, provider dApps, and session tokens.
+ * This contract provides functions for creating, updating, and deleting user cards, registering dApps,
+ * and managing session tokens for authentication and authorization purposes.
+ * @notice Implements OAuth authorization flows and data storage
+ */
 contract OAuth is Ownable {
-    uint256 private _totalCards;
-    uint256 private _totalProviderDapp;
-    uint256 private _totalSessionTokens;
+    uint256 private _totalCardsCount;
+    uint256 private _totalProviderDappCount;
+    uint256 private _totalSessionTokensCount;
 
+    // Structs to represent user cards
     struct CardStruct {
         uint256 id;
         address owner;
@@ -21,6 +30,7 @@ contract OAuth is Ownable {
         uint256 updatedAt;
     }
 
+    // Structs to represent session tokens
     struct SessionTokenStruct {
         uint256 id;
         uint256 cardId;
@@ -32,6 +42,7 @@ contract OAuth is Ownable {
         uint256 updatedAt;
     }
 
+    // Structs to represent provider dApps
     struct ProviderDappStruct {
         uint256 id;
         string domain;
@@ -42,6 +53,9 @@ contract OAuth is Ownable {
         uint256 updatedAt;
     }
 
+    /**
+     * Events to log actions within the contract.
+     */
     event CardAction(
         uint256 id,
         string actionType,
@@ -87,10 +101,99 @@ contract OAuth is Ownable {
 
     constructor() Ownable(msg.sender) {}
 
+    /**
+     * @dev Private function to get the adjusted current timestamp.
+     * @return timestamp.
+     */
     function _time() private view returns (uint256) {
         return (block.timestamp * 1000) + 1000;
     }
 
+    /**
+     * @notice Verifies the signer of a messgae
+     * @param _message Message to be signed
+     * @param _signer Address that signed the message
+     * @param _signature Signature gotten from signing the message hash
+     * @return bool
+     */
+    function verify(
+        string memory _message,
+        address _signer,
+        bytes memory _signature
+    ) private pure returns (bool) {
+        bytes32 messageHash = getMessageHash(_message);
+        bytes32 ethSignedMessageHash = getEthSignedMessageHash(messageHash);
+
+        return recover(ethSignedMessageHash, _signature) == _signer;
+    }
+
+    /**
+     * @notice Returns the keecak256 hash of the message
+     * @param _message Message to be hashed
+     * @return bytes32
+     */
+    function getMessageHash(
+        string memory _message
+    ) private pure returns (bytes32) {
+        return keccak256(abi.encodePacked(_message));
+    }
+
+    /**
+     * @notice Returns the keecak256 hash of the eth signed message
+     * @param _messageHash Message hash to be hashed
+     * @return bytes32
+     */
+    function getEthSignedMessageHash(
+        bytes32 _messageHash
+    ) private pure returns (bytes32) {
+        return
+            keccak256(
+                abi.encodePacked(
+                    "\x19Ethereum Signed Message:\n32",
+                    _messageHash
+                )
+            );
+    }
+
+    /**
+     * @notice Recovers the address of the signature signer
+     * @param _ethSignedMessageHash ETH signed message
+     * @param _signature Signature gotten from signing the message hash
+     * @return address of the signer
+     */
+    function recover(
+        bytes32 _ethSignedMessageHash,
+        bytes memory _signature
+    ) private pure returns (address) {
+        (bytes32 r, bytes32 s, uint8 v) = _split(_signature);
+        return ecrecover(_ethSignedMessageHash, v, r, s);
+    }
+
+    /**
+     * @notice Splits the signature into r, s and v values
+     * @param _signature Signature gotten from signing the message hash
+     * @return (bytes32 r, bytes32 s, uint8 v)
+     */
+    function _split(
+        bytes memory _signature
+    ) private pure returns (bytes32 r, bytes32 s, uint8 v) {
+        require(_signature.length == 65, "Invalid signature length");
+
+        assembly {
+            r := mload(add(_signature, 32))
+            s := mload(add(_signature, 64))
+            v := byte(0, mload(add(_signature, 96)))
+        }
+    }
+
+    /**
+     * @notice Create a new user card
+     * @param _username Username
+     * @param _pfp PFP URL
+     * @param _emailAddress Email Address
+     * @param _bio Short bio text
+     * @dev Emits a CardAction event
+     */
     function createCard(
         string memory _username,
         string memory _pfp,
@@ -107,7 +210,7 @@ contract OAuth is Ownable {
 
         CardStruct memory card;
 
-        card.id = ++_totalCards;
+        card.id = ++_totalCardsCount;
         card.username = _username;
         card.owner = msg.sender;
         card.pfp = _pfp;
@@ -124,15 +227,25 @@ contract OAuth is Ownable {
         emit CardAction(card.id, "Created Card", msg.sender, _time());
     }
 
+    /**
+     * @notice Updates an existing card
+     * @param _cardId Card ID to update
+     * @param _username New username
+     * @param _pfp New PFP URL
+     * @param _emailAddress New Email address
+     * @param _bio New Short bio text
+     * @dev Requires the card exists and msg.sender is the owner
+     * @dev Emits a CardAction event
+     */
     function updateCard(
-        uint256 _id,
+        uint256 _cardId,
         string memory _username,
         string memory _pfp,
         string memory _emailAddress,
         string memory _bio
     ) public {
-        require(doesCardExist[_id], "Card not found");
-        require(cards[_id].owner == msg.sender, "Unauthorized");
+        require(doesCardExist[_cardId], "Card not found");
+        require(cards[_cardId].owner == msg.sender, "Unauthorized");
         require(bytes(_username).length > 0, "Username must not be empty");
         require(bytes(_pfp).length > 0, "PFP must not be empty");
         require(
@@ -141,15 +254,21 @@ contract OAuth is Ownable {
         );
         require(bytes(_bio).length > 0, "Bio must not be empty");
 
-        cards[_id].username = _username;
-        cards[_id].pfp = _pfp;
-        cards[_id].emailAddress = _emailAddress;
-        cards[_id].bio = _bio;
-        cards[_id].updatedAt = _time();
+        cards[_cardId].username = _username;
+        cards[_cardId].pfp = _pfp;
+        cards[_cardId].emailAddress = _emailAddress;
+        cards[_cardId].bio = _bio;
+        cards[_cardId].updatedAt = _time();
 
-        emit CardAction(_id, "Updated Card", msg.sender, _time());
+        emit CardAction(_cardId, "Updated Card", msg.sender, _time());
     }
 
+    /**
+     * @notice Deletes an existing card
+     * @param _id Card ID to delete
+     * @dev Requires the card exists and msg.sender is the owner
+     * @dev Emits a CardAction event
+     */
     function deleteCard(uint256 _id) public {
         require(doesCardExist[_id], "Card not found");
         require(cards[_id].owner == msg.sender, "Unauthorized");
@@ -161,6 +280,12 @@ contract OAuth is Ownable {
         emit CardAction(_id, "Deleted Card", msg.sender, _time());
     }
 
+    /**
+     * @notice Gets card for a particular address
+     * @param _user User address
+     * @dev Can be called by only contract owner
+     * @return CardStruct[]
+     */
     function getUserCards(
         address _user
     ) public view onlyOwner returns (CardStruct[] memory Cards) {
@@ -187,6 +312,12 @@ contract OAuth is Ownable {
         }
     }
 
+    /**
+     * @notice Registers a new dApp
+     * @param _domain Domain of dApp or '*' for local access
+     * @param _accessToken Somewhat like an API token
+     * @dev Emits a ProviderAction event
+     */
     function registerDapp(
         string memory _domain,
         string memory _accessToken
@@ -199,7 +330,7 @@ contract OAuth is Ownable {
 
         ProviderDappStruct memory providerDapp;
 
-        providerDapp.id = ++_totalProviderDapp;
+        providerDapp.id = ++_totalProviderDappCount;
         providerDapp.domain = _domain;
         providerDapp.accessToken = _accessToken;
         providerDapp.owner = msg.sender;
@@ -220,6 +351,13 @@ contract OAuth is Ownable {
         );
     }
 
+    /**
+     * @notice Updates an existing dApp
+     * @param _id dApp ID to update
+     * @param _domain Domain of dApp or '*' for local access
+     * @dev Requires the dApp is registered and msg.sender is the owner
+     * @dev Emits a ProviderAction event
+     */
     function modifyDapp(uint256 _id, string memory _domain) public {
         require(doesProviderDappExist[_id], "dApp not registered");
         require(providerDapps[_id].owner == msg.sender, "Unauthorized");
@@ -231,6 +369,12 @@ contract OAuth is Ownable {
         emit ProviderAction(_id, "Updated dApp", msg.sender, _time());
     }
 
+    /**
+     * @notice Deletes an existing dApp
+     * @param _id dApp ID to delete
+     * @dev Requires the dApp is registered and msg.sender is the owner
+     * @dev Emits a ProviderAction event
+     */
     function deleteDapp(uint256 _id) public {
         require(doesProviderDappExist[_id], "dApp not registered");
         require(providerDapps[_id].owner == msg.sender, "Unauthorized");
@@ -244,9 +388,14 @@ contract OAuth is Ownable {
         emit ProviderAction(_id, "Deleted dApp", msg.sender, _time());
     }
 
+    /**
+     * @notice Gets all registered dApps for a particular address
+     * @param _user User address
+     * @return ProviderDappStruct[]
+     */
     function getDapps(
         address _user
-    ) public view returns (ProviderDappStruct[] memory Dapps) {
+    ) public view returns (ProviderDappStruct[] memory dApps) {
         uint256 available;
 
         for (uint256 i = 0; i < userProviderDappCount[_user]; i++) {
@@ -276,18 +425,35 @@ contract OAuth is Ownable {
         }
     }
 
+    /**
+     * @notice Gets single dApp details
+     * @param _dappId ID of a registered dApp
+     * @return ProviderDappStruct
+     */
     function getDapp(
         uint256 _dappId
-    ) public view returns (ProviderDappStruct memory Dapp) {
+    ) public view returns (ProviderDappStruct memory dApp) {
         return providerDapps[_dappId];
     }
 
+    /**
+     * @notice Gets dApp details from access token
+     * @param _token dApp access token
+     * @dev Can be called by only contract owner
+     * @return ProviderDappStruct
+     */
     function getDappFromToken(
         string memory _token
-    ) public view onlyOwner returns (ProviderDappStruct memory Dapp) {
+    ) public view onlyOwner returns (ProviderDappStruct memory dApp) {
         return getDapp(tokenProviderDapps[_token]);
     }
 
+    /**
+     * @notice Gets dApps that can access a particular card
+     * @param _user User address
+     * @param _cardId Card ID
+     * @return ProviderDappStruct[]
+     */
     function getDappsConnectedToCard(
         address _user,
         uint256 _cardId
@@ -311,6 +477,10 @@ contract OAuth is Ownable {
         }
     }
 
+    /**
+     * @notice Deactivates all session token(s) if a dApp gets deleted
+     * @param _dappId dApp ID
+     */
     function deactivateSessionTokensForDapp(uint256 _dappId) private {
         for (uint256 i = 0; i < dAppSessionTokenCount[_dappId]; i++) {
             uint256 _sessionId = dAppSessionTokens[_dappId][i];
@@ -324,6 +494,11 @@ contract OAuth is Ownable {
         }
     }
 
+    /**
+     * @notice Deactivates session token
+     * @param _id Session ID to deactivate
+     * @dev Emits a SessionTokenAction event
+     */
     function deactivateSessionToken(uint256 _id) private {
         sessionTokens[_id].isActive = false;
         sessionTokens[_id].updatedAt = _time();
@@ -337,55 +512,15 @@ contract OAuth is Ownable {
         );
     }
 
-    function verify(
-        string memory _message,
-        address _signer,
-        bytes memory _signature
-    ) private pure returns (bool) {
-        bytes32 messageHash = getMessageHash(_message);
-        bytes32 ethSignedMessageHash = getEthSignedMessageHash(messageHash);
-
-        return recover(ethSignedMessageHash, _signature) == _signer;
-    }
-
-    function getMessageHash(
-        string memory _message
-    ) private pure returns (bytes32) {
-        return keccak256(abi.encodePacked(_message));
-    }
-
-    function getEthSignedMessageHash(
-        bytes32 _messageHash
-    ) private pure returns (bytes32) {
-        return
-            keccak256(
-                abi.encodePacked(
-                    "\x19Ethereum Signed Message:\n32",
-                    _messageHash
-                )
-            );
-    }
-
-    function recover(
-        bytes32 _ethSignedMessageHash,
-        bytes memory _signature
-    ) private pure returns (address) {
-        (bytes32 r, bytes32 s, uint8 v) = _split(_signature);
-        return ecrecover(_ethSignedMessageHash, v, r, s);
-    }
-
-    function _split(
-        bytes memory _signature
-    ) private pure returns (bytes32 r, bytes32 s, uint8 v) {
-        require(_signature.length == 65, "Invalid signature length");
-
-        assembly {
-            r := mload(add(_signature, 32))
-            s := mload(add(_signature, 64))
-            v := byte(0, mload(add(_signature, 96)))
-        }
-    }
-
+    /**
+     * @notice Triggers a login instance
+     * @param _user User address
+     * @param _dappId dApp user is trying to login on
+     * @param _message Message signed by user
+     * @param _signature Signature from signing message hash
+     * @dev Can be called by only contract owner
+     * @return tuple(bytes32, CardStruct[])
+     */
     function triggerLogin(
         address _user,
         uint256 _dappId,
@@ -408,6 +543,12 @@ contract OAuth is Ownable {
         } else return (sessionTokens[sessionId].token, new CardStruct[](0));
     }
 
+    /**
+     * @notice Gets active session for a user on a dApp
+     * @param _user User address
+     * @param _dappId dApp ID
+     * @return uint256
+     */
     function getActiveSessionId(
         address _user,
         uint256 _dappId
@@ -427,6 +568,16 @@ contract OAuth is Ownable {
         return 0;
     }
 
+    /**
+     * @notice Registers a new user session
+     * @param _cardId Username
+     * @param _dappId dApp user is trying to login on
+     * @param _user User address
+     * @param _message Message signed by user
+     * @param _signature Signature from signing message hash
+     * @dev Can be called by only contract owner
+     * @dev Emits a SessionTokenAction event
+     */
     function createSession(
         uint256 _cardId,
         uint256 _dappId,
@@ -446,7 +597,7 @@ contract OAuth is Ownable {
 
         SessionTokenStruct memory sessionToken;
 
-        sessionToken.id = ++_totalSessionTokens;
+        sessionToken.id = ++_totalSessionTokensCount;
         sessionToken.cardId = _cardId;
         sessionToken.dappId = _dappId;
         sessionToken.owner = _user;
@@ -472,6 +623,11 @@ contract OAuth is Ownable {
         return _token;
     }
 
+    /**
+     * @notice Gets session ID from session token
+     * @param _token Session Token
+     * @return uint256
+     */
     function getSessionIdFromToken(
         bytes32 _token
     ) private view returns (uint256) {
@@ -487,6 +643,11 @@ contract OAuth is Ownable {
         return 0;
     }
 
+    /**
+     * @notice Deactivates a session from it's token
+     * @param _token Session token
+     * @dev Requires that the token is not invalid or expired
+     */
     function deactivateSessionFromToken(bytes32 _token) public onlyOwner {
         require(
             getSessionIdFromToken(_token) != 0,
@@ -496,12 +657,22 @@ contract OAuth is Ownable {
         deactivateSessionToken(getSessionIdFromToken(_token));
     }
 
+    /**
+     * @notice Gets user info from their session token
+     * @param _token session token
+     * @dev Requires that token is not invalid or expired and card exists
+     * @return CardStruct
+     */
     function fetchUserInfo(
         bytes32 _token
     ) public view returns (CardStruct memory Card) {
         require(
             getSessionIdFromToken(_token) != 0,
             "Invalid or Expired token provided"
+        );
+        require(
+            doesCardExist[sessionTokens[getSessionIdFromToken(_token)].cardId],
+            "Card not found!"
         );
 
         return cards[sessionTokens[getSessionIdFromToken(_token)].cardId];
