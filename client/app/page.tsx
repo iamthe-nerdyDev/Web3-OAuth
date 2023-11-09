@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+// import { useEffect } from 'react';
 import Image from "next/image";
 import localFont from "next/font/local";
 // import icon from "../public/arrow-right-solid.svg";
@@ -25,13 +25,13 @@ import button2 from "../public/Store Buttons.svg";
 
 function Home() {
   // useEffect(() => {
-  //   const faqs = document.querySelectorAll(".Faq");
+    // const faqs = document.querySelectorAll(".Faq");
 
-  //   faqs.forEach((faq) => {
-  //     faq.addEventListener("click", () => {
-  //       faq.classList.toggle("active");
-  //     });
-  //   });
+    // faqs.forEach((faq) => {
+    //   faq.addEventListener("click", () => {
+        // faq.classList.toggle("active");
+    //   });
+    // });
   // }, []);
 
   return (
