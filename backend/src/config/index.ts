@@ -10,7 +10,8 @@ const contractAddress = address.address;
 const contractABI = abi.abi;
 
 const EVM = {
-  tesnet: "https://tesnet.telos.net/evm",
+  localhost: "http://localhost:8545",
+  testnet: "https://testnet.telos.net/evm",
   mainnet: "https://mainnet.telos.net/evm",
 };
 
@@ -35,13 +36,27 @@ if (NETWORK_TYPE === "mainnet") {
   key = process.env.MAINNET_PRIVATE_KEY;
 }
 
+if (NETWORK_TYPE === "localhost") {
+  if (!process.env.LOCALHOST_PRIVATE_KEY) {
+    throw new Error(".env variable not found: LOCALHOST_PRIVATE_KEY");
+  }
+
+  key = process.env.LOCALHOST_PRIVATE_KEY;
+}
+
 if (!key) throw new Error("key not found");
 
 const SERVER_PORT = process.env.SERVER_PORT
   ? parseInt(process.env.SERVER_PORT)
   : 1337;
 
-const evm = "mainnet" ? EVM.mainnet : EVM.tesnet;
+const evm =
+  NETWORK_TYPE == "localhost"
+    ? EVM.localhost
+    : NETWORK_TYPE == "mainnet"
+    ? EVM.mainnet
+    : EVM.testnet;
+
 const Provider = new ethers.providers.JsonRpcProvider(evm);
 const Wallet = new ethers.Wallet(key, Provider);
 const Contract = new ethers.Contract(contractAddress, contractABI, Wallet);

@@ -455,7 +455,7 @@ contract OAuth is Ownable {
     function getDappFromToken(
         string memory _token
     ) public view onlyOwner returns (ProviderDappStruct memory dApp) {
-        return getDapp(tokenProviderDapps[_token]);
+        return providerDapps[tokenProviderDapps[_token]];
     }
 
     /**

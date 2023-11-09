@@ -1,32 +1,26 @@
 import { config } from "../config";
-import { ethers } from "ethers";
 
 async function getDappInfoFromToken(accessToken: string) {
   const Contract = config.contract.Contract;
 
   if (!Contract || accessToken) return null;
 
-  const result = await Contract.getDappFromToken(accessToken);
+  try {
+    const result = await Contract.getDappFromToken(accessToken);
 
-  return result;
+    return result;
+  } catch (e: any) {
+    return e.message;
+  }
 }
 
-export async function performValidation(
-  user: string,
-  accessToken: string,
-  domain: string,
-  message: string,
-  signature: string
-) {
-  const _signer = ethers.utils.verifyMessage(
-    ethers.utils.solidityPack(["string"], [message]),
-    signature
-  );
-
-  if (_signer != user) return "Unable to verify signature";
-
+export async function performValidation(accessToken: string, domain: string) {
   try {
     const _dapp = await getDappInfoFromToken(accessToken);
+
+    if (typeof _dapp === "string") return _dapp;
+
+    if (!_dapp) return "dApp not found";
 
     if (_dapp.id == 0) return "Invalid access token";
 

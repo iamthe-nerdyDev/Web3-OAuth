@@ -11,6 +11,5 @@ router.post(
   controller.createSession
 );
 router.delete("/logout/:token", controller.deleteSession);
-router.get("/:address", controller.getUserCards);
 
 export = router;

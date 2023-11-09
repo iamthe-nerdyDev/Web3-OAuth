@@ -24,9 +24,6 @@ module.exports = {
       { version: "0.8.19" },
     ],
   },
-  paths: {
-    artifacts: "./backend/src/contract",
-  },
   mocha: {
     timeout: 40000,
   },

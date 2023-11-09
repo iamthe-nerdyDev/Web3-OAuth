@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import ethers from "ethers";
-import { performValidation } from "../library/helpers";
+import { ethers } from "ethers";
+import { performValidation } from "../utils/helpers";
 import { config } from "../config";
 
 async function login(req: Request, res: Response) {
@@ -9,20 +9,14 @@ async function login(req: Request, res: Response) {
 
     if (!ethers.utils.isAddress(user)) {
       return res
-        .status(200)
+        .status(400)
         .json({ status: false, message: "Invalid user address supplied" });
     }
 
-    const response = await performValidation(
-      user,
-      accessToken,
-      domain,
-      message,
-      signature
-    );
+    const response = await performValidation(accessToken, domain);
 
     if (typeof response == "string") {
-      return res.status(200).json({ status: false, message: response });
+      return res.status(400).json({ status: false, message: response });
     }
 
     const Contract = config.contract.Contract;
@@ -41,7 +35,7 @@ async function login(req: Request, res: Response) {
       //check if second tuple is empty
       if (_login[1].length <= 0) {
         //no card found
-        return res.status(200).json({
+        return res.status(404).json({
           status: false,
           message: "not found",
         });
@@ -72,20 +66,14 @@ async function createSession(req: Request, res: Response) {
 
     if (!ethers.utils.isAddress(user)) {
       return res
-        .status(200)
+        .status(400)
         .json({ status: false, message: "Invalid user address supplied" });
     }
 
-    const response = await performValidation(
-      user,
-      accessToken,
-      domain,
-      message,
-      signature
-    );
+    const response = await performValidation(accessToken, domain);
 
     if (typeof response == "string") {
-      return res.status(200).json({ status: false, message: response });
+      return res.status(400).json({ status: false, message: response });
     }
 
     const Contract = config.contract.Contract;
@@ -113,7 +101,7 @@ async function deleteSession(req: Request, res: Response) {
 
   if (!token) {
     return res
-      .status(200)
+      .status(400)
       .json({ status: false, message: "Token missing is url" });
   }
 
@@ -128,31 +116,4 @@ async function deleteSession(req: Request, res: Response) {
   }
 }
 
-async function getUserCards(req: Request, res: Response) {
-  const address = req.params.address ?? null;
-
-  if (!address) {
-    return res
-      .status(200)
-      .json({ status: false, message: "Address missing is url" });
-  }
-
-  if (!ethers.utils.isAddress(address)) {
-    return res
-      .status(200)
-      .json({ status: false, message: "Invalid user address supplied" });
-  }
-
-  try {
-    const Contract = config.contract.Contract;
-    const _cards = await Contract.getUserCards(address);
-
-    return res
-      .status(200)
-      .json({ status: true, message: "Cards fetched", data: _cards });
-  } catch (e: any) {
-    return res.status(500).json({ status: false, message: e.message });
-  }
-}
-
-export default { login, createSession, deleteSession, getUserCards };
+export default { login, createSession, deleteSession };

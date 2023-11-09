@@ -11,7 +11,7 @@ async function main() {
   const address = JSON.stringify({ address: contract.target }, null, 4);
 
   fs.writeFile(
-    "./backend/src/contract/contractAddress.json",
+    "./artifacts/contracts/contractAddress.json",
     address,
     "utf-8",
     (err) => {
@@ -20,24 +20,9 @@ async function main() {
         return;
       }
 
-      fs.cp(
-        "./backend/src/contract",
-        "./client/contract",
-        { recursive: true },
-        (copyErr) => {
-          if (copyErr) {
-            console.error(copyErr);
-          } else {
-            console.log(
-              "Contents copied from ./backend/src/contract to ./client/contract"
-            );
-          }
-        }
-      );
+      console.log("Contract address:", contract.target);
     }
   );
-
-  console.log("Contract address:", contract.target);
 }
 
 main().catch((error) => {
