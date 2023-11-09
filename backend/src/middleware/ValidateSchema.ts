@@ -16,7 +16,7 @@ export const ValidateSchema = (schema: ObjectSchema) => {
 };
 
 export const Schemas = {
-  signin: {
+  main: {
     login: Joi.object<ISignIn>({
       user: Joi.string()
         .regex(/(0x)?[0-9a-fA-F]{40}/)
@@ -28,7 +28,7 @@ export const Schemas = {
         .regex(/(0x)?[0-9a-fA-F]{130}/)
         .required(),
     }),
-    session: Joi.object<ISignIn>({
+    create_session: Joi.object<ISignIn>({
       cardId: Joi.number().required(),
       user: Joi.string()
         .regex(/(0x)?[0-9a-fA-F]{40}/)

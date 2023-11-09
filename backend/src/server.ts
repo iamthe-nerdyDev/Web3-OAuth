@@ -1,8 +1,8 @@
 import express from "express";
 import http from "http";
-import { config } from "./config/config";
+import { config } from "./config";
 
-import SignInRoutes from "./routes/SignIn";
+import v1Routes from "./routes/v1_Routes";
 
 const router = express();
 
@@ -18,24 +18,23 @@ const startServer = () => {
     );
 
     if (req.method === "OPTIONS") {
-      res.header(
-        "Access-Control-Allow-Headers",
-        "PUT, POST, PATCH, DELETE, GET"
-      );
+      res.header("Access-Control-Allow-Headers", "POST, DELETE, GET");
 
       return res.status(200).json({ status: true });
     }
 
+    res.header("Access-Control-Allow-Headers", "POST, DELETE, GET");
+
     next();
   });
 
-  router.use("/login", SignInRoutes);
+  router.use("/v1", v1Routes);
 
   router.get("/healthcheck", (req, res) => {
     return res.status(200).json({ status: true, message: "running" });
   });
 
-  router.use((req, res, next) => {
+  router.use((req, res) => {
     const error = new Error("`endpoint not found!`");
 
     return res.status(404).json({ status: false, mesage: error.message });
