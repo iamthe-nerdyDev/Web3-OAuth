@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import { IConfig } from "../interface";
-import abi from "../contract/contracts/OAuth.sol/OAuth.json";
-import address from "../contract/contractAddress.json";
+import abi from "../contracts/OAuth.json";
+import address from "../contracts/contractAddress.json";
 import { ethers } from "ethers";
 
 dotenv.config();
