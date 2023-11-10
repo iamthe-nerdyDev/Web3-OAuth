@@ -1,5 +1,7 @@
 import express from "express";
 import v1Routes from "../routes/v1_Routes";
+import swaggerDocs from "./swagger";
+import { config } from "../config";
 
 function createServer() {
   const app = express();
@@ -27,9 +29,7 @@ function createServer() {
 
   app.use("/v1", v1Routes);
 
-  app.get("/healthcheck", (req, res) => {
-    return res.status(200).json({ status: true, message: "running" });
-  });
+  swaggerDocs(app, config.server.port); //starting docs server..
 
   app.use((req, res) => {
     return res
