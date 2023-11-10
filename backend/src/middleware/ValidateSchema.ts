@@ -10,7 +10,7 @@ export const ValidateSchema = (schema: ObjectSchema) => {
 
       next();
     } catch (e: any) {
-      return res.status(200).json({ status: false, message: e.message });
+      return res.status(400).json({ status: false, message: e.message });
     }
   };
 };
@@ -28,7 +28,7 @@ export const Schemas = {
         .regex(/(0x)?[0-9a-fA-F]{130}/)
         .required(),
     }),
-    create_session: Joi.object<ISignIn>({
+    session: Joi.object<ISignIn>({
       cardId: Joi.number().required(),
       user: Joi.string()
         .regex(/(0x)?[0-9a-fA-F]{40}/)

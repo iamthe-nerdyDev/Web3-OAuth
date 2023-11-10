@@ -96,13 +96,13 @@ async function createSession(req: Request, res: Response) {
   }
 }
 
-async function deleteSession(req: Request, res: Response) {
+async function deactivateSession(req: Request, res: Response) {
   const token = req.params.token ?? null;
 
   if (!token) {
     return res
       .status(400)
-      .json({ status: false, message: "Token missing is url" });
+      .json({ status: false, message: "Token missing in url" });
   }
 
   try {
@@ -116,4 +116,31 @@ async function deleteSession(req: Request, res: Response) {
   }
 }
 
-export default { login, createSession, deleteSession };
+async function getUserInfo(req: Request, res: Response) {
+  const token = req.params.token ?? null;
+
+  if (!token) {
+    return res
+      .status(400)
+      .json({ status: false, message: "Token missing in url" });
+  }
+
+  if (token.length !== 66) {
+    return res
+      .status(400)
+      .json({ status: false, message: "Invalid token format" });
+  }
+
+  try {
+    const Contract = config.contract.Contract;
+    const info = await Contract.fetchUserInfo(token);
+
+    return res
+      .status(200)
+      .json({ status: true, message: "Info fetched", data: info });
+  } catch (e: any) {
+    return res.status(500).json({ status: false, message: e.message });
+  }
+}
+
+export default { login, createSession, deactivateSession, getUserInfo };

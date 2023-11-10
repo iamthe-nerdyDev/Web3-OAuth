@@ -337,6 +337,10 @@ contract OAuth is Ownable {
             bytes(_accessToken).length > 0,
             "Access Token must not be empty"
         );
+        require(
+            !doesProviderDappExist[tokenProviderDapps[_accessToken]],
+            "Access token assigned to a dApp already"
+        );
 
         ProviderDappStruct memory providerDapp;
 

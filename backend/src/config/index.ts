@@ -18,7 +18,7 @@ const EVM = {
 const NETWORK_TYPE = process.env.NETWORK_TYPE;
 if (!NETWORK_TYPE) throw new Error(".env variable not found: NETWORK_TYPE");
 
-let key: string | null = null;
+let key: string | undefined;
 
 if (NETWORK_TYPE === "testnet") {
   if (!process.env.TESTNET_PRIVATE_KEY) {

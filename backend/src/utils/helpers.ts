@@ -16,17 +16,17 @@ async function getDappInfoFromToken(accessToken: string) {
 
 export async function performValidation(accessToken: string, domain: string) {
   try {
-    const _dapp = await getDappInfoFromToken(accessToken);
+    const response = await getDappInfoFromToken(accessToken);
 
-    if (typeof _dapp === "string") return _dapp;
+    if (typeof response === "string") return response;
 
-    if (!_dapp) return "dApp not found";
+    if (!response) return "dApp not found";
 
-    if (_dapp.id == 0) return "Invalid access token";
+    if (response.id == 0) return "Invalid access token";
 
-    if (_dapp.domain != domain) return "ERR: Domain not registered to token";
+    if (response.domain != domain) return "ERR: Domain not registered to token";
 
-    return _dapp;
+    return response;
   } catch (e: any) {
     return e.message;
   }

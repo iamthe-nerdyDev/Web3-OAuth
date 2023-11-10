@@ -2,12 +2,12 @@ import express from "express";
 import v1Routes from "../routes/v1_Routes";
 
 function createServer() {
-  const router = express();
+  const app = express();
 
-  router.use(express.urlencoded({ extended: true }));
-  router.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
+  app.use(express.json());
 
-  router.use((req, res, next) => {
+  app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header(
       "Access-Control-Allow-Headers",
@@ -25,19 +25,19 @@ function createServer() {
     next();
   });
 
-  router.use("/v1", v1Routes);
+  app.use("/v1", v1Routes);
 
-  router.get("/healthcheck", (req, res) => {
+  app.get("/healthcheck", (req, res) => {
     return res.status(200).json({ status: true, message: "running" });
   });
 
-  router.use((req, res) => {
-    const error = new Error("`endpoint not found!`");
-
-    return res.status(404).json({ status: false, mesage: error.message });
+  app.use((req, res) => {
+    return res
+      .status(404)
+      .json({ status: false, mesage: "endpoint not found!" });
   });
 
-  return router;
+  return app;
 }
 
 export default createServer;

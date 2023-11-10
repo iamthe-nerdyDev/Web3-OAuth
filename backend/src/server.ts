@@ -3,10 +3,10 @@ import { config } from "./config";
 import createServer from "./utils/app";
 
 const startServer = () => {
-  const router = createServer();
+  const app = createServer();
 
-  http.createServer(router).listen(config.server.port, () => {
-    console.log("Server is running on port: " + config.server.port);
+  http.createServer(app).listen(config.server.port, () => {
+    console.log(`Server is running on port: ${config.server.port}`);
   });
 };
 
