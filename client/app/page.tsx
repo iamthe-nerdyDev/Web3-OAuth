@@ -14,10 +14,7 @@ import { faLightbulb } from "@fortawesome/free-solid-svg-icons";
 import { faLinkedin } from "@fortawesome/free-brands-svg-icons";
 import { faDiscord } from "@fortawesome/free-brands-svg-icons";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
-
-import "./style.css";
-
-// import {faSomeIcon} from &apos;@fortawesome/react-fontawesome&apos;
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import dots from "../public/Dot.svg";
 import profile from "../public/profile_sample.svg";
 import Creation from "../public/profile_picture.svg";
@@ -31,7 +28,6 @@ import button2 from "../public/Store Buttons.svg";
 import "./Theme";
 import ThemeButton from "./Theme";
 import "./style.css";
-
 
 const Home = () => {
   const [toggleNavbar, settoggleNavbar] = useState<boolean>(false);
@@ -149,7 +145,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <ThemeButton/>
+      {/* <ThemeButton /> */}
 
       <div className="group3">
         {/* <div className="dot">  */}
