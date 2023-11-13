@@ -2,22 +2,19 @@
 import { useState } from "react";
 
 import Image from "next/image";
-import { Container, Row, Col } from "react-bootstrap";
-// import "bootstrap/dist/css/bootstrap.min.css";
-// import icon from "../public/arrow-right-solid.svg";
+// import { Container, Row, Col } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { faFileLines } from "@fortawesome/free-solid-svg-icons";
 import { faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
+import { faLightbulb } from "@fortawesome/free-solid-svg-icons";
 // import { faGithub } from &apos;@fortawesome/free-solid-svg-icons&apos;;
 import { faLinkedin } from "@fortawesome/free-brands-svg-icons";
 import { faDiscord } from "@fortawesome/free-brands-svg-icons";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
-
-import "./style.css";
-
-// import {faSomeIcon} from &apos;@fortawesome/react-fontawesome&apos;
+import {faTimes} from "@fortawesome/free-solid-svg-icons";
 import dots from "../public/Dot.svg";
 import profile from "../public/profile_sample.svg";
 import Creation from "../public/profile_picture.svg";
@@ -28,11 +25,15 @@ import Puzzle from "../public/puzzle.png";
 import Rating from "../public/Rating.svg";
 import button1 from "../public/Group.svg";
 import button2 from "../public/Store Buttons.svg";
-import "./Theme"
+import "./Theme";
 import ThemeButton from "./Theme";
+import "./style.css";
 
-function Home() {
+
+const Home = () => {
+  const [toggleNavbar, settoggleNavbar] = useState<boolean>(false);
   const [expandedFaqId, setExpandedFaqId] = useState<any>(null);
+
   const faqs = [
     {
       title: "Can I use a UI Kit for commercial projects?",
@@ -61,7 +62,7 @@ function Home() {
       However, it's crucial to review the license or usage terms provided with the UI Kit 
       to ensure compliance with the specific usage rights and any attribution requirements.`,
       id: 4,
-    }
+    },
   ];
 
   // useEffect(() => {
@@ -80,8 +81,7 @@ function Home() {
         <div className="nav">
           <div className="nav-cont">
             <a href="">web3 Oauth</a>
-
-            <div className="group2">
+            <div className={`group2 ${toggleNavbar ? "open" : ""}`}>
               <ul>
                 <li className="nav_L">
                   <a href="#whatweoffer" className="link">
@@ -105,31 +105,51 @@ function Home() {
                 </li>
               </ul>
             </div>
-            <ul>
-              <li className="nav_L">
-                <a href="#about" className="link">
-                  English
-                </a>
-              </li>
-              <li className="nav_L">
-                <a href="#work" className="link2">
-                  Connect wallet
+
+            <div className="group22">
+              <ul>
+                <li className="nav_L">
                   <FontAwesomeIcon
-                    icon={faArrowRight}
-                    beat
-                    style={{ width: "12px" }}
+                    icon={faLightbulb}
+                    style={{ width: "25px", color: "#5A6475" }}
                   />
-                </a>
-              </li>
-            </ul>
-            {/* <FontAwesomeIcon icon={faBars} /> */}
+                </li>
+                <li className="nav_L">
+                  <a href="#work" className="link2">
+                    Connect wallet
+                    <FontAwesomeIcon
+                      icon={faArrowRight}
+                      beat
+                      style={{ width: "12px" }}
+                    />
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div
+              className="hamburger"
+              onClick={() => {
+                settoggleNavbar(!toggleNavbar);
+                const group2 = document.querySelector(".group2");
+                if (group2) {
+                  group2.classList.toggle("open");
+                }
+              }}
+            >
+              {toggleNavbar ? (
+                <FontAwesomeIcon icon={faTimes} />
+              ) : (
+                <FontAwesomeIcon icon={faBars} />
+              )}
+            </div>
           </div>
         </div>
       </div>
-      <ThemeButton/>
+      {/* <ThemeButton /> */}
 
       <div className="group3">
-        {/* <div className="dot"> */}
+        {/* <div className="dot">  */}
         {/* <Image className="dots" src={dots} alt="Dots" /> */}
         {/* </div> */}
         <div className=" text_cont">
@@ -226,7 +246,7 @@ function Home() {
                 details are required.
               </li>
               <li className="bullets">
-                After connecting their wallet,users gain access to their
+                After connecting their wallet, users gain access to their
                 dashboard.
               </li>
               <li className="bullets">
@@ -377,6 +397,6 @@ function Home() {
       </div>
     </div>
   );
-}
+};
 
 export default Home;
