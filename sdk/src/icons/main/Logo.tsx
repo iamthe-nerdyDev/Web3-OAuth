@@ -1,4 +1,4 @@
-const Logo = () => {
+const Logo = ({ fill }: { fill?: string }) => {
   return (
     <svg
       width={35}
@@ -10,19 +10,19 @@ const Logo = () => {
       <g>
         <path fill="#fff" fillOpacity="0.01" d="M0 0H48V48H0z"></path>
         <path
-          stroke="#000"
+          stroke={fill || "currentColor"}
           strokeLinecap="round"
           strokeWidth="2"
           d="M14 8L34 8"
         ></path>
         <path
-          stroke="#000"
+          stroke={fill || "currentColor"}
           strokeLinecap="round"
           strokeWidth="2"
           d="M14 8L34 8"
         ></path>
         <path
-          stroke="#000"
+          stroke={fill || "currentColor"}
           strokeLinecap="round"
           strokeWidth="2"
           d="M14 40L34 40"
@@ -33,7 +33,7 @@ const Logo = () => {
           x="36"
           y="4"
           fill="#fff"
-          stroke="#000"
+          stroke={fill || "currentColor"}
           strokeLinejoin="round"
           strokeWidth="2"
           rx="2"
@@ -44,7 +44,7 @@ const Logo = () => {
           x="4"
           y="4"
           fill="#fff"
-          stroke="#000"
+          stroke={fill || "currentColor"}
           strokeLinejoin="round"
           strokeWidth="2"
           rx="2"
@@ -55,7 +55,7 @@ const Logo = () => {
           x="36"
           y="36"
           fill="#fff"
-          stroke="#000"
+          stroke={fill || "currentColor"}
           strokeLinejoin="round"
           strokeWidth="2"
           rx="2"
@@ -66,19 +66,19 @@ const Logo = () => {
           x="4"
           y="36"
           fill="#fff"
-          stroke="#000"
+          stroke={fill || "currentColor"}
           strokeLinejoin="round"
           strokeWidth="2"
           rx="2"
         ></rect>
         <path
-          stroke="#000"
+          stroke={fill || "currentColor"}
           strokeLinecap="round"
           strokeWidth="2"
           d="M40 14L40 34"
         ></path>
         <path
-          stroke="#000"
+          stroke={fill || "currentColor"}
           strokeLinecap="round"
           strokeWidth="2"
           d="M8 14L8 34"

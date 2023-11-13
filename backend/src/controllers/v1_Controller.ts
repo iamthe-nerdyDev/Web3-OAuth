@@ -35,9 +35,9 @@ async function login(req: Request, res: Response) {
       //check if second tuple is empty
       if (_login[1].length <= 0) {
         //no card found
-        return res.status(404).json({
+        return res.status(200).json({
           status: false,
-          message: "not found",
+          message: "You do not have any card yet!",
         });
       }
 
