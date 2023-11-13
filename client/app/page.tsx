@@ -14,7 +14,10 @@ import { faLightbulb } from "@fortawesome/free-solid-svg-icons";
 import { faLinkedin } from "@fortawesome/free-brands-svg-icons";
 import { faDiscord } from "@fortawesome/free-brands-svg-icons";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
-import {faTimes} from "@fortawesome/free-solid-svg-icons";
+
+import "./style.css";
+
+// import {faSomeIcon} from &apos;@fortawesome/react-fontawesome&apos;
 import dots from "../public/Dot.svg";
 import profile from "../public/profile_sample.svg";
 import Creation from "../public/profile_picture.svg";
@@ -146,7 +149,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-      {/* <ThemeButton /> */}
+      <ThemeButton/>
 
       <div className="group3">
         {/* <div className="dot">  */}

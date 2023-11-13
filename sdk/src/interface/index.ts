@@ -1,3 +1,4 @@
+import { WalletConfig, WalletInstance } from "@thirdweb-dev/react";
 import { Dispatch, ReactNode, SetStateAction } from "react";
 
 export type WalletType =
@@ -23,6 +24,7 @@ export interface IConnectWallet {
   btnTitle?: string;
   theme?: "light" | "dark";
   className?: string;
+  accessToken: string;
 }
 
 export interface IWalletObj {
@@ -31,7 +33,13 @@ export interface IWalletObj {
   logo: string;
 }
 
-export interface IConnectedButton {}
+export interface IConnectedButton {
+  wallet: WalletConfig<WalletInstance> | undefined;
+  address: string | undefined;
+  balance: number;
+  disconnect: () => Promise<void>;
+  theme: string;
+}
 
 export interface IConnectModal {
   isLoading: boolean;
