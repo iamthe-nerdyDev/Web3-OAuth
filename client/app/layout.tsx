@@ -1,11 +1,45 @@
 import type { Metadata } from "next";
-// import { Inter } from 'next/font/google'
 import localFont from "next/font/local";
-import "./globals.css";
 
-const myFont = localFont({
-  src: "../public/font/Chillax-Medium.woff2",
+import { ThirdwebProvider } from "@/components";
+
+import "./globals.css";
+import StateProvider from "@/utils/context/StateProvider";
+
+const Chillax = localFont({
   display: "swap",
+  src: [
+    {
+      path: "../font/Chillax-Extralight.woff2",
+      weight: "200",
+      style: "normal",
+    },
+    {
+      path: "../font/Chillax-Light.woff2",
+      weight: "300",
+      style: "normal",
+    },
+    {
+      path: "../font/Chillax-Regular.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../font/Chillax-Medium.woff2",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../font/Chillax-Semibold.woff2",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "../font/Chillax-Bold.woff2",
+      weight: "700",
+      style: "normal",
+    },
+  ],
 });
 
 export const metadata: Metadata = {
@@ -19,8 +53,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={myFont.className}>{children}</body>
-    </html>
+    <ThirdwebProvider>
+      <StateProvider>
+        <html lang="en">
+          <body className={Chillax.className}>{children}</body>
+        </html>
+      </StateProvider>
+    </ThirdwebProvider>
   );
 }

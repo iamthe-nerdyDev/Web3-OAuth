@@ -16,6 +16,7 @@ import { faDiscord } from "@fortawesome/free-brands-svg-icons";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 
 import "./style.css";
+import "./page.css";
 
 // import {faSomeIcon} from &apos;@fortawesome/react-fontawesome&apos;
 import dots from "../public/Dot.svg";
@@ -28,7 +29,7 @@ import Puzzle from "../public/puzzle.png";
 import Rating from "../public/Rating.svg";
 import button1 from "../public/Group.svg";
 import button2 from "../public/Store Buttons.svg";
-import "./Theme"
+import "./Theme";
 import ThemeButton from "./Theme";
 
 function Home() {
@@ -61,7 +62,7 @@ function Home() {
       However, it's crucial to review the license or usage terms provided with the UI Kit 
       to ensure compliance with the specific usage rights and any attribution requirements.`,
       id: 4,
-    }
+    },
   ];
 
   // useEffect(() => {
@@ -126,7 +127,7 @@ function Home() {
           </div>
         </div>
       </div>
-      <ThemeButton/>
+      <ThemeButton />
 
       <div className="group3">
         {/* <div className="dot"> */}
