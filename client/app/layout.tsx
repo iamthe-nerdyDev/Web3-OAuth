@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 // import { Inter } from 'next/font/google'
 import localFont from "next/font/local";
-// import { ThemeProvider } from "next-themes ";
 import "./globals.css";
 
 const myFont = localFont({
