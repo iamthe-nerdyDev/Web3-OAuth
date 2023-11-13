@@ -1,15 +1,21 @@
-import { useEffect } from "react";
+"use client";
+import { useState } from "react";
+
 import Image from "next/image";
-import localFont from "next/font/local";
+import { Container, Row, Col } from "react-bootstrap";
+// import "bootstrap/dist/css/bootstrap.min.css";
 // import icon from "../public/arrow-right-solid.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { faFileLines } from "@fortawesome/free-solid-svg-icons";
 import { faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 // import { faGithub } from &apos;@fortawesome/free-solid-svg-icons&apos;;
 import { faLinkedin } from "@fortawesome/free-brands-svg-icons";
 import { faDiscord } from "@fortawesome/free-brands-svg-icons";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
+
+import "./style.css";
 
 // import {faSomeIcon} from &apos;@fortawesome/react-fontawesome&apos;
 import dots from "../public/Dot.svg";
@@ -22,16 +28,50 @@ import Puzzle from "../public/puzzle.png";
 import Rating from "../public/Rating.svg";
 import button1 from "../public/Group.svg";
 import button2 from "../public/Store Buttons.svg";
+import "./Theme"
+import ThemeButton from "./Theme";
 
 function Home() {
-  // useEffect(() => {
-    // const faqs = document.querySelectorAll(".Faq");
+  const [expandedFaqId, setExpandedFaqId] = useState<any>(null);
+  const faqs = [
+    {
+      title: "Can I use a UI Kit for commercial projects?",
+      description: `Yes! Mode UI Kit is designed for both personal and commercial use. 
+      However, it's crucial to review the license or usage terms provided with the UI Kit 
+      to ensure compliance with the specific usage rights and any attribution requirements.`,
+      id: 1,
+    },
+    {
+      title: "Can I use a UI Kit for commercial projects?",
+      description: `Yes! Mode UI Kit is designed for both personal and commercial use. 
+      However, it's crucial to review the license or usage terms provided with the UI Kit 
+      to ensure compliance with the specific usage rights and any attribution requirements.`,
+      id: 2,
+    },
+    {
+      title: "Can I use a UI Kit for commercial projects?",
+      description: `Yes! Mode UI Kit is designed for both personal and commercial use. 
+      However, it's crucial to review the license or usage terms provided with the UI Kit 
+      to ensure compliance with the specific usage rights and any attribution requirements.`,
+      id: 3,
+    },
+    {
+      title: "Can I use a UI Kit for commercial projects?",
+      description: `Yes! Mode UI Kit is designed for both personal and commercial use. 
+      However, it's crucial to review the license or usage terms provided with the UI Kit 
+      to ensure compliance with the specific usage rights and any attribution requirements.`,
+      id: 4,
+    }
+  ];
 
-    // faqs.forEach((faq) => {
-    //   faq.addEventListener("click", () => {
-        // faq.classList.toggle("active");
-    //   });
-    // });
+  // useEffect(() => {
+  // const faqs = document.querySelectorAll(".Faq");
+
+  // faqs.forEach((faq) => {
+  //   faq.addEventListener("click", () => {
+  // faq.classList.toggle("active");
+  //   });
+  // });
   // }, []);
 
   return (
@@ -40,20 +80,21 @@ function Home() {
         <div className="nav">
           <div className="nav-cont">
             <a href="">web3 Oauth</a>
+
             <div className="group2">
               <ul>
                 <li className="nav_L">
-                  <a href="#about" className="link">
+                  <a href="#whatweoffer" className="link">
                     What we offer
                   </a>
                 </li>
                 <li className="nav_L">
-                  <a href="#work" className="link">
+                  <a href="#Methodology" className="link">
                     Methodology
                   </a>
                 </li>
                 <li className="nav_L">
-                  <a href="#contact" className="link">
+                  <a href="#Faq" className="link">
                     FAQ
                   </a>
                 </li>
@@ -81,30 +122,34 @@ function Home() {
                 </a>
               </li>
             </ul>
+            {/* <FontAwesomeIcon icon={faBars} /> */}
           </div>
         </div>
       </div>
+      <ThemeButton/>
 
       <div className="group3">
-        <div className="dot">
-          <Image className="dots" src={dots} alt="Dots" />
-        </div>
-        <p>Seamless Experience</p>
-        <h2>
-          Simplifying user data management across websites. Seamless profile
-          updates. Blockchain-powered.
-        </h2>
-        <h5>Experience the future of web interaction.</h5>
+        {/* <div className="dot"> */}
+        {/* <Image className="dots" src={dots} alt="Dots" /> */}
+        {/* </div> */}
+        <div className=" text_cont">
+          <p>Seamless Experience</p>
+          <h2>
+            Simplifying user data management across websites. Seamless profile
+            updates. Blockchain-powered.
+          </h2>
+          <h5>Experience the future of web interaction.</h5>
 
-        <div className="button">
-          <a href="">
-            Connect Wallet
-            <FontAwesomeIcon icon={faArrowRight} style={{ width: "12px" }} />
-          </a>
-          <a href="">
-            Read Docs
-            <FontAwesomeIcon icon={faFileLines} style={{ width: "12px" }} />
-          </a>
+          <div className="button">
+            <a href="">
+              Connect Wallet
+              <FontAwesomeIcon icon={faArrowRight} style={{ width: "12px" }} />
+            </a>
+            <a href="">
+              Read Docs
+              <FontAwesomeIcon icon={faFileLines} style={{ width: "12px" }} />
+            </a>
+          </div>
         </div>
       </div>
 
@@ -114,7 +159,7 @@ function Home() {
         </div>
       </div>
 
-      <div className="group5">
+      <div id="whatweoffer" className="group5">
         <h3>What we offer</h3>
         <div className="group_offers">
           <div className="offer1">
@@ -152,7 +197,7 @@ function Home() {
         </div>
       </div>
 
-      <div className="group5">
+      <div id="Methodology" className="group5">
         <h3>Methodology</h3>
         <div className="group_offers">
           <div className="offer2">
@@ -227,70 +272,39 @@ function Home() {
         <Image src={Rating} alt="rating" />
       </div>
 
-      <div className="group7">
+      <div id="Faq" className="group7">
         <h3>
           Find Answers to Your Burning Questions about Profile Card Solutions
         </h3>
         <div className="general_faq">
-          <div className="Faq">
-            <div className="question">
-              <h3>Can I use a UI Kit for commercial projects?</h3>
-              <FontAwesomeIcon icon={faChevronUp} style={{ width: "12px" }} />
+          {faqs.map((faq) => (
+            <div className="Faq" key={faq.id}>
+              <div
+                className="question"
+                onClick={() => {
+                  setExpandedFaqId((prevId: any) =>
+                    prevId === faq.id ? null : faq.id
+                  );
+                  console.log(faq.id);
+                }}
+              >
+                <h3>{faq.title}</h3>
+                <FontAwesomeIcon
+                  icon={faChevronDown}
+                  className={
+                    expandedFaqId === faq.id ? "arrow-icn active" : "arrow-icn"
+                  }
+                />
+              </div>
+              <div
+                className={
+                  expandedFaqId === faq.id ? "answer active" : "answer"
+                }
+              >
+                <p>{faq.description}</p>
+              </div>
             </div>
-            <div className="answer">
-              <p>
-                Yes! Mode UI Kit is created for both personal and commercial
-                use. However, it&apos;s essential to review the license or usage
-                terms provided with the UI Kit to ensure compliance with the
-                specific usage rights and any attribution requirements.
-              </p>
-            </div>
-          </div>
-
-          <div className="Faq">
-            <div className="question">
-              <h3>Can I use a UI Kit for commercial projects?</h3>
-              <FontAwesomeIcon icon={faChevronUp} style={{ width: "12px" }} />
-            </div>
-            <div className="answer">
-              <p>
-                Yes! Mode UI Kit is created for both personal and commercial
-                use. However, it&apos;s essential to review the license or usage
-                terms provided with the UI Kit to ensure compliance with the
-                specific usage rights and any attribution requirements.
-              </p>
-            </div>
-          </div>
-
-          <div className="Faq">
-            <div className="question">
-              <h3>Can I use a UI Kit for commercial projects?</h3>
-              <FontAwesomeIcon icon={faChevronUp} style={{ width: "12px" }} />
-            </div>
-            <div className="answer">
-              <p>
-                Yes! Mode UI Kit is created for both personal and commercial
-                use. However, it&apos;s essential to review the license or usage
-                terms provided with the UI Kit to ensure compliance with the
-                specific usage rights and any attribution requirements.
-              </p>
-            </div>
-          </div>
-
-          <div className="Faq">
-            <div className="question">
-              <h3>Can I use a UI Kit for commercial projects?</h3>
-              <FontAwesomeIcon icon={faChevronUp} style={{ width: "12px" }} />
-            </div>
-            <div className="answer">
-              <p>
-                Yes! Mode UI Kit is created for both personal and commercial
-                use. However, it&apos;s essential to review the license or usage
-                terms provided with the UI Kit to ensure compliance with the
-                specific usage rights and any attribution requirements.
-              </p>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
 
@@ -306,7 +320,7 @@ function Home() {
         </div>
       </div>
 
-      <div className="group9">
+      <div id="contact" className="group9">
         <div className="flex2">
           <div className="list">
             <ul>
