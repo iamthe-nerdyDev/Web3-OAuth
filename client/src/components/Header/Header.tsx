@@ -6,7 +6,7 @@ import StateContext from "@/utils/context/StateContext";
 import "./Header.css";
 
 const Header = () => {
-  const { theme, setTheme } = useContext(StateContext)!;
+  const { theme, setTheme, isLoggedIn } = useContext(StateContext)!;
 
   const toggleTheme = () => {
     setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
@@ -19,7 +19,7 @@ const Header = () => {
           <div className="py-4 px-2">
             <div className="d-flex flex-column flex-md-row align-md-items-center justify-content-between gap-1">
               <div className="nav-brand">
-                <a href="/">
+                <a href={isLoggedIn ? "/dashboard" : "/"}>
                   <h1>Web3 OAuth</h1>
                 </a>
               </div>

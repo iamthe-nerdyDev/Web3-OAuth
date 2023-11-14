@@ -101,3 +101,7 @@
   background-color: rgba(250, 235, 215, 0.594);
   border: 1px solid var(--bg-border-black);
 }
+
+.card-details-dark .empty-result p {
+  border-bottom: 2px dotted #fff;
+}

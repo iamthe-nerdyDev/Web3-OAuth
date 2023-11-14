@@ -1,3 +1,5 @@
+//verify it can receive funds and also withdraw it!
+
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 const { expectRevert } = require("@openzeppelin/test-helpers");

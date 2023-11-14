@@ -5,6 +5,7 @@ import { useContext } from "react";
 import StateContext from "@/utils/context/StateContext";
 
 import "./CardDetails.css";
+import { Trash } from "@/icons";
 
 const CardDetails = () => {
   const { theme } = useContext(StateContext)!;
@@ -20,11 +21,16 @@ const CardDetails = () => {
               <div className="info d-flex align-items-center justify-content-between mb-4">
                 <div className="d-flex align-items-center line-text px-3 gap-1">
                   <hr />
-                  <h1>
+                  <h2>
                     Card-<span>01</span>
-                  </h1>
+                  </h2>
                 </div>
-                <button>edit</button>
+                <div className="d-flex align-items-center gap-1">
+                  <button>edit</button>
+                  <div className="pointer">
+                    <Trash fill="crimson" />
+                  </div>
+                </div>
               </div>
 
               <div className="row g-4">

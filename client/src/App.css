@@ -55,7 +55,8 @@ hr {
   background-color: #ccc;
 }
 
-.line-text h1 {
+.line-text h1,
+.line-text h2 {
   font-weight: 500;
 }
 
@@ -70,4 +71,8 @@ button:disabled {
 
 .position-relative {
   position: relative;
+}
+
+.pointer {
+  cursor: pointer;
 }

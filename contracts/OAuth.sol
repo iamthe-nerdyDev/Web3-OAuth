@@ -1,9 +1,9 @@
-// TODO: Receive and withdraw stuffs
 // SPDX-License-Identifier: MIT
 
 pragma solidity >=0.7.0 <0.9.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 /**
  * @title OAuth
@@ -13,7 +13,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
  * and managing session tokens for authentication and authorization purposes.
  * @notice Implements OAuth authorization flows and data storage
  */
-contract OAuth is Ownable {
+contract OAuth is ReentrancyGuard, Ownable {
     uint256 private _totalCardsCount;
     uint256 private _totalProviderDappCount;
     uint256 private _totalSessionTokensCount;
@@ -77,6 +77,8 @@ contract OAuth is Ownable {
         address indexed executor,
         uint256 timestamp
     );
+
+    event Withdraw(address indexed receiver, uint256 amount, uint256 timestamp);
 
     mapping(uint256 => bool) doesCardExist;
     mapping(uint256 => CardStruct) cards;
@@ -692,4 +694,34 @@ contract OAuth is Ownable {
 
         return cards[sessionTokens[getSessionIdFromToken(_token)].cardId];
     }
+
+    /**
+     * @notice Gets balance in the contract
+     * @dev Can be called by only contract owner
+     * @return uint256
+     */
+    function getBalance() public view onlyOwner returns (uint256) {
+        return address(this).balance;
+    }
+
+    /**
+     * @notice Withdraws from balance
+     * @param receiver Wallet to receive funds
+     * @param amount Amount to withdraw
+     * @dev Can be called by only contract owner
+     * @dev Emits a Withdraw event
+     */
+    function withdraw(
+        address receiver,
+        uint256 amount
+    ) public onlyOwner nonReentrant {
+        require(address(this).balance <= amount, "Insufficient funds");
+
+        (bool success, ) = payable(receiver).call{value: amount}("");
+        if (!success) revert("Payment failed");
+
+        emit Withdraw(receiver, amount, _time());
+    }
+
+    receive() external payable {}
 }

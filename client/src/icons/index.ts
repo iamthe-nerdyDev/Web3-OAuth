@@ -11,3 +11,4 @@ export { default as QuoteLeft } from "./all/QuoteLeft";
 export { default as QuoteRight } from "./all/QuoteRight";
 export { default as List } from "./all/List";
 export { default as Revert } from "./all/Revert";
+export { default as Trash } from "./all/Trash";

@@ -1,9 +1,29 @@
 import { useEffect, useState } from "react";
 import StateContext from "./StateContext";
 import { StateProviderProps, Themes } from "@/interface";
+import { useConnectionStatus } from "@thirdweb-dev/react";
 
 const StateProvider = ({ children }: StateProviderProps) => {
   const [theme, setTheme] = useState<Themes>("dark");
+  const [isMounting, setIsMounting] = useState<boolean>(true);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+
+  const connectionStatus = useConnectionStatus();
+
+  //to control mounting and logged in status
+  useEffect(() => {
+    if (
+      connectionStatus === "connected" ||
+      connectionStatus === "disconnected"
+    ) {
+      if (connectionStatus === "connected") setIsLoggedIn(true);
+      if (connectionStatus === "disconnected") setIsLoggedIn(false);
+
+      setTimeout(() => {
+        setIsMounting(false);
+      }, 2000);
+    }
+  }, [connectionStatus]);
 
   //getting current theme
   useEffect(() => {
@@ -37,7 +57,16 @@ const StateProvider = ({ children }: StateProviderProps) => {
   }, [theme]);
 
   return (
-    <StateContext.Provider value={{ theme, setTheme }}>
+    <StateContext.Provider
+      value={{
+        theme,
+        setTheme,
+        isLoggedIn,
+        setIsLoggedIn,
+        isMounting,
+        setIsMounting,
+      }}
+    >
       {children}
     </StateContext.Provider>
   );
