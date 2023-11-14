@@ -1,0 +1,25 @@
+.pfp > div.e img {
+  padding: 0;
+  margin-bottom: 0;
+  border: 1px solid #ddd;
+}
+
+.pfp > div.e {
+  background-color: inherit;
+}
+
+.pfp > div.e > div {
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.pfp > div.e > div button {
+  background-color: antiquewhite;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+}

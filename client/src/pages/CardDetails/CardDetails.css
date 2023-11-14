@@ -30,10 +30,16 @@
   gap: 0.8rem;
 }
 
-.entries > div span {
+.entries > div span,
+.entries > div label {
+  width: max-content;
   opacity: 0.5;
   font-weight: 450;
   font-size: 0.97rem;
+}
+
+.entries > div label {
+  cursor: pointer;
 }
 
 .entries > div p {

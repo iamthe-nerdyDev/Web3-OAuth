@@ -27,26 +27,30 @@ const CardDetails = () => {
                 <button>edit</button>
               </div>
 
-              <div className="d-flex flex-column flex-md-row gap-2">
-                <div className="pfp">
-                  <img src={userImage} className="mb-1" alt="user" />
-                  <span>pfp</span>
+              <div className="row g-4">
+                <div className="col-12 col-md-5">
+                  <div className="pfp">
+                    <img src={userImage} className="mb-1" alt="user" />
+                    <span>pfp</span>
+                  </div>
                 </div>
-                <div className="entries d-flex flex-column gap-1">
-                  <div>
-                    <span>username</span>
-                    <p>NerdyDev</p>
-                  </div>
-                  <div>
-                    <span>email</span>
-                    <p>adedeji@gmail.com</p>
-                  </div>
-                  <div>
-                    <span>bio</span>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                      sed do eiusmod tempor incididu.
-                    </p>
+                <div className="col-12 col-md-7">
+                  <div className="entries d-flex flex-column gap-1">
+                    <div>
+                      <span>username</span>
+                      <p>NerdyDev</p>
+                    </div>
+                    <div>
+                      <span>email</span>
+                      <p>adedeji@gmail.com</p>
+                    </div>
+                    <div>
+                      <span>bio</span>
+                      <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididu.
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>

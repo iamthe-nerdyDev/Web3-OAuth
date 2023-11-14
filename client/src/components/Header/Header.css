@@ -26,6 +26,6 @@
 .header-nav.dark {
   background-color: var(--bg-black);
   color: var(--bg-white);
-  box-shadow: rgba(225, 224, 224, 0.05) 0px 6px 24px 0px,
-    rgba(224, 223, 223, 0.08) 0px 0px 0px 1px;
+  box-shadow: rgba(255, 255, 255, 0.05) 0px 6px 24px 0px,
+    rgba(255, 255, 255, 0.08) 0px 0px 0px 1px;
 }

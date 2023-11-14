@@ -62,3 +62,12 @@ hr {
 .line-text hr {
   width: 3rem;
 }
+
+button:disabled {
+  opacity: 0.6;
+  cursor: no-drop;
+}
+
+.position-relative {
+  position: relative;
+}
