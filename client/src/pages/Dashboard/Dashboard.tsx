@@ -13,11 +13,11 @@ const Dashboard = () => {
   const displayCards = false;
 
   return (
-    <main className={`dashboard-${theme}`}>
+    <main className={`dashboard dashboard-${theme}`}>
       <Header />
       <div className="container">
         <div className="row g-5">
-          <div className="col-12 col-md-9 col-lg-7 mx-auto">
+          <div className="col-12 col-md-10 col-lg-8 mx-auto">
             <div className="top ">
               <div className="top__content pt-4 px-2">
                 <div className="top__content-header mb-4 pb-3">
@@ -39,7 +39,7 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div className="col-12 col-md-9 col-lg-7 mx-auto mb-5">
+          <div className="col-12 col-md-10 col-lg-8 mx-auto mb-5">
             <div className="px-2">
               <div className="cards">
                 <div className="d-flex align-items-center line-text px-3 gap-1 mb-4">

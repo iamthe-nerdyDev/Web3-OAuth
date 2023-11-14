@@ -32,14 +32,14 @@
 
 .entries > div span {
   opacity: 0.5;
-  font-weight: 400;
+  font-weight: 450;
   font-size: 0.97rem;
 }
 
 .entries > div p {
   font-size: 0.98rem;
   line-height: 185%;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .card-details__box .info span {
@@ -58,13 +58,35 @@
   cursor: pointer;
 }
 
+.connected-sites > span {
+  width: max-content;
+  background-color: var(--bg-white-2);
+  border: 1px solid #ddd;
+  border-radius: 100px;
+  padding: 0.8rem 1.8rem;
+  font-weight: 500;
+}
+
+.empty-result img {
+  width: 10rem;
+  height: 10rem;
+}
+
+.empty-result p {
+  width: max-content;
+  padding: 0.2rem 0.4rem;
+  font-weight: 500;
+  border-bottom: 2px dotted #000;
+}
+
 .card-details-dark {
   background-color: var(--bg-black);
   color: #fff;
 }
 
 .card-details-dark .entries > div,
-.card-details-dark .card-details__box .pfp span {
+.card-details-dark .card-details__box .pfp span,
+.card-details-dark .connected-sites > span {
   background-color: var(--bg-black-2);
   border: 1px solid var(--bg-border-black);
 }

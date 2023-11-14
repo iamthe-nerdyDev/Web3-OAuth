@@ -144,12 +144,12 @@
   top: 3rem;
 }
 
-.empty-result img {
-  width: 14rem;
-  height: 14rem;
+.dashboard .empty-result img {
+  width: 13rem;
+  height: 13rem;
 }
 
-.empty-result p {
+.dashboard .empty-result p {
   padding: 0.2rem 0.4rem;
   font-weight: 500;
   border-bottom: 2px dotted #000;

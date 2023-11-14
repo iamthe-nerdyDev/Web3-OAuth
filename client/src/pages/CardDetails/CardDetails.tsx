@@ -1,5 +1,6 @@
 import { Footer_2, Header } from "@/components";
 import userImage from "@assets/user.png";
+import emptyResultImage from "@assets/empty-result.png";
 import { useContext } from "react";
 import StateContext from "@/utils/context/StateContext";
 
@@ -52,7 +53,24 @@ const CardDetails = () => {
             </div>
           </div>
 
-          <div className="col-12 col-md-9 col-lg-7 mx-auto"></div>
+          <div className="col-12 col-md-9 col-lg-8 mx-auto">
+            <div className="px-2">
+              <hr />
+            </div>
+          </div>
+
+          <div className="col-12 col-md-9 col-lg-8 mx-auto mb-5">
+            <div className="px-2">
+              <div className="connected-sites">
+                <span className="mb-2 d-block">Connected Sites</span>
+                <div className="empty-result align-items-center py-4 d-flex flex-column">
+                  <img src={emptyResultImage} alt="empty result" />
+                  <p>Nothing found</p>
+                </div>
+                <div className="sites"></div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
