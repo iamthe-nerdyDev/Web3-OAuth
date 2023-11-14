@@ -6,6 +6,7 @@ import { Themes } from "@/interface";
 import "./Middleware.css";
 
 interface Props {
+  ignore?: boolean;
   children: React.ReactNode;
 }
 
@@ -21,24 +22,26 @@ const Loader = ({ theme }: { theme: Themes }) => {
   );
 };
 
-const Middleware = ({ children }: Props) => {
+const Middleware = ({ ignore = false, children }: Props) => {
   const { isMounting, isLoggedIn, theme } = useContext(StateContext)!;
 
-  if (location.pathname !== "/") {
-    //if user is not in the landing page....
-    //check if user is loggedIn..if no! redirect to homepage
-    if (!isMounting && !isLoggedIn) {
-      redirectTo("/");
-      return;
+  if (!ignore) {
+    if (location.pathname !== "/") {
+      //if user is not in the landing page....
+      //check if user is loggedIn..if no! redirect to homepage
+      if (!isMounting && !isLoggedIn) {
+        redirectTo("/");
+        return;
+      }
     }
-  }
 
-  if (location.pathname == "/") {
-    //if user is in the landing page....
-    //check if user is loggedIn...if yes! redirect to dashboard
-    if (!isMounting && isLoggedIn) {
-      redirectTo("/dashboard");
-      return;
+    if (location.pathname == "/") {
+      //if user is in the landing page....
+      //check if user is loggedIn...if yes! redirect to dashboard
+      if (!isMounting && isLoggedIn) {
+        redirectTo("/dashboard");
+        return;
+      }
     }
   }
 

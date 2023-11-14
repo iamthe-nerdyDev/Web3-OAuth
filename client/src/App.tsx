@@ -18,7 +18,7 @@ const App = () => {
         <Route
           path="*"
           element={
-            <Middleware>
+            <Middleware ignore={true}>
               <NotFound />
             </Middleware>
           }
