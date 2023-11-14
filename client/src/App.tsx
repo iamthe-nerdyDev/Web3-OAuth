@@ -1,9 +1,9 @@
-import { Dashboard } from "./pages";
+import { CardDetails } from "./pages";
 
 import "./App.css";
 
 const App = () => {
-  return <Dashboard />;
+  return <CardDetails />;
 };
 
 export default App;

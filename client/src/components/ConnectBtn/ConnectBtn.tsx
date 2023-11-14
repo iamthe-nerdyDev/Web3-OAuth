@@ -29,7 +29,7 @@ const ConnectBtn = () => {
 };
 
 const DetailsBtn = ({ theme }: { theme: Themes }) => {
-  const address = useAddress();
+  const address = useAddress() ?? "null";
 
   return (
     <button className={`connected-wallet ${theme}`}>

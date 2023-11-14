@@ -13,6 +13,7 @@ import {
 import { TelosEvmTestnet } from "@thirdweb-dev/chains";
 import StateProvider from "./utils/context/StateProvider.tsx";
 
+//@ts-ignore
 const CLIENT_ID = import.meta.env.VITE_THIRDWEB_CLIENT_ID;
 
 if (!CLIENT_ID) {

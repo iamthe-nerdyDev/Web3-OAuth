@@ -44,14 +44,6 @@
   padding: 0rem;
 }
 
-.cards .line-text h1 {
-  font-weight: 500;
-}
-
-.cards .line-text hr {
-  width: 3rem;
-}
-
 .single-card {
   gap: 0.8rem;
   border-radius: 100px;

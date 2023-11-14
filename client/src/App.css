@@ -54,3 +54,11 @@ hr {
   border: none;
   background-color: #ddd;
 }
+
+.line-text h1 {
+  font-weight: 500;
+}
+
+.line-text hr {
+  width: 3rem;
+}

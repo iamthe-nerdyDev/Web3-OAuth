@@ -1,0 +1,75 @@
+.card-details__box .pfp img {
+  width: 100%;
+  height: auto;
+  background-color: antiquewhite;
+  padding: 1rem;
+  border-radius: 7px;
+  padding: 1rem;
+  border: 1px solid #ddd;
+}
+
+.card-details__box .pfp span {
+  width: 100%;
+  display: block;
+  border: 1px solid #ddd;
+  background-color: var(--bg-white-2);
+  text-align: center;
+  padding: 0.8rem;
+  border-radius: 7px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.entries > div {
+  border: 1px solid #ddd;
+  background-color: var(--bg-white-2);
+  padding: 1.2rem 1.4rem;
+  border-radius: 7px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.entries > div span {
+  opacity: 0.5;
+  font-weight: 400;
+  font-size: 0.97rem;
+}
+
+.entries > div p {
+  font-size: 0.98rem;
+  line-height: 185%;
+  font-weight: 500;
+}
+
+.card-details__box .info span {
+  color: #9327ff;
+}
+
+.card-details__box .info button {
+  border: none;
+  outline: none;
+  background-color: #9327ff;
+  padding: 0.7rem 1.9rem;
+  border-radius: 100px;
+  font-size: 1rem;
+  color: #fff;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.card-details-dark {
+  background-color: var(--bg-black);
+  color: #fff;
+}
+
+.card-details-dark .entries > div,
+.card-details-dark .card-details__box .pfp span {
+  background-color: var(--bg-black-2);
+  border: 1px solid var(--bg-border-black);
+}
+
+.card-details-dark .card-details__box .pfp img {
+  background-color: rgba(250, 235, 215, 0.594);
+  border: 1px solid var(--bg-border-black);
+}
