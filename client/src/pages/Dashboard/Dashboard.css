@@ -1,0 +1,199 @@
+.top__content-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.top__content-header h2 {
+  font-size: 2.5rem;
+  font-weight: 500;
+}
+
+.top__content-header p {
+  font-weight: 400;
+  opacity: 0.8;
+  font-size: 1.1rem;
+}
+
+.top__content-body {
+  gap: 0.7rem;
+}
+
+.top__content-body > span {
+  background-color: var(--bg-white-2);
+  display: block;
+  width: max-content;
+  padding: 0.7rem 1.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--bg-border-white);
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.top__content-body > div {
+  background-color: var(--bg-white-2);
+  width: 100%;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--bg-border-white);
+  line-height: 188%;
+  font-weight: 400;
+}
+
+.cards {
+  padding: 0rem;
+}
+
+.cards .line-text h1 {
+  font-weight: 500;
+}
+
+.cards .line-text hr {
+  width: 3rem;
+}
+
+.single-card {
+  gap: 0.8rem;
+  border-radius: 100px;
+  border: 1px solid transparent;
+  background: linear-gradient(to right, white, white),
+    linear-gradient(to right, #9327ff, #ffa927);
+  background-clip: padding-box, border-box;
+  background-origin: padding-box, border-box;
+  padding: 0.8rem;
+  width: 100%;
+  padding-right: 3rem;
+  cursor: pointer;
+}
+
+.single-card img {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  background-color: #f4ce9b;
+  border: 4px solid #eee;
+}
+
+.single-card > div {
+  width: 100%;
+  gap: 0.05rem;
+}
+
+.single-card .username {
+  font-weight: 500;
+  font-size: 1rem;
+  width: 100%;
+}
+
+.single-card p {
+  font-size: 0.95rem;
+}
+
+.single-card .email {
+  font-weight: 350;
+  opacity: 0.7;
+  font-size: 0.85rem;
+  width: max-content;
+  margin-bottom: 0.45rem;
+}
+
+.single-card .bio {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+}
+
+.new-card-btn {
+  border: 1px solid #ccc;
+  border-radius: 100px;
+  padding: 0.6rem;
+  padding-right: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.new-card-btn button {
+  background-color: var(--bg-black-2);
+  color: #fff;
+  padding: 1.1rem 2.5rem;
+  font-size: 0.95rem;
+  border-radius: 100px;
+  font-weight: 600;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.new-card-btn > div {
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+}
+
+.new-card-btn > div p {
+  background: linear-gradient(90deg, rgb(208, 208, 208) -6.25%, #797979 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.new-card-btn > div span svg {
+  margin-left: -0.8rem !important;
+  opacity: 0.5;
+}
+
+.position-sticky {
+  position: static;
+  position: -webkit-sticky;
+  top: 3rem;
+}
+
+.empty-result img {
+  width: 14rem;
+  height: 14rem;
+}
+
+.empty-result p {
+  padding: 0.2rem 0.4rem;
+  font-weight: 500;
+  border-bottom: 2px dotted #000;
+}
+
+.dashboard-dark {
+  background-color: var(--bg-black);
+  color: #fff;
+}
+
+.dashboard-dark .top__content-body > span {
+  background-color: var(--bg-black-2);
+  border: 1px solid var(--bg-border-black);
+}
+
+.dashboard-dark .top__content-body > div {
+  background-color: var(--bg-black-2);
+  border: 1px solid var(--bg-border-black);
+}
+
+.dashboard-dark .empty-result p {
+  border-bottom: 2px dotted #fff;
+}
+
+.dashboard-dark .new-card-btn button {
+  background-color: var(--bg-white);
+  color: var(--bg-black);
+}
+
+.dashboard-dark .single-card {
+  background: linear-gradient(to right, var(--bg-black-2), var(--bg-black-2)),
+    linear-gradient(to right, #9327ff, #ffa927);
+  background-clip: padding-box, border-box;
+  background-origin: padding-box, border-box;
+}
+
+.dashboard-dark .new-card-btn {
+  border: 1px solid #555;
+}

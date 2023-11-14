@@ -1,0 +1,11 @@
+export { default as Logo } from "./all/Logo";
+export { default as Moon } from "./all/Moon";
+export { default as Sun } from "./all/Sun";
+export { default as Line } from "./all/Line";
+export { default as ChevronRight } from "./all/ChevronRight";
+export { default as Discord } from "./all/Discord";
+export { default as Telegram } from "./all/Telegram";
+export { default as Github } from "./all/Github";
+export { default as Twitter } from "./all/Twitter";
+export { default as QuoteLeft } from "./all/QuoteLeft";
+export { default as QuoteRight } from "./all/QuoteRight";

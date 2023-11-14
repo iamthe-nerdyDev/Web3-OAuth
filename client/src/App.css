@@ -1,0 +1,56 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Chillax", sans-serif;
+}
+
+:root {
+  --bg-black: #000;
+  --bg-white: #fff;
+  --bg-black-2: #171a25;
+  --bg-white-2: #faf9ff;
+  --bg-border-black: #3a3342;
+  --bg-border-white: #f1f1f2;
+  --bg-text-black: #868686;
+  --bg-text-white: #222;
+  --my-bs-gutter-x: -1.5rem;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  overflow-x: hidden;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+svg {
+  display: block;
+  margin-bottom: 0;
+}
+
+.gap-1 {
+  gap: 1rem;
+}
+
+.gap-2 {
+  gap: 1.4rem;
+}
+
+.opaq-1 {
+  opacity: 0.4;
+}
+
+hr {
+  width: 100%;
+  height: 1px;
+  border: none;
+  background-color: #ddd;
+}

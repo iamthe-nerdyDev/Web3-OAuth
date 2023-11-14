@@ -1,7 +1,9 @@
-import { Home } from "./pages";
+import { Dashboard, Home } from "./pages";
+
+import "./App.css";
 
 const App = () => {
-  return <Home />;
+  return <Dashboard />;
 };
 
 export default App;

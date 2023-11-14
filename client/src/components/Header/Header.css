@@ -1,0 +1,31 @@
+.header-nav {
+  background-color: #fff;
+  position: fixed;
+  width: 100%;
+  left: 0;
+  right: 0;
+  top: 0;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  z-index: 99;
+}
+
+.header-nav h1 {
+  font-size: 2rem;
+  font-weight: 550;
+  background: linear-gradient(92deg, #9327ff 1.06%, #ffa927 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.theme-switcher {
+  cursor: pointer;
+}
+
+.header-nav.dark {
+  background-color: var(--bg-black);
+  color: var(--bg-white);
+  box-shadow: rgba(225, 224, 224, 0.05) 0px 6px 24px 0px,
+    rgba(224, 223, 223, 0.08) 0px 0px 0px 1px;
+}
