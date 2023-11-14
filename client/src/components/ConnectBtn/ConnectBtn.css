@@ -49,13 +49,14 @@ button.connected-wallet {
   gap: 1rem;
   cursor: pointer;
   color: inherit;
+  user-select: none;
 }
 
-button.connected-wallet canvas.identicon {
-  width: 2.7rem !important;
-  height: 2.7rem !important;
+button.connected-wallet svg {
+  width: 2.9rem !important;
+  height: 2.9rem !important;
   border-radius: 50%;
-  background-color: var(--bg-white-2);
+  background-color: #fff;
 }
 
 button.connected-wallet p {

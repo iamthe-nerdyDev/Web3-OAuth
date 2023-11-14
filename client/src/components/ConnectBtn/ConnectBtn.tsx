@@ -1,7 +1,7 @@
 import { ConnectWallet, useAddress } from "@thirdweb-dev/react";
 import { Logo } from "@/icons";
 // @ts-ignore
-import Identicon from "react-identicons";
+import Jdenticon from "react-jdenticon";
 import { truncateAddress } from "@/utils/helper";
 import { useContext } from "react";
 import StateContext from "@/utils/context/StateContext";
@@ -33,7 +33,7 @@ const DetailsBtn = ({ theme }: { theme: Themes }) => {
 
   return (
     <button className={`connected-wallet ${theme}`}>
-      <Identicon string={address} />
+      <Jdenticon value={address} />
       <p>{truncateAddress(address)}</p>
     </button>
   );
