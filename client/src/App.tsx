@@ -1,9 +1,9 @@
-import { CardDetails } from "./pages";
+import { Home } from "./pages";
 
 import "./App.css";
 
 const App = () => {
-  return <CardDetails />;
+  return <Home />;
 };
 
 export default App;
