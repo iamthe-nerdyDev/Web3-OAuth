@@ -1,4 +1,4 @@
-import { Dashboard, Home } from "./pages";
+import { Dashboard } from "./pages";
 
 import "./App.css";
 
