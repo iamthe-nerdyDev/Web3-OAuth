@@ -16,8 +16,8 @@ const Dashboard = () => {
   const address = useAddress();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [cards, setCards] = useState<ICardStruct[]>([]);
-  const [fact, setFact] = useState<string>("");
+  const [cards, setCards] = useState<ICardStruct[] | null>(null);
+  const [fact, setFact] = useState<string | null>(null);
 
   useEffect(() => {
     async function getRandomFact() {
@@ -37,6 +37,8 @@ const Dashboard = () => {
       } catch (e: any) {
         setFact("Unable to fetch fact");
         console.error(e);
+      } finally {
+        if (cards) setIsLoading(false);
       }
     }
 
@@ -54,13 +56,13 @@ const Dashboard = () => {
         } catch (e: any) {
           console.error(e);
         } finally {
-          setIsLoading(false);
+          if (fact) setIsLoading(false);
         }
       }
 
       init();
     }
-  }, [isMounting, address]);
+  }, [isMounting, address, fact]);
 
   return isLoading ? (
     <Loader theme={theme} />
@@ -96,7 +98,7 @@ const Dashboard = () => {
                   <h1>My Cards</h1>
                 </div>
                 <div className="cards-box d-flex flex-column gap-2 mb-5">
-                  {cards.length > 0 ? (
+                  {cards && cards.length > 0 ? (
                     <RenderCards cards={cards} />
                   ) : (
                     <RenderEmptyResult />
