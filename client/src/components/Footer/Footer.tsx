@@ -16,7 +16,7 @@ const Footer = () => {
               <div className="row g-4">
                 <div className="col-12 col-md-4 mb-3">
                   <div>
-                    <h2 className="gradient-text mb-3">Web3 OAuth</h2>
+                    <h2 className="gradient-text mb-4">Web3 OAuth</h2>
                     <ul>
                       <li>
                         <a href="#">Home</a>

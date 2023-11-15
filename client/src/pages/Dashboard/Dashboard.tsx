@@ -130,7 +130,6 @@ const Dashboard = () => {
 const RenderCards = ({ cards }: { cards: ICardStruct[] }) => {
   return cards.map((card, i) => (
     <AnchorLink to={`/card/${card.id}/${i + 1}`} key={`my-card-${i}`}>
-      {" "}
       <div className="single-card d-flex align-items-center">
         <img src={card.pfp} alt="User" />
         <div className="d-flex flex-column">

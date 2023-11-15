@@ -1,26 +1,30 @@
-import { AnchorLink, Footer_2, Header, Loader } from "@/components";
+import {
+  AnchorLink,
+  Footer_2,
+  Header,
+  ImagePicker,
+  Loader,
+} from "@/components";
 import { useContext, useEffect, useState } from "react";
 import StateContext from "@/utils/context/StateContext";
-
-import { List, Revert } from "@/icons";
+import { List, LoaderIcon, Revert } from "@/icons";
 import { useParams } from "react-router-dom";
 import { ICardStruct } from "@/interface";
 import { useAddress, useSigner } from "@thirdweb-dev/react";
 import { getUserCard, serializeForm, updateCard } from "@/utils/helper";
 import { NotFound } from "..";
-
-import "./EditCard.css";
 import { toast } from "react-toastify";
 
-const AddCard = () => {
-  const { cardId } = useParams();
+import "./EditCard.css";
 
+const AddCard = () => {
   const { theme, isMounting } = useContext(StateContext)!;
+  const { cardId } = useParams();
 
   const address = useAddress();
   const signer = useSigner();
 
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isPageLoading, setIsPageLoading] = useState<boolean>(true);
   const [card, setCard] = useState<ICardStruct | null>(null);
 
   useEffect(() => {
@@ -34,7 +38,7 @@ const AddCard = () => {
         } catch (e: any) {
           console.error(e);
         } finally {
-          setIsLoading(false);
+          setIsPageLoading(false);
         }
       }
 
@@ -42,22 +46,47 @@ const AddCard = () => {
     }
   }, [isMounting, address]);
 
+  const [displayModal, setDisplayModal] = useState<boolean>(false);
+  const [selectedURL, setSelectedURL] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const doEditCard = async (e: any) => {
     e.preventDefault();
 
     const { pfp, username, email, bio } = serializeForm(e.target);
 
+    setIsLoading(true);
+
     await toast.promise(
       new Promise<void>((resolve, reject) => {
         updateCard(
-          parseInt(cardId!),
-          { username, pfp, emailAddress: email, bio },
+          {
+            cardId: parseInt(cardId!),
+            username,
+            pfp,
+            emailAddress: email,
+            bio,
+          },
           signer!
         )
           .then((tx) => {
+            setSelectedURL(null);
+            setIsLoading(false);
+
+            let _newCard = card;
+            _newCard!.pfp = pfp;
+            _newCard!.username = username;
+            _newCard!.emailAddress = email;
+            _newCard!.bio = bio;
+
+            setCard(_newCard);
+
             resolve(tx);
           })
-          .catch((error) => reject(error));
+          .catch((error) => {
+            setIsLoading(false);
+            reject(error);
+          });
       }),
       {
         pending: "Approve transaction",
@@ -67,13 +96,20 @@ const AddCard = () => {
     );
   };
 
-  return isLoading ? (
+  return isPageLoading ? (
     <Loader theme={theme} />
   ) : card == null ? (
     <NotFound />
   ) : (
     <main className={`form-${theme}`}>
       <Header />
+
+      <ImagePicker
+        displayModal={displayModal}
+        setDisplayModal={setDisplayModal}
+        selectedURL={selectedURL}
+        setSelectedURL={setSelectedURL}
+      />
 
       <div className="container mt-5 mt-md-0 mb-4">
         <div className="row">
@@ -105,19 +141,33 @@ const AddCard = () => {
                 <div className="col-12 col-md-5">
                   <div className="pfp selected">
                     <div className="e position-relative mb-3">
-                      <img src={card.pfp} alt="NFT Sample" />
+                      <img src={selectedURL ?? card.pfp} alt="NFT Sample" />
                       <div>
-                        <button>
+                        <button
+                          type="button"
+                          onClick={() => setDisplayModal(true)}
+                        >
                           <List />
+                          <p>Choose</p>
                         </button>
-                        <button>
+                        <button
+                          type="button"
+                          onClick={() => setSelectedURL(card.pfp)}
+                        >
                           <Revert />
+                          <p>Undo</p>
                         </button>
                       </div>
                     </div>
-                    <input type="hidden" name="pfp" id="pfp" />
                     <span>pfp</span>
                   </div>
+                  <input
+                    type="hidden"
+                    name="pfp"
+                    id="pfp"
+                    value={selectedURL ?? card.pfp}
+                    readOnly
+                  />
                 </div>
                 <div className="col-12 col-md-7">
                   <div className="entries d-flex flex-column gap-1">
@@ -154,7 +204,13 @@ const AddCard = () => {
                         defaultValue={card.bio}
                       />
                     </div>
-                    <button>Update</button>
+                    <button
+                      type="submit"
+                      className="d-flex align-items-center justify-content-center"
+                      disabled={isLoading}
+                    >
+                      {isLoading ? <LoaderIcon /> : "Update"}
+                    </button>
                   </div>
                 </div>
               </form>

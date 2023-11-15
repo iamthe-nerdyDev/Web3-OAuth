@@ -7,7 +7,7 @@ const Methodology = () => {
   const { theme } = useContext(StateContext)!;
 
   return (
-    <section className={`methodology py-5 ${theme} mb-4`}>
+    <section className={`methodology py-5 ${theme} mb-4`} id="methodology">
       <div className="container">
         <div className="row">
           <div className="col-12">

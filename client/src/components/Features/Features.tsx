@@ -30,7 +30,7 @@ const Features = () => {
   ];
 
   return (
-    <section className={`features py-5 ${theme} mb-3`}>
+    <section className={`features py-5 ${theme} mb-3`} id="features">
       <div className="container">
         <div className="row">
           <div className="col-12">

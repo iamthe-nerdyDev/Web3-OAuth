@@ -39,6 +39,7 @@ export interface IDAppStruct {
 }
 
 export interface ICardParams {
+  cardId?: number;
   username: string;
   emailAddress: string;
   pfp: string;

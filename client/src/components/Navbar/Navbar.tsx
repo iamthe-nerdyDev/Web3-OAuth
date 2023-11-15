@@ -1,4 +1,4 @@
-import { ConnectBtn } from "..";
+import { AnchorLink, ConnectBtn } from "..";
 import { useContext, useState } from "react";
 import StateContext from "@/utils/context/StateContext";
 import { Sun, Moon, Menu, Close } from "@/icons";
@@ -6,7 +6,7 @@ import { Sun, Moon, Menu, Close } from "@/icons";
 import "./Navbar.css";
 
 const Navbar = () => {
-  const { theme, setTheme } = useContext(StateContext)!;
+  const { theme, setTheme, isLoggedIn } = useContext(StateContext)!;
   const [displayModal, setDisplayModal] = useState<boolean>(false);
 
   const toggleTheme = () => {
@@ -26,17 +26,19 @@ const Navbar = () => {
             <div className="d-none d-lg-block links">
               <ul className="d-flex align-items-center">
                 <li className="active">
-                  <a href="#">What We Offer</a>
+                  <a href="#features">What We Offer</a>
                 </li>
                 <li>
-                  <a href="#">Methodology</a>
+                  <a href="#methodology">Methodology</a>
                 </li>
                 <li>
-                  <a href="#">FAQs</a>
+                  <a href="#faq">FAQs</a>
                 </li>
-                <li>
-                  <a href="#">Contact</a>
-                </li>
+                {isLoggedIn && (
+                  <li>
+                    <AnchorLink to="/dashboard">Dashboard</AnchorLink>
+                  </li>
+                )}
               </ul>
             </div>
             <div className="d-flex align-items-center gap-3">
@@ -68,17 +70,19 @@ const Navbar = () => {
         <div>
           <ul className="d-flex flex-column align-items-center mb-5">
             <li className="active">
-              <a href="#">What We Offer</a>
+              <a href="#features">What We Offer</a>
             </li>
             <li>
-              <a href="#">Methodology</a>
+              <a href="#methodology">Methodology</a>
             </li>
             <li>
-              <a href="#">FAQs</a>
+              <a href="#faq">FAQs</a>
             </li>
-            <li>
-              <a href="#">Contact</a>
-            </li>
+            {isLoggedIn && (
+              <li>
+                <AnchorLink to="/dashboard">Dashboard</AnchorLink>
+              </li>
+            )}
           </ul>
           <div>
             <div className="d-flex d-md-none align-items-center gap-2">

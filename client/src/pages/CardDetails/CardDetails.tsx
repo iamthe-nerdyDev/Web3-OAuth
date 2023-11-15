@@ -2,9 +2,8 @@ import { AnchorLink, Footer_2, Header, Loader } from "@/components";
 import emptyResultImage from "@/assets/empty-result.png";
 import { useContext, useEffect, useState } from "react";
 import StateContext from "@/utils/context/StateContext";
-
-import { Trash } from "@/icons";
-import { useParams } from "react-router-dom";
+import { LoaderIcon, Trash } from "@/icons";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAddress, useSigner } from "@thirdweb-dev/react";
 import { ICardStruct } from "@/interface";
 import { deleteCard, getUserCard } from "@/utils/helper";
@@ -14,6 +13,8 @@ import { toast } from "react-toastify";
 import "./CardDetails.css";
 
 const CardDetails = () => {
+  const navigate = useNavigate();
+
   const { cardId, index } = useParams();
 
   const { theme, isMounting } = useContext(StateContext)!;
@@ -22,6 +23,7 @@ const CardDetails = () => {
   const signer = useSigner();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isDeleteLoading, setIsDeleteLoading] = useState<boolean>(false);
   const [card, setCard] = useState<ICardStruct | null>(null);
 
   useEffect(() => {
@@ -44,6 +46,8 @@ const CardDetails = () => {
   }, [isMounting, address]);
 
   const doDeleteCard = async (cardId: number) => {
+    if (isDeleteLoading) return;
+
     if (
       !confirm(
         "Are you sure you want to delete this card?\n\nNOTE:This will automatically log you out of all sites you have linked it to.."
@@ -54,13 +58,20 @@ const CardDetails = () => {
 
     if (!signer) return;
 
+    setIsDeleteLoading(true);
+
     await toast.promise(
       new Promise<void>((resolve, reject) => {
         deleteCard(cardId, signer)
           .then((tx) => {
             resolve(tx);
+
+            return navigate("/dashboard");
           })
-          .catch((error) => reject(error));
+          .catch((error) => {
+            reject(error);
+            setIsDeleteLoading(false);
+          });
       }),
       {
         pending: "Approve transaction",
@@ -104,7 +115,11 @@ const CardDetails = () => {
                     className="pointer"
                     onClick={() => doDeleteCard(parseInt(cardId!))}
                   >
-                    <Trash fill="crimson" />
+                    {isDeleteLoading ? (
+                      <LoaderIcon />
+                    ) : (
+                      <Trash fill="crimson" />
+                    )}
                   </div>
                 </div>
               </div>

@@ -43,7 +43,7 @@ const FAQ = () => {
   ];
 
   return (
-    <section className={`faq py-5 mb-5 ${theme}`}>
+    <section className={`faq py-5 mb-5 ${theme}`} id="faq">
       <div className="container">
         <div className="row">
           <div className="col-12">
@@ -54,7 +54,7 @@ const FAQ = () => {
                     Find Answers to Your Burning Questions about Web3 OAuth
                   </h2>
                 </div>
-                <div className="col-12 col-md-9 col-lg-7 mx-auto">
+                <div className="col-12 col-md-9 col-lg-8 mx-auto">
                   <div className="row">
                     {FAQList.map((faq, i) => (
                       <div className="col-12" key={`faq-list-${i}`}>

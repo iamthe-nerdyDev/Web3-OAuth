@@ -3,10 +3,9 @@ import { useContext, useState } from "react";
 import StateContext from "@/utils/context/StateContext";
 import { toast } from "react-toastify";
 import nftIcon from "@/assets/nft.png";
-
 import { clearForm, createCard, serializeForm } from "@/utils/helper";
 import { useSigner } from "@thirdweb-dev/react";
-import { LoaderIcon } from "@/icons";
+import { List, LoaderIcon } from "@/icons";
 
 import "./AddCard.css";
 
@@ -51,6 +50,7 @@ const AddCard = () => {
   return (
     <main className={`form-${theme}`}>
       <Header />
+
       <ImagePicker
         displayModal={displayModal}
         setDisplayModal={setDisplayModal}
@@ -86,11 +86,19 @@ const AddCard = () => {
               >
                 <div className="col-12 col-md-5">
                   {selectedURL ? (
-                    <div
-                      className="pfp pointer"
-                      onClick={() => setDisplayModal(true)}
-                    >
-                      <img src={selectedURL} className="mb-1" alt="user" />
+                    <div className="pfp selected">
+                      <div className="e position-relative mb-3">
+                        <img src={selectedURL} alt="User PFP" />
+                        <div>
+                          <button
+                            type="button"
+                            onClick={() => setDisplayModal(true)}
+                          >
+                            <List />
+                            <p>Choose</p>
+                          </button>
+                        </div>
+                      </div>
                       <span>pfp</span>
                     </div>
                   ) : (
@@ -118,6 +126,7 @@ const AddCard = () => {
                     name="pfp"
                     id="pfp"
                     value={selectedURL ?? ""}
+                    readOnly
                   />
                 </div>
 

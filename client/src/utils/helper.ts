@@ -8,10 +8,6 @@ const logError = (e: any) => {
   console.error("Err:", e);
 };
 
-export const redirectTo = (url: string): void => {
-  location.href = url;
-};
-
 export const truncateAddress = (address?: string): string => {
   if (!address) return "null";
 
@@ -86,27 +82,17 @@ export const createCard = async (data: ICardParams, signer: ethers.Signer) => {
   }
 };
 
-export const updateCard = async (
-  cardId: number,
-  data: ICardParams,
-  signer: ethers.Signer
-) => {
-  if (!signer) return Promise.reject("Signer is required!");
-
-  const gasLimit = 210000;
-  const gasPrice = ethers.utils.parseUnits("50", "gwei");
-
+export const updateCard = async (data: ICardParams, signer: ethers.Signer) => {
   try {
     const Contract = getContract(signer);
-    const { username, pfp, emailAddress, bio } = data;
+    const { cardId, username, pfp, emailAddress, bio } = data;
 
     const _tx = await Contract.updateCard(
       cardId,
       username,
       pfp,
       emailAddress,
-      bio,
-      { gasLimit, gasPrice }
+      bio
     );
 
     await _tx.wait();

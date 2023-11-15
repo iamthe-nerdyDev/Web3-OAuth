@@ -35,12 +35,13 @@
   outline: none;
   padding: 0.9rem 1.5rem;
   font-size: 0.98rem;
-  border-radius: 10px;
+  border-radius: 7px;
   color: #000;
   width: 100%;
 }
 
 .footer .newsletter input {
+  background-color: #fff;
   border: 1px solid #ddd;
 }
 
@@ -57,5 +58,11 @@
 
 .footer.dark {
   background-color: #111;
+  color: #fff;
+}
+
+.footer.dark .newsletter input {
+  background-color: var(--bg-black-2);
+  border: 1px solid #555;
   color: #fff;
 }

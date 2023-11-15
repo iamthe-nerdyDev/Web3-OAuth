@@ -1,5 +1,5 @@
 import { Line, Moon, Sun } from "@/icons";
-import { ConnectBtn } from "..";
+import { AnchorLink, ConnectBtn } from "..";
 import { useContext } from "react";
 import StateContext from "@/utils/context/StateContext";
 
@@ -19,9 +19,9 @@ const Header = () => {
           <div className="py-4 px-2">
             <div className="d-flex flex-column flex-md-row align-md-items-center justify-content-between gap-1">
               <div className="nav-brand">
-                <a href={isLoggedIn ? "/dashboard" : "/"}>
+                <AnchorLink to={isLoggedIn ? "/dashboard" : "/"}>
                   <h1>Web3 OAuth</h1>
-                </a>
+                </AnchorLink>
               </div>
               <div className="d-flex align-items-center gap-1">
                 <div className="theme-switcher" onClick={toggleTheme}>

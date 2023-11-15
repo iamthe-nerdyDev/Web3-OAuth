@@ -5,10 +5,10 @@ import emptyResultImage from "@/assets/empty-result.png";
 import { Close, LoaderIcon } from "@/icons";
 import { newNFTObj, serializeForm } from "@/utils/helper";
 import { Alchemy, Network } from "alchemy-sdk";
-
-import "./ImagePicker.css";
 import { useAddress } from "@thirdweb-dev/react";
 import { toast } from "react-toastify";
+
+import "./ImagePicker.css";
 
 const ImagePicker = ({
   displayModal,
@@ -160,7 +160,7 @@ const ImagePicker = ({
               id="url"
             />
             <button disabled={isLoading} type="submit">
-              {isLoading ? <LoaderIcon /> : "Submit & Close"}
+              {isLoading ? <LoaderIcon /> : "Save"}
             </button>
           </div>
         </form>

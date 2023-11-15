@@ -6,7 +6,7 @@ import StateContext from "@/utils/context/StateContext";
 import "./Hero.css";
 
 const Hero = () => {
-  const { theme } = useContext(StateContext)!;
+  const { theme, isLoggedIn } = useContext(StateContext)!;
 
   return (
     <section className={`hero mb-5 ${theme}`}>
@@ -20,7 +20,11 @@ const Hero = () => {
                 profile updates. Blockchain-powered.
               </h1>
               <p className="mb-3">Experience the future of web interaction.</p>
-              <div className="gap-1 d-flex flex-column flex-md-row align-items-center justify-content-center">
+              <div
+                className={`${
+                  isLoggedIn ? "gap-2" : "gap-1"
+                } d-flex flex-column flex-md-row align-items-center justify-content-center`}
+              >
                 <ConnectBtn className="bg-purple" />
                 <button className="docs d-flex align-items-center justify-content-center gap-1">
                   Read docs <Doc />

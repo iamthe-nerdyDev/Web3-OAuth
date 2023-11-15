@@ -47,7 +47,7 @@
 .single-card {
   gap: 1.25rem;
   border-radius: 100px;
-  border: 1px solid transparent;
+  border: 0.001rem solid transparent;
   background: linear-gradient(to right, white, white),
     linear-gradient(to right, #9327ff, #ffa927);
   background-clip: padding-box, border-box;

@@ -21,7 +21,7 @@ const StateProvider = ({ children }: StateProviderProps) => {
 
       setTimeout(() => {
         setIsMounting(false);
-      }, 1000);
+      }, 1800);
     }
   }, [connectionStatus]);
 
