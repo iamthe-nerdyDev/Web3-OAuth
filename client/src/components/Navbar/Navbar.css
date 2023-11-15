@@ -1,0 +1,129 @@
+.home-nav {
+  background-color: #fff;
+  position: fixed;
+  width: 100%;
+  left: 0;
+  right: 0;
+  top: 0;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  z-index: 99;
+}
+
+.home-nav .nav-brand h2 {
+  font-size: 1.9rem;
+  font-weight: 500;
+  background: linear-gradient(92deg, #9327ff 1.06%, #ffa927 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.home-nav ul {
+  list-style-type: none;
+  gap: 2rem;
+}
+
+.home-nav ul li {
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 0.8rem;
+  opacity: 0.5;
+}
+
+.home-nav ul li a {
+  width: max-content;
+  display: block;
+  padding: 0.1rem 0.4rem;
+}
+
+.home-nav ul li.active {
+  opacity: 1;
+}
+
+.home-nav ul li.active a {
+  border-bottom: 2px dotted #000;
+}
+
+.home-nav.dark {
+  background-color: var(--bg-black);
+  color: var(--bg-white);
+  border-bottom: 1px solid #222;
+}
+
+.home-nav.dark ul li.active a {
+  border-bottom: 2px dotted #fff;
+}
+
+.mobile-nav-contents {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation-name: comeDown;
+  animation-duration: 0.6s;
+  -webkit-animation-name: comeDown;
+  -webkit-animation-duration: 0.6s;
+}
+
+@keyframes comeDown {
+  from {
+    top: -300px;
+  }
+  to {
+    top: 0;
+  }
+}
+
+.mobile-nav-contents .close {
+  position: absolute;
+  top: 4rem;
+  right: 3rem;
+  width: max-content;
+  cursor: pointer;
+}
+
+.mobile-nav-contents .close svg {
+  opacity: 0.5;
+  width: 1.4rem;
+  height: 1.4rem;
+}
+
+.mobile-nav-contents ul {
+  list-style-type: none;
+  gap: 2.4rem;
+  font-size: 1.33rem;
+  font-weight: 500;
+}
+
+.mobile-nav-contents ul li {
+  font-weight: 400;
+  opacity: 0.5;
+}
+
+.mobile-nav-contents ul li a {
+  display: block;
+  padding: 0.1rem 0.4rem;
+}
+
+.mobile-nav-contents ul li.active {
+  opacity: 1;
+  font-weight: 500;
+}
+
+.mobile-nav-contents ul li.active a {
+  border-bottom: 2px dotted #000;
+}
+
+.mobile-nav-contents.dark {
+  background-color: #000;
+  color: #fff;
+}
+
+.mobile-nav-contents.dark ul li.active a {
+  border-bottom: 2px dotted #fff;
+}

@@ -44,6 +44,10 @@ svg {
   gap: 1.4rem;
 }
 
+.gap-3 {
+  gap: 2.4rem;
+}
+
 .opaq-1 {
   opacity: 0.4;
 }
@@ -75,4 +79,16 @@ button:disabled {
 
 .pointer {
   cursor: pointer;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.bg-dark {
+  background-color: #000;
+}
+
+.bg-light {
+  background-color: #fff;
 }

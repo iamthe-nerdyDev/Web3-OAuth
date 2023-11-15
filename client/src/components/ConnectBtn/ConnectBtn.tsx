@@ -9,12 +9,12 @@ import StateContext from "@/utils/context/StateContext";
 import "./ConnectBtn.css";
 import { Themes } from "@/interface";
 
-const ConnectBtn = () => {
+const ConnectBtn = ({ className }: { className?: string }) => {
   const { theme } = useContext(StateContext)!;
 
   return (
     <ConnectWallet
-      className="connect-wallet-btn"
+      className={`connect-wallet-btn ${className}`}
       modalSize="wide"
       theme={theme}
       switchToActiveChain={true}

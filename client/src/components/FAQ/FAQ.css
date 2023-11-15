@@ -1,0 +1,44 @@
+.faq h2 {
+  font-size: 1.8rem;
+  line-height: 170%;
+}
+
+.single-faq {
+  border-bottom: 1px solid #ddd;
+  padding: 1.92rem 0.5rem;
+}
+
+.single-faq > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.single-faq h4 {
+  font-weight: 500;
+  font-size: 1.1rem;
+  line-height: 185%;
+}
+
+.single-faq p {
+  font-size: 0.98rem;
+  line-height: 210%;
+  font-weight: 400;
+  opacity: 0.6;
+}
+
+.single-faq svg {
+  opacity: 0.3;
+}
+
+.faq.dark {
+  color: #fff;
+}
+
+.faq.dark .single-faq {
+  border-bottom: 1px solid var(--bg-border-black);
+}
+
+.border-none {
+  border: none !important;
+}

@@ -1,0 +1,49 @@
+.methodology h2 {
+  font-size: 1.8rem;
+}
+
+.methodology-box {
+  border: 1px solid #ddd;
+  background-color: var(--bg-white-2);
+  padding: 3rem 2.5rem;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  height: 100%;
+}
+
+.methodology-box img {
+  width: 14rem;
+  height: auto;
+  transform: rotate(-90deg);
+}
+
+.methodology-box h3 {
+  font-weight: 500;
+  font-size: 1.4rem;
+}
+
+.methodology-box ul {
+  list-style-type: disc;
+  margin-left: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.methodology-box ul li {
+  line-height: 190%;
+  font-size: 0.98rem;
+  font-weight: 400;
+  opacity: 0.6;
+}
+
+.methodology.dark {
+  color: #fff;
+}
+
+.methodology.dark .methodology-box {
+  border: 1px solid var(--bg-border-black);
+  background-color: var(--bg-black-2);
+}

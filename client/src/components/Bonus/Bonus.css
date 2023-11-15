@@ -1,0 +1,19 @@
+.bonus p {
+  line-height: 190%;
+  font-weight: 400;
+  opacity: 0.6;
+}
+
+.bonus h2 {
+  font-size: 1.8rem;
+}
+
+.bonus svg {
+  width: 1.2rem;
+  height: 1.2rem;
+  color: goldenrod;
+}
+
+.bonus.dark {
+  color: #fff;
+}

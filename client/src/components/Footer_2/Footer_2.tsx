@@ -10,7 +10,7 @@ const Footer_2 = () => {
   const year = new Date().getFullYear();
 
   return (
-    <footer className={`py-5 my-0 ${theme}`}>
+    <footer className={`py-5 footer-2 my-0 ${theme}`}>
       <div className="container">
         <div className="main d-flex flex-column align-items-center justify-items-center gap-2">
           <div className="socials d-flex align-items-center gap-2 opaq-1 mb-2">

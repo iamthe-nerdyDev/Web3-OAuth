@@ -48,6 +48,7 @@ const StateProvider = ({ children }: StateProviderProps) => {
         //@ts-ignore
         document.querySelector('meta[name="theme-color"]')!.content =
           theme === "light" ? "#fff" : "#000";
+        document.body.className = `bg-${theme}`;
       } catch (e: any) {
         console.error("Unable to get theme:", e);
       }
