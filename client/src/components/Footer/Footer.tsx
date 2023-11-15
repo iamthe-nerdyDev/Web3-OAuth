@@ -25,10 +25,20 @@ const Footer = () => {
                         <a href="#">Tokenomics(Coming soon)</a>
                       </li>
                       <li>
-                        <a href="#">Developer</a>
+                        <a
+                          href="https://web3-oauth-dev.vercel.app"
+                          target="_blank"
+                        >
+                          Developer
+                        </a>
                       </li>
                       <li>
-                        <a href="#">Docs</a>
+                        <a
+                          href="https://github.com/iamthe-nerdyDev/Web3-OAuth/blob/master/client/README.md"
+                          target="_blank"
+                        >
+                          Docs
+                        </a>
                       </li>
                     </ul>
                   </div>

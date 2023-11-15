@@ -240,7 +240,12 @@ const WelcomeComponent = () => {
               </p>
               <div className="buttons d-flex align-items-center">
                 <ConnectBtn />
-                <button>Read Docs</button>
+                <a
+                  target="_blank"
+                  href="https://github.com/iamthe-nerdyDev/Web3-OAuth/blob/master/sdk/README.md"
+                >
+                  <button>Read Docs</button>
+                </a>
               </div>
             </div>
           </div>
