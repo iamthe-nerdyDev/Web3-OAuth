@@ -66,7 +66,7 @@ const CardDetails = () => {
           .then((tx) => {
             resolve(tx);
 
-            return navigate("/dashboard");
+            navigate("/dashboard");
           })
           .catch((error) => {
             reject(error);

@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import StateContext from "@/utils/context/StateContext";
 import { Loader } from "@/components";
 import { useNavigate } from "react-router-dom";
@@ -13,15 +13,14 @@ const Middleware = ({ ignore = false, children }: Props) => {
 
   const { isMounting, isLoggedIn, theme } = useContext(StateContext)!;
 
-  if (!ignore) {
-    if (location.pathname !== "/") {
-      //if user is not in the landing page....
-      //check if user is loggedIn..if no! redirect to homepage
+  useEffect(() => {
+    if (!ignore && location.pathname !== "/") {
+      // If the user is not on the landing page and not logged in, redirect to the homepage
       if (!isMounting && !isLoggedIn) {
-        return navigate("/");
+        navigate("/");
       }
     }
-  }
+  }, [ignore, isMounting, isLoggedIn, navigate]);
 
   return isMounting ? <Loader theme={theme} /> : <>{children}</>;
 };
