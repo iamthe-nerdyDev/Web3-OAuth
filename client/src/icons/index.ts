@@ -18,3 +18,4 @@ export { default as Menu } from "./all/Menu";
 export { default as Close } from "./all/Close";
 export { default as Doc } from "./all/Doc";
 export { default as Star } from "./all/Star";
+export { default as LoaderIcon } from "./all/LoaderIcon";

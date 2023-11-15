@@ -1,0 +1,125 @@
+.image-picker {
+  position: fixed;
+  z-index: 99999;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgb(0 0 0 / 0.3);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+}
+
+.image-picker-box {
+  margin: 3rem auto;
+  position: relative;
+  width: 93%;
+  max-width: 40rem;
+  background-color: #fff;
+  color: #000;
+  border-radius: 10px;
+  padding: 2rem;
+  animation-name: comeDown;
+  animation-duration: 0.6s;
+  -webkit-animation-name: comeDown;
+  -webkit-animation-duration: 0.6s;
+}
+
+.image-picker-box .tabs {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.image-picker-box .tabs > p {
+  width: 100%;
+  font-weight: 500;
+  text-align: center;
+  padding: 0.3rem 0;
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+.image-picker-box .tabs > p.active {
+  opacity: 1;
+  border-bottom: 2px solid #9327ff;
+  color: #9327ff;
+}
+
+.image-picker-box .close {
+  position: absolute;
+  right: 3rem;
+}
+
+.image-picker-box .close svg {
+  width: 1.3rem;
+  height: 1.3rem;
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+.local-image input {
+  width: 100%;
+  max-width: 20rem;
+  border: 1px solid #ddd;
+  font-size: 1rem;
+  padding: 0.8rem 1.5rem;
+  border-radius: 10px;
+  outline: none;
+  font-weight: 450;
+}
+
+.local-image button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 20rem;
+  border: none;
+  outline: none;
+  background-color: #9327ff;
+  padding: 0.85rem 1.9rem;
+  border-radius: 6px;
+  text-transform: uppercase;
+  font-size: 1rem;
+  color: #fff;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.single-nft {
+  height: 100%;
+}
+
+.single-nft img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 1px solid #ddd;
+  padding: 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.single-nft.selected img {
+  border: 2px solid #9327ff;
+}
+
+.image-picker.dark .image-picker-box {
+  background-color: var(--bg-black-2);
+  color: #fff;
+}
+
+.image-picker.dark .empty-result p {
+  border-bottom: 2px dotted #fff;
+}
+
+.image-picker.dark .single-nft img {
+  border: 1px solid #333;
+}

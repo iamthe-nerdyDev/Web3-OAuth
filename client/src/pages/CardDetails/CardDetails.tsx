@@ -1,33 +1,109 @@
-import { Footer_2, Header } from "@/components";
-import userImage from "@assets/user.png";
-import emptyResultImage from "@assets/empty-result.png";
-import { useContext } from "react";
+import { AnchorLink, Footer_2, Header, Loader } from "@/components";
+import emptyResultImage from "@/assets/empty-result.png";
+import { useContext, useEffect, useState } from "react";
 import StateContext from "@/utils/context/StateContext";
 
-import "./CardDetails.css";
 import { Trash } from "@/icons";
+import { useParams } from "react-router-dom";
+import { useAddress, useSigner } from "@thirdweb-dev/react";
+import { ICardStruct } from "@/interface";
+import { deleteCard, getUserCard } from "@/utils/helper";
+import { NotFound } from "..";
+import { toast } from "react-toastify";
+
+import "./CardDetails.css";
 
 const CardDetails = () => {
-  const { theme } = useContext(StateContext)!;
+  const { cardId, index } = useParams();
 
-  return (
+  const { theme, isMounting } = useContext(StateContext)!;
+
+  const address = useAddress();
+  const signer = useSigner();
+
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [card, setCard] = useState<ICardStruct | null>(null);
+
+  useEffect(() => {
+    if (!isMounting) {
+      async function init() {
+        if (!address || !signer) return;
+
+        try {
+          const _card = await getUserCard(parseInt(cardId!), signer);
+          setCard(_card);
+        } catch (e: any) {
+          console.error(e);
+        } finally {
+          setIsLoading(false);
+        }
+      }
+
+      init();
+    }
+  }, [isMounting, address]);
+
+  const doDeleteCard = async (cardId: number) => {
+    if (
+      !confirm(
+        "Are you sure you want to delete this card?\n\nNOTE:This will automatically log you out of all sites you have linked it to.."
+      )
+    ) {
+      return;
+    }
+
+    if (!signer) return;
+
+    await toast.promise(
+      new Promise<void>((resolve, reject) => {
+        deleteCard(cardId, signer)
+          .then((tx) => {
+            resolve(tx);
+          })
+          .catch((error) => reject(error));
+      }),
+      {
+        pending: "Approve transaction",
+        success: "Card deleted successfully!",
+        error: "Unable to complete request",
+      }
+    );
+  };
+
+  return isLoading ? (
+    <Loader theme={theme} />
+  ) : card == null ? (
+    <NotFound />
+  ) : (
     <main className={`card-details-${theme}`}>
       <Header />
 
       <div className="container mt-5 mt-md-0">
         <div className="row g-5">
           <div className="col-12 col-md-10 col-lg-8 mx-auto">
+            <div className="px-2 mb-4 pb-2">
+              <div className="back-btn">
+                <AnchorLink to="/dashboard">
+                  &laquo; Back to dashboard
+                </AnchorLink>
+              </div>
+            </div>
             <div className="card-details__box px-2">
               <div className="info d-flex align-items-center justify-content-between mb-4">
                 <div className="d-flex align-items-center line-text px-3 gap-1">
                   <hr />
                   <h2>
-                    Card-<span>01</span>
+                    Card&nbsp;<span>0{index}</span>
                   </h2>
                 </div>
                 <div className="d-flex align-items-center gap-1">
-                  <button>edit</button>
-                  <div className="pointer">
+                  <AnchorLink to={`/edit-card/${cardId}`}>
+                    <button>edit</button>
+                  </AnchorLink>
+                  <div
+                    className="pointer"
+                    onClick={() => doDeleteCard(parseInt(cardId!))}
+                  >
                     <Trash fill="crimson" />
                   </div>
                 </div>
@@ -36,7 +112,7 @@ const CardDetails = () => {
               <div className="row g-4">
                 <div className="col-12 col-md-5">
                   <div className="pfp">
-                    <img src={userImage} className="mb-1" alt="user" />
+                    <img src={card.pfp} className="mb-1" alt="user" />
                     <span>pfp</span>
                   </div>
                 </div>
@@ -44,18 +120,15 @@ const CardDetails = () => {
                   <div className="entries d-flex flex-column gap-1">
                     <div>
                       <span>username</span>
-                      <p>NerdyDev</p>
+                      <p>{card.username}</p>
                     </div>
                     <div>
                       <span>email</span>
-                      <p>adedeji@gmail.com</p>
+                      <p>{card.emailAddress}</p>
                     </div>
                     <div>
                       <span>bio</span>
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                        sed do eiusmod tempor incididu.
-                      </p>
+                      <p>{card.bio}</p>
                     </div>
                   </div>
                 </div>

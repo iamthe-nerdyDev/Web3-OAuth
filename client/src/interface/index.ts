@@ -44,3 +44,15 @@ export interface ICardParams {
   pfp: string;
   bio: string;
 }
+
+export interface IImagePicker {
+  displayModal: boolean;
+  setDisplayModal: React.Dispatch<React.SetStateAction<boolean>>;
+  selectedURL: string | null;
+  setSelectedURL: React.Dispatch<React.SetStateAction<string | null>>;
+}
+
+export interface INewNFT {
+  name: string;
+  image: string;
+}

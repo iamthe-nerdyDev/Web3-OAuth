@@ -56,6 +56,6 @@
 }
 
 .footer.dark {
-  background-color: var(--bg-black-2);
+  background-color: #111;
   color: #fff;
 }

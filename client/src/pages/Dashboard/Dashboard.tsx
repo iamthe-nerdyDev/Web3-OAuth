@@ -1,18 +1,70 @@
-import { Footer_2, Header } from "@/components";
-import userImage from "@assets/user.png";
-import emptyResultImage from "@assets/empty-result.png";
+import { AnchorLink, Footer_2, Header, Loader } from "@/components";
+import emptyResultImage from "@/assets/empty-result.png";
 import { ChevronRight, QuoteLeft, QuoteRight } from "@/icons";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import StateContext from "@/utils/context/StateContext";
+
+import { ICardStruct } from "@/interface";
+import { getUserCards } from "@/utils/helper";
+import { useAddress } from "@thirdweb-dev/react";
+import axios from "axios";
 
 import "./Dashboard.css";
 
 const Dashboard = () => {
-  const { theme } = useContext(StateContext)!;
+  const { theme, isMounting } = useContext(StateContext)!;
+  const address = useAddress();
 
-  const displayCards = false;
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [cards, setCards] = useState<ICardStruct[]>([]);
+  const [fact, setFact] = useState<string>("");
 
-  return (
+  useEffect(() => {
+    async function getRandomFact() {
+      try {
+        const { data } = await axios.get(
+          "https://uselessfacts.jsph.pl/api/v2/facts/random?language=en",
+          {
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (data?.text) setFact(data.text);
+        else setFact("No fact today :-)");
+      } catch (e: any) {
+        setFact("Unable to fetch fact");
+        console.error(e);
+      }
+    }
+
+    getRandomFact();
+  }, []);
+
+  useEffect(() => {
+    if (!isMounting) {
+      async function init() {
+        if (!address) return;
+
+        try {
+          const _cards = await getUserCards(address);
+          setCards(_cards);
+        } catch (e: any) {
+          console.error(e);
+        } finally {
+          setIsLoading(false);
+        }
+      }
+
+      init();
+    }
+  }, [isMounting, address]);
+
+  return isLoading ? (
+    <Loader theme={theme} />
+  ) : (
     <main className={`dashboard dashboard-${theme}`}>
       <Header />
       <div className="container">
@@ -28,10 +80,7 @@ const Dashboard = () => {
                   <span>Random Facts</span>
                   <div>
                     <QuoteLeft className="opaq-1" />
-                    <span>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                      sed do eiusmod tempor incididunt ut labore et dolore
-                    </span>
+                    <span>{fact}</span>
                     <QuoteRight className="opaq-1" />
                   </div>
                 </div>
@@ -47,11 +96,17 @@ const Dashboard = () => {
                   <h1>My Cards</h1>
                 </div>
                 <div className="cards-box d-flex flex-column gap-2 mb-5">
-                  {displayCards ? <RenderCards /> : <RenderEmptyResult />}
+                  {cards.length > 0 ? (
+                    <RenderCards cards={cards} />
+                  ) : (
+                    <RenderEmptyResult />
+                  )}
                 </div>
 
                 <div className="new-card-btn">
-                  <button>New Card</button>
+                  <AnchorLink to="/create-card">
+                    <button>New Card</button>
+                  </AnchorLink>
                   <div>
                     <p>slide</p>
                     <span className="d-flex align-items-center">
@@ -72,54 +127,20 @@ const Dashboard = () => {
   );
 };
 
-const RenderCards = () => {
-  return (
-    <>
+const RenderCards = ({ cards }: { cards: ICardStruct[] }) => {
+  return cards.map((card, i) => (
+    <AnchorLink to={`/card/${card.id}/${i + 1}`} key={`my-card-${i}`}>
+      {" "}
       <div className="single-card d-flex align-items-center">
-        <img src={userImage} alt="User" />
+        <img src={card.pfp} alt="User" />
         <div className="d-flex flex-column">
-          <h4 className="username">moyinthegrait</h4>
-          <p className="email">moyinadedeji@gmail.com</p>
-          <p className="bio">
-            Lorem ipsum dolor sit amet consectetur adipiscing elit, sed
-          </p>
+          <h4 className="username">{card.username}</h4>
+          <p className="email">{card.emailAddress}</p>
+          <p className="bio">{card.bio}</p>
         </div>
       </div>
-
-      <div className="single-card d-flex align-items-center">
-        <img src={userImage} alt="User" />
-        <div className="d-flex flex-column">
-          <h4 className="username">moyinthegrait</h4>
-          <p className="email">moyinadedeji@gmail.com</p>
-          <p className="bio">
-            Lorem ipsum dolor sit amet consectetur adipiscing elit, sed
-          </p>
-        </div>
-      </div>
-
-      <div className="single-card d-flex align-items-center">
-        <img src={userImage} alt="User" />
-        <div className="d-flex flex-column">
-          <h4 className="username">moyinthegrait</h4>
-          <p className="email">moyinadedeji@gmail.com</p>
-          <p className="bio">
-            Lorem ipsum dolor sit amet consectetur adipiscing elit, sed
-          </p>
-        </div>
-      </div>
-
-      <div className="single-card d-flex align-items-center">
-        <img src={userImage} alt="User" />
-        <div className="d-flex flex-column">
-          <h4 className="username">moyinthegrait</h4>
-          <p className="email">moyinadedeji@gmail.com</p>
-          <p className="bio">
-            Lorem ipsum dolor sit amet consectetur adipiscing elit, sed
-          </p>
-        </div>
-      </div>
-    </>
-  );
+    </AnchorLink>
+  ));
 };
 
 const RenderEmptyResult = () => {

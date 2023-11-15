@@ -1,26 +1,12 @@
 import { useContext } from "react";
 import StateContext from "@/utils/context/StateContext";
 import { redirectTo } from "@/utils/helper";
-import { Themes } from "@/interface";
-
-import "./Middleware.css";
+import { Loader } from "@/components";
 
 interface Props {
   ignore?: boolean;
   children: React.ReactNode;
 }
-
-const Loader = ({ theme }: { theme: Themes }) => {
-  return (
-    <div className={`loading-screen ${theme}`}>
-      <h2>Web3 OAuth</h2>
-      <div className="loader-box mb-2">
-        <div></div>
-      </div>
-      <p>Loading..</p>
-    </div>
-  );
-};
 
 const Middleware = ({ ignore = false, children }: Props) => {
   const { isMounting, isLoggedIn, theme } = useContext(StateContext)!;

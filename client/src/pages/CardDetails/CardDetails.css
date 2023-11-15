@@ -1,10 +1,7 @@
 .card-details__box .pfp img {
   width: 100%;
   height: auto;
-  background-color: antiquewhite;
-  padding: 1rem;
   border-radius: 7px;
-  padding: 1rem;
   border: 1px solid #ddd;
 }
 
@@ -104,4 +101,13 @@
 
 .card-details-dark .empty-result p {
   border-bottom: 2px dotted #fff;
+}
+
+.back-btn {
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 0.3rem 0.2rem;
+  width: max-content;
+  border-bottom: 2px dotted rgb(21, 111, 201);
+  color: rgb(21, 111, 201);
 }

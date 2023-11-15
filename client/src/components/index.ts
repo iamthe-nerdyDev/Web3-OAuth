@@ -10,3 +10,6 @@ export { default as Bonus } from "./Bonus";
 export { default as Footer } from "./Footer";
 export { default as FAQ } from "./FAQ";
 export { default as Preview } from "./Preview";
+export { default as Loader } from "./Loader";
+export { default as AnchorLink } from "./AnchorLink";
+export { default as ImagePicker } from "./ImagePicker";

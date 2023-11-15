@@ -13,8 +13,8 @@
 
 .pfp.form img {
   background-color: transparent;
-  width: 6.5rem;
-  height: 6.5rem;
+  width: 4.5rem;
+  height: 4.5rem;
   border: none;
   border-radius: 0;
 }
@@ -76,4 +76,5 @@
   border: 1px solid #444;
   background-color: var(--bg-black);
   color: #fff;
+  border-radius: 7px;
 }

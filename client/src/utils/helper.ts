@@ -1,7 +1,8 @@
 import { ethers } from "ethers";
 import { address as contractAddress } from "../contracts/contractAddress.json";
 import { abi } from "../contracts/OAuth.json";
-import { ICardParams, ICardStruct, IDAppStruct } from "@/interface";
+import { ICardParams, ICardStruct, IDAppStruct, INewNFT } from "@/interface";
+import { OwnedNftsResponse } from "alchemy-sdk";
 
 const logError = (e: any) => {
   console.error("Err:", e);
@@ -35,7 +36,7 @@ export const getContract = (_signer?: ethers.Signer): ethers.Contract => {
   const Contract = new ethers.Contract(
     contractAddress,
     abi,
-    _signer ?? new ethers.Wallet("__KEY HERE___", provider)
+    _signer ?? new ethers.Wallet(import.meta.env.VITE_DEPLOYER_KEY, provider)
   );
 
   return Contract;
@@ -61,10 +62,10 @@ export const getUserCards = async (address: string) => {
   return structureCards(result);
 };
 
-export const getUserCard = async (address: string, signer: ethers.Signer) => {
+export const getUserCard = async (cardId: number, signer: ethers.Signer) => {
   const Contract = getContract(signer);
 
-  const result = await Contract.getUserCard(address);
+  const result = await Contract.getUserCard(cardId);
 
   return structureCards([result])[0];
 };
@@ -92,6 +93,9 @@ export const updateCard = async (
 ) => {
   if (!signer) return Promise.reject("Signer is required!");
 
+  const gasLimit = 210000;
+  const gasPrice = ethers.utils.parseUnits("50", "gwei");
+
   try {
     const Contract = getContract(signer);
     const { username, pfp, emailAddress, bio } = data;
@@ -101,7 +105,8 @@ export const updateCard = async (
       username,
       pfp,
       emailAddress,
-      bio
+      bio,
+      { gasLimit, gasPrice }
     );
 
     await _tx.wait();
@@ -149,3 +154,50 @@ const structureDApps = (dApps: any[]): Array<IDAppStruct> =>
   dApps
     .map((dApp) => ({ domain: dApp.domain }))
     .sort((a, b) => b.domain - a.domain);
+
+export const serializeForm = (form: HTMLFormElement) => {
+  const formData: Record<string, string> = {};
+  const elements = form.elements;
+
+  for (let i = 0; i < elements.length; i++) {
+    const element = elements[i] as HTMLInputElement;
+    const name = element.name;
+
+    if (name) formData[name] = element.value;
+  }
+
+  return formData;
+};
+
+export const clearForm = (form: HTMLFormElement) => {
+  const formElements = form.elements;
+
+  for (let i = 0; i < formElements.length; i++) {
+    const element = formElements[i] as HTMLInputElement;
+
+    if (element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
+      element.value = "";
+    }
+  }
+
+  return;
+};
+
+export const newNFTObj = (data: OwnedNftsResponse): INewNFT[] => {
+  const newArr = [];
+
+  for (let i in data.ownedNfts) {
+    let _data = data.ownedNfts[i];
+
+    const metaData = _data.rawMetadata;
+
+    if (metaData && metaData.image) {
+      newArr.push({
+        name: metaData.name ?? "undefined",
+        image: metaData.image,
+      });
+    }
+  }
+
+  return newArr;
+};

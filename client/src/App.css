@@ -69,8 +69,8 @@ hr {
 }
 
 button:disabled {
-  opacity: 0.6;
-  cursor: no-drop;
+  opacity: 0.6 !important;
+  cursor: no-drop !important;
 }
 
 .position-relative {
@@ -91,4 +91,8 @@ button:disabled {
 
 .bg-light {
   background-color: #fff;
+}
+
+.disable-scroll {
+  overflow: hidden !important;
 }
