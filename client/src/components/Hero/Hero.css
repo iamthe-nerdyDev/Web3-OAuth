@@ -47,6 +47,11 @@
   color: #fff;
 }
 
+.hero-content a {
+  display: block;
+  width: max-content;
+}
+
 .hero-content .docs {
   background-color: #eeefef;
   padding: 0.98rem 2.1rem;

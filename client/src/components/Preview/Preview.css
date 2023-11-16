@@ -16,14 +16,6 @@
   position: relative;
 }
 
-.preview-main h2 {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  top: 4.4rem;
-  font-size: 1.8rem;
-}
-
 .preview-main .single-card {
   position: absolute;
   width: 85%;
@@ -32,19 +24,32 @@
 }
 
 .preview-main .single-card.one {
-  top: 8em;
+  top: 4.8em;
   left: 0rem;
 }
 
 .preview-main .single-card.two {
   right: 0rem;
-  bottom: 1.5rem;
+  bottom: 1.8rem;
   border: 1px solid #ddd;
+}
+
+@media screen and (min-width: 410px) {
+  .preview-main .single-card.one {
+    top: 6.8em;
+    left: 0rem;
+  }
+
+  .preview-main .single-card.two {
+    right: 0rem;
+    bottom: 1.8rem;
+    border: 1px solid #ddd;
+  }
 }
 
 @media screen and (min-width: 768px) {
   .preview-main .single-card.one {
-    top: 8.4rem;
+    top: 7.5rem;
     left: 30%;
     transform: translateX(-30%);
   }
@@ -52,14 +57,14 @@
   .preview-main .single-card.two {
     right: 24%;
     transform: translateX(24%);
-    bottom: 1.3rem;
+    bottom: 1.7rem;
     border: 1px solid #ddd;
   }
 }
 
 @media screen and (min-width: 991px) {
   .preview-main .single-card.one {
-    top: 8.5rem;
+    top: 6.3rem;
     left: 43%;
     transform: translateX(-43%);
   }
@@ -67,7 +72,7 @@
   .preview-main .single-card.two {
     right: 43%;
     transform: translateX(43%);
-    bottom: 1.3rem;
+    bottom: 2rem;
     border: 1px solid #ddd;
   }
 }

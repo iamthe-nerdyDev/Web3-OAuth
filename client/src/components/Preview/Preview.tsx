@@ -14,7 +14,6 @@ const Preview = () => {
         <div className="row">
           <div className="col-12">
             <div className="preview-main d-flex alignn-items-center justify-content-center">
-              <h2 className="gradient-text">Web3 OAuth</h2>
               <div className="single-card d-flex align-items-center one">
                 <img src={userImage} alt="User" />
                 <div className="d-flex flex-column">
