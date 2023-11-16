@@ -1,6 +1,6 @@
 # Client
 
-Frontend endpoint for Web3 OAuth. Was built using React + Vite + Typescript.
+Frontend for Web3 OAuth. Was built using React + Vite + Typescript.
 
 ## Key Pages
 

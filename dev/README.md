@@ -1,27 +1,37 @@
-# React + TypeScript + Vite
+# Dev
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Developers area for Web3 OAuth. Was built using React + Vite + Typescript.
 
-Currently, two official plugins are available:
+## Key Pages
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1.  Landing page
+2.  Connect wallet
+3.  Dashboard
 
-## Expanding the ESLint configuration
+### Landing page
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+![Landing Page](https://iili.io/JCt63qx.jpg)
 
-- Configure the top-level `parserOptions` property like this:
+### Connect wallet
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
+![Wallet connect modal from thirdweb](https://iili.io/JCt6dsj.jpg)
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+### Dashboard
+
+![Developers' dashboard](https://iili.io/JCt6F0Q.jpg)
+
+## Installation & Setup Instructions
+
+Clone down this repository. You will need `node` and `npm` installed globally on your machine.
+
+Installation:
+
+    npm install
+
+To start server:
+
+    npm run dev
+
+To visit app:
+
+    http://localhost:5173
