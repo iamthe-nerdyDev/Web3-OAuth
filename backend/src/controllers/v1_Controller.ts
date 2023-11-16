@@ -36,7 +36,8 @@ async function login(req: Request, res: Response) {
       if (_login[1].length <= 0) {
         //no card found
         return res.status(200).json({
-          status: false,
+          status: true,
+          token: [],
           message: "You do not have any card yet!",
         });
       }
@@ -106,6 +107,14 @@ async function deactivateSession(req: Request, res: Response) {
   }
 
   try {
+    let { accessToken, domain } = req.body;
+
+    const response = await performValidation(accessToken, domain);
+
+    if (typeof response == "string") {
+      return res.status(400).json({ status: false, message: response });
+    }
+
     const Contract = config.contract.Contract;
     const _tx = await Contract.deactivateSessionFromToken(token);
     await _tx.wait();
@@ -116,31 +125,4 @@ async function deactivateSession(req: Request, res: Response) {
   }
 }
 
-async function getUserInfo(req: Request, res: Response) {
-  const token = req.params.token ?? null;
-
-  if (!token) {
-    return res
-      .status(400)
-      .json({ status: false, message: "Token missing in url" });
-  }
-
-  if (token.length !== 66) {
-    return res
-      .status(400)
-      .json({ status: false, message: "Invalid token format" });
-  }
-
-  try {
-    const Contract = config.contract.Contract;
-    const info = await Contract.fetchUserInfo(token);
-
-    return res
-      .status(200)
-      .json({ status: true, message: "Info fetched", data: info });
-  } catch (e: any) {
-    return res.status(500).json({ status: false, message: e.message });
-  }
-}
-
-export default { login, createSession, deactivateSession, getUserInfo };
+export default { login, createSession, deactivateSession };

@@ -6,4 +6,5 @@ export interface IConnectedButton {
   balance: number;
   disconnect: () => Promise<void>;
   theme: "light" | "dark";
+  accessToken: string;
 }

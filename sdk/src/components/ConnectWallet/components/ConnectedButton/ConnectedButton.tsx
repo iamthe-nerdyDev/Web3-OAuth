@@ -1,10 +1,37 @@
 import React, { useState } from "react";
 import { IConnectedButton } from "./ConnectedButton.types";
 import { ChevronDown, Loader, Clipboard } from "../utils/icons";
-import { copyText, truncateAddress } from "../utils/helper";
+import { copyText, destroySession, truncateAddress } from "../utils/helper";
+import { useSessionToken } from "../../../../hooks";
 
 const ConnectedButton: React.FC<IConnectedButton> = (props) => {
   const [displayLoggedInInfo, setDisplayLoggedInfo] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const sessionnToken = useSessionToken();
+
+  const doDestroySession = async (): Promise<void> => {
+    if (!sessionnToken) return;
+
+    setIsLoading(true);
+
+    if (
+      !confirm(
+        "Are you sure you want to destroy this session?\n\nNOTE: Be aware of what you are doing before you proceed. You can learn more at https://web3-o-auth.vercel.app/#faqs\n\nYou may proceed if you are aware of this"
+      )
+    ) {
+      setIsLoading(false);
+
+      return;
+    }
+
+    const _response = await destroySession(props.accessToken, sessionnToken);
+
+    if (!_response) alert("Unable to complete request!");
+    else await props.disconnect();
+
+    setIsLoading(false);
+  };
 
   return !props.address ? (
     <button
@@ -66,8 +93,11 @@ const ConnectedButton: React.FC<IConnectedButton> = (props) => {
         <div className="disconnect-btn" onClick={props.disconnect}>
           Disconnect Wallet
         </div>
-        <div className="logout-btn" onClick={props.disconnect}>
-          Logout
+        <div
+          className={`logout-btn ${isLoading && "disabled"}`}
+          onClick={doDestroySession}
+        >
+          {isLoading ? <Loader width={20} height={20} /> : "Destroy Session"}
         </div>
       </div>
     </div>

@@ -1,3 +1,4 @@
+//no 2 dapps should have same name and owner should be able to delete dapp from domain!
 // SPDX-License-Identifier: MIT
 
 pragma solidity >=0.7.0 <0.9.0;

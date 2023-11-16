@@ -187,7 +187,7 @@ router.post(
 /**
  * @openapi
  * /v1/logout/{token}:
- *   delete:
+ *   patch:
  *     tags:
  *       - User
  *     summary: Deactivates a session token
@@ -230,68 +230,6 @@ router.post(
  *                  message:
  *                    type: string
  */
-router.delete("/logout/:token", controller.deactivateSession);
-
-/**
- * @openapi
- * /v1/{token}:
- *   get:
- *     tags:
- *       - User
- *     summary: Gets user info from session token
- *     parameters:
- *     - name: token
- *       description: The session token of the user
- *       required: true
- *     responses:
- *       200:
- *         description: Success
- *         contents:
- *            application/json:
- *              schema:
- *                type: object
- *                properties:
- *                  id:
- *                    type: number
- *                  owner:
- *                    type: string
- *                  username:
- *                    type: string
- *                  pfp:
- *                    type: string
- *                  emailAddress:
- *                    type: string
- *                  bio:
- *                    type: string
- *                  isDeleted:
- *                    type: boolean
- *                  createdAt:
- *                    type: number
- *                  updatedAt:
- *                    type: number
- *       400:
- *         description: Bad Request
- *         contents:
- *            application/json:
- *              schema:
- *                type: object
- *                properties:
- *                  status:
- *                    type: boolean
- *                  message:
- *                    type: string
- *       500:
- *         description: Server Error
- *         contents:
- *            application/json:
- *              schema:
- *                type: object
- *                properties:
- *                  status:
- *                    type: boolean
- *                  message:
- *                    type: string
- */
-router.get("/:token", controller.getUserInfo);
+router.patch("/logout/:token", controller.deactivateSession);
 
 export = router;

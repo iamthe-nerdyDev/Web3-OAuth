@@ -1,7 +1,6 @@
 import express from "express";
 import v1Routes from "../routes/v1_Routes";
 import swaggerDocs from "./swagger";
-import { config } from "../config";
 
 function createServer() {
   const app = express();
@@ -17,19 +16,19 @@ function createServer() {
     );
 
     if (req.method === "OPTIONS") {
-      res.header("Access-Control-Allow-Headers", "POST, DELETE, GET");
+      res.header("Access-Control-Allow-Headers", "POST, PATCH, GET");
 
       return res.status(200).json({ status: true });
     }
 
-    res.header("Access-Control-Allow-Headers", "POST, DELETE, GET");
+    res.header("Access-Control-Allow-Headers", "POST, PATCH, GET");
 
     next();
   });
 
   app.use("/v1", v1Routes);
 
-  swaggerDocs(app, config.server.port); //starting docs server..
+  swaggerDocs(app); //starting docs server..
 
   app.use((req, res) => {
     return res
