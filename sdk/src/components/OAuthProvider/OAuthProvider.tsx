@@ -8,7 +8,7 @@ import {
   walletConnect,
 } from "@thirdweb-dev/react";
 import { TelosEvmTestnet } from "@thirdweb-dev/chains";
-import { IWeb3OAuthProvider } from "./Web3OAuthProvider.types";
+import { IWeb3OAuthProvider } from "./OAuthProvider.types";
 
 const Web3OAuthProvider: React.FC<IWeb3OAuthProvider> = (props) => {
   return (

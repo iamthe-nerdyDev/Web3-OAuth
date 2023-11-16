@@ -1,11 +1,11 @@
 {
   "name": "web3-oauth",
+  "private": false,
   "version": "1.0.0",
   "description": "Official React Library for Web3 OAuth",
-  "main": "lib/cjs/index.js",
-  "module": "lib/esm/index.js",
+  "main": "lib/index.umd.js",
+  "module": "lib/index.mjs",
   "types": "lib/index.d.ts",
-  "ssideEffects": false,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/iamthe-nerdyDev/Web3-OAuth.git"
@@ -23,7 +23,7 @@
     "web3-oauth",
     "identity"
   ],
-  "author": "NerdyDev",
+  "author": "Adedeji Morifeoluwa",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/iamthe-nerdyDev/Web3-OAuth/issues"

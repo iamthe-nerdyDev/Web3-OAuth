@@ -1,2 +1,2 @@
-export { default as Web3OAuthProvider } from "./Web3OAuthProvider";
+export { default as OAuthProvider } from "./OAuthProvider";
 export { default as ConnectWallet } from "./ConnectWallet";
