@@ -30,9 +30,9 @@ const Methodology = () => {
                         <h3>Development Approach:</h3>
                         <ul>
                           <li>
-                            Our system will be built on the blockchain,
-                            utilizing various web3 libraries to ensure security
-                            and efficiency.
+                            Our system will be built on the&nbsp;
+                            <span>Telos EVM blockchain</span>, utilizing various
+                            web3 libraries to ensure security and efficiency.
                           </li>
                         </ul>
                       </div>
@@ -42,26 +42,18 @@ const Methodology = () => {
                         <h3>Normal Users:</h3>
                         <ul>
                           <li>
-                            Regular users will enjoy a seamless experience with
-                            a simple landing page.
+                            Regular users will enjoy a&nbsp;
+                            <span>seamless experience</span> with a simple
+                            landing page.
                           </li>
                           <li>
-                            To log in, users need to connect their web3 wallet;
-                            no other details are required.
+                            To log in, users need to connect their&nbsp;
+                            <span>web3 wallet</span>; no other details are
+                            required.
                           </li>
                           <li>
                             After connecting their wallet, users gain access to
                             their dashboard.
-                          </li>
-                          <li>
-                            The dashboard displays a randomly generated profile
-                            picture, username (unchangeable), a list of linked
-                            profile cards, and associated websites.
-                          </li>
-                          <li>
-                            Users can also access JSON-format details for each
-                            profile card, useful for developers who want to
-                            update information on their websites.
                           </li>
                         </ul>
                       </div>
@@ -72,16 +64,14 @@ const Methodology = () => {
                         <ul>
                           <li>
                             Developers, mainly website owners, can sign up for
-                            an API Key to integrate their users into our system.
-                          </li>
-                          <li>
-                            Sign-up details include username, email address,
-                            password, and organization details (if applicable).
+                            an <span>Access Token</span> to integrate their
+                            users into our system.
                           </li>
                           <li>
                             Sign-in allows access to the dashboard, where
-                            developers can create API Keys, monitor usage, and
-                            manage their settings.
+                            developers can create <span>Access tokens</span>,
+                            monitor usage, and manage their settings (coming
+                            soon).
                           </li>
                         </ul>
                       </div>

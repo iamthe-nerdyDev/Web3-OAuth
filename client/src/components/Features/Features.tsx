@@ -14,7 +14,7 @@ const Features = () => {
     },
     {
       title: "Real-Time Website Updates",
-      body: "Instantly notify connected websites of any changes through webhook integration.",
+      body: "Users info gets changed in real time across all affected websites instantly",
       image: "/images/features/two.png",
     },
     {

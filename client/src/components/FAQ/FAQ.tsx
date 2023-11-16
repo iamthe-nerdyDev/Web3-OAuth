@@ -11,34 +11,23 @@ const FAQ = () => {
 
   const FAQList = [
     {
-      question: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+      question: "Can I create more than one profile card?",
       answer:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        "Absolutely! You can create as many cards as possible. It won't be nice if there are some kind of restrictions attached right?",
     },
     {
-      question: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+      question: "Can I connect more than one website to a card?",
       answer:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        "Yes. This also promotes - make changes on dashboard, reflect everywhere. So, that way you don't have changing info for each website",
     },
     {
-      question: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-      answer:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      question: "Which EVM is powering Web3 OAuth",
+      answer: "Currently, Web3 OAuth is running on the Telos EVM Testnet",
     },
     {
-      question: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+      question: "Can NFTs be used as PFP when creating cards?",
       answer:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    },
-    {
-      question: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-      answer:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    },
-    {
-      question: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-      answer:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        "100% possible. We tried to make it as easy as possible. You can always select your favourite NFT as a PFP",
     },
   ];
 

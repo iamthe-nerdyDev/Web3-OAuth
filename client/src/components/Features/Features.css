@@ -5,6 +5,10 @@
 .single-feature {
   border: 1px solid #ddd;
   border-radius: 10px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .single-feature img {
@@ -14,7 +18,7 @@
 
 .single-feature .text {
   margin: 0% auto;
-  width: 85%;
+  width: 80%;
   display: flex;
   flex-direction: column;
   gap: 0.6rem;

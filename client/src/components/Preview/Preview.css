@@ -1,0 +1,89 @@
+.preview {
+  background-color: #faf9ff;
+  background-image: url("/images/glow.png");
+  background-repeat: no-repeat;
+  background-position: 0rem right;
+  background-size: contain;
+}
+
+.preview img {
+  width: 90%;
+  display: block;
+  margin: 0% auto;
+}
+
+.preview-main {
+  position: relative;
+}
+
+.preview-main h2 {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 4.4rem;
+  font-size: 1.8rem;
+}
+
+.preview-main .single-card {
+  position: absolute;
+  width: 85%;
+  max-width: 25rem;
+  cursor: unset;
+}
+
+.preview-main .single-card.one {
+  top: 8em;
+  left: 0rem;
+}
+
+.preview-main .single-card.two {
+  right: 0rem;
+  bottom: 1.5rem;
+  border: 1px solid #ddd;
+}
+
+@media screen and (min-width: 768px) {
+  .preview-main .single-card.one {
+    top: 8.4rem;
+    left: 30%;
+    transform: translateX(-30%);
+  }
+
+  .preview-main .single-card.two {
+    right: 24%;
+    transform: translateX(24%);
+    bottom: 1.3rem;
+    border: 1px solid #ddd;
+  }
+}
+
+@media screen and (min-width: 991px) {
+  .preview-main .single-card.one {
+    top: 8.5rem;
+    left: 43%;
+    transform: translateX(-43%);
+  }
+
+  .preview-main .single-card.two {
+    right: 43%;
+    transform: translateX(43%);
+    bottom: 1.3rem;
+    border: 1px solid #ddd;
+  }
+}
+
+.preview.dark {
+  background-color: var(--bg-black-2);
+  color: #fff;
+}
+
+.preview.dark .preview-main .single-card {
+  background: linear-gradient(to right, var(--bg-black-2), var(--bg-black-2)),
+    linear-gradient(to right, #9327ff, #ffa927);
+  background-clip: padding-box, border-box;
+  background-origin: padding-box, border-box;
+}
+
+.preview.dark .preview-main .single-card.two {
+  border: 1px solid var(--bg-border-black);
+}

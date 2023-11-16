@@ -33,7 +33,7 @@
 }
 
 .methodology-box ul li {
-  line-height: 190%;
+  line-height: 220%;
   font-size: 0.98rem;
   font-weight: 400;
   opacity: 0.6;
@@ -41,6 +41,11 @@
 
 .methodology.dark {
   color: #fff;
+}
+
+.methodology-box span {
+  font-weight: 500;
+  border-bottom: 2px dotted #000;
 }
 
 .methodology.dark .methodology-box {

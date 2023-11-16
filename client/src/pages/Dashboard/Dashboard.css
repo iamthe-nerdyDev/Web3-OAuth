@@ -45,7 +45,7 @@
 }
 
 .single-card {
-  gap: 1.25rem;
+  gap: 1rem;
   border-radius: 100px;
   border: 0.001rem solid transparent;
   background: linear-gradient(to right, white, white),
@@ -85,11 +85,10 @@
 
 .single-card .email {
   font-weight: 400;
-  border-bottom: 2px dotted #000;
-  opacity: 0.7;
+  opacity: 0.5;
   font-size: 0.85rem;
   width: max-content;
-  margin-bottom: 0.65rem;
+  margin-bottom: 0.35rem;
 }
 
 .single-card .bio {
@@ -191,8 +190,4 @@
 
 .dashboard-dark .new-card-btn {
   border: 1px solid #555;
-}
-
-.dashboard-dark .single-card .email {
-  border-bottom: 2px dotted #fff;
 }

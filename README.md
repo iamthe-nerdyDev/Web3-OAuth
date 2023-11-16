@@ -1,4 +1,6 @@
-# Web3 OAuth
+![Web3 OAuth](https://iili.io/JCDdtRe.png)
+
+## Introduction
 
 Web3 OAuth empowers users by seamlessly linking their social identities to a single source.
 
