@@ -1,5 +1,5 @@
 {
-  "name": "@web3-oauth/react",
+  "name": "web3-oauth",
   "version": "1.0.0",
   "description": "Official React Library for Web3 OAuth",
   "main": "lib/cjs/index.js",
