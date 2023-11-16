@@ -34,7 +34,7 @@ const Footer = () => {
                       </li>
                       <li>
                         <a
-                          href="https://github.com/iamthe-nerdyDev/Web3-OAuth/blob/master/client/README.md"
+                          href="https://github.com/iamthe-nerdyDev/Web3-OAuth/blob/master/sdk/README.md"
                           target="_blank"
                         >
                           Docs

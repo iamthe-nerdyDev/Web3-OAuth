@@ -27,7 +27,7 @@ const Hero = () => {
               >
                 <ConnectBtn className="bg-purple" />
                 <a
-                  href="https://github.com/iamthe-nerdyDev/Web3-OAuth/blob/master/client/README.md"
+                  href="https://github.com/iamthe-nerdyDev/Web3-OAuth/blob/master/sdk/README.md"
                   target="_blank"
                 >
                   <button className="docs d-flex align-items-center justify-content-center gap-1">

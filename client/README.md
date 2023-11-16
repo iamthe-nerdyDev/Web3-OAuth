@@ -1,27 +1,58 @@
-# React + TypeScript + Vite
+# Client
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend endpoint for Web3 OAuth. Was built using React + Vite + Typescript.
 
-Currently, two official plugins are available:
+## Key Pages
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1.  Landing page
+2.  Connect wallet
+3.  Loader
+4.  Card creation
+5.  PFP selection
+6.  Card management
+7.  Error page
 
-## Expanding the ESLint configuration
+### Landing page
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+![Landing Page](https://iili.io/JCtvA9s.jpg)
 
-- Configure the top-level `parserOptions` property like this:
+### Connect wallet
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
+![Wallet connect modal from thirdweb](https://iili.io/JCtvoPI.jpg)
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+### Loader
+
+![enter image description here](https://iili.io/JCtvnMN.jpg)
+
+### Card creation
+
+![Create a new card](https://iili.io/JCtvRAG.jpg)
+
+### PFP selection
+
+1.  Selecting PFP from NFT Collection(s)![Selecting from NFT Collection](https://iili.io/JCtv5Nf.jpg)
+2.  Selecting PFP from an online URL ![From an online source](https://iili.io/JCtv7t4.jpg)
+
+### Card management
+
+![View single card details](https://iili.io/JCtvEl9.jpg)
+
+### Error page
+
+![Custom 404 error component](https://iili.io/JCtv1K7.jpg)
+
+## Installation & Setup Instructions
+
+Clone down this repository. You will need `node` and `npm` installed globally on your machine.
+
+Installation:
+
+    npm install
+
+To start server:
+
+    npm run dev
+
+To visit app:
+
+    http://localhost:5173

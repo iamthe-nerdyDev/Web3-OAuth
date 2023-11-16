@@ -1,6 +1,8 @@
 import { useContext } from "react";
-import "./NotFound.css";
 import StateContext from "@/utils/context/StateContext";
+import { AnchorLink } from "@/components";
+
+import "./NotFound.css";
 
 const NotFound = () => {
   const { theme, isLoggedIn } = useContext(StateContext)!;
@@ -9,9 +11,9 @@ const NotFound = () => {
     <div className={`not-found ${theme}`}>
       <h1>404</h1>
       <p>Page not found</p>
-      <a href={isLoggedIn ? "/dashboard" : "/"}>
+      <AnchorLink to={isLoggedIn ? "/dashboard" : "/"}>
         <button>Back home</button>
-      </a>
+      </AnchorLink>
     </div>
   );
 };
