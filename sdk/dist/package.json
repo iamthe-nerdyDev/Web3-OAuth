@@ -1,0 +1,32 @@
+{
+  "name": "@web3-oauth/react",
+  "version": "1.0.0",
+  "description": "Official React Library for Web3 OAuth",
+  "main": "lib/cjs/index.js",
+  "module": "lib/esm/index.js",
+  "types": "lib/index.d.ts",
+  "ssideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iamthe-nerdyDev/Web3-OAuth.git"
+  },
+  "files": [
+    "lib",
+    "CHANGELOG.md",
+    "LICENSE",
+    "package.json",
+    "README.md"
+  ],
+  "keywords": [
+    "web3",
+    "oauth",
+    "web3-oauth",
+    "identity"
+  ],
+  "author": "NerdyDev",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/iamthe-nerdyDev/Web3-OAuth/issues"
+  },
+  "homepage": "https://web3-o-auth.vercel.app"
+}
