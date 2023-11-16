@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 
-type Token = string | undefined;
+type Token = string | null;
 
 const useSessionToken = (): Token => {
-  const [token, setToken] = useState<Token>(undefined);
+  const [token, setToken] = useState<Token>(null);
 
   useEffect(() => {
     function init() {
@@ -17,6 +17,14 @@ const useSessionToken = (): Token => {
     }
 
     init();
+
+    const tokenChange = (e: StorageEvent) => {
+      if (e.key === "web3_oauth_session_token") setToken(e.newValue);
+    };
+
+    window.addEventListener("storage", tokenChange);
+
+    return () => window.removeEventListener("storage", tokenChange);
   }, []);
 
   return token;

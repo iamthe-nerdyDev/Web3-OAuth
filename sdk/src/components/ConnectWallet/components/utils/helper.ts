@@ -81,7 +81,7 @@ export async function triggerSignIn(
     console.error(e);
   }
 
-  return null;
+  return false;
 }
 
 export const isWalletInstalled = (wallet: WalletType): boolean => {

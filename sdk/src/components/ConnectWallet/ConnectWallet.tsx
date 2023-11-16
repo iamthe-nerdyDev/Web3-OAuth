@@ -17,6 +17,9 @@ const ConnectWallet: React.FC<IConnectWallet> = (props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showConnectModal, setShowConnectModal] = useState<boolean>(false);
 
+  const [userCards, setUserCards] = useState<any[] | [] | null>(null);
+  const [shouldDisplayCards, setShouldDisplayCards] = useState<boolean>(false);
+
   const address = useAddress();
   const signer = useSigner();
   const disconnect = useDisconnect();
@@ -36,7 +39,16 @@ const ConnectWallet: React.FC<IConnectWallet> = (props) => {
     if (address) {
       const _address = async () => {
         if (selectedWallet !== null && isLoading == true) {
-          await triggerSignIn(address, props.accessToken);
+          const _response = await triggerSignIn(address, props.accessToken);
+
+          if (!_response) disconnect(); //their identity could not be verified
+          else if (typeof _response === "string") {
+            localStorage.setItem("web3_oauth_session_token", _response); //the token is returned
+          } else {
+            setUserCards(_response);
+
+            setShouldDisplayCards(true);
+          }
         } else {
           setSelectedWallet(null);
           setIsLoading(false);
