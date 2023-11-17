@@ -1,0 +1,585 @@
+@import url("./chillax/css/chillax.css");
+
+.web3-oauth {
+  user-select: none;
+}
+
+.web3-oauth *,
+.web3-oauth {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Chillax", sans-serif !important;
+}
+
+.web3-oauth button:disabled,
+button.web3-oauth:disabled {
+  opacity: 0.8;
+  cursor: no-drop;
+}
+
+.web3-oauth a {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.web3-oauth__connect-btn {
+  border: 1px solid #bbb;
+  color: #000;
+  outline: none;
+  border-radius: 7px;
+  background-color: #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.9rem 1.7rem;
+  font-size: 1rem;
+  font-weight: 550;
+  cursor: pointer;
+}
+
+.web3-oauth__connect-btn span {
+  border-bottom: 2px dotted #000;
+  font-weight: 400;
+}
+
+.web3-oauth__connect-btn svg {
+  width: 2rem;
+  height: 2rem;
+}
+
+.web3-oauth__modal {
+  background-color: rgb(255 255 255 / 0.3);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  position: fixed;
+  bottom: 0;
+  top: 0;
+  right: 0;
+  left: 0;
+  width: 100vw;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-animation-name: comeUp;
+  -webkit-animation-duration: 0.6s;
+  animation-name: comeUp;
+  animation-duration: 0.6s;
+  z-index: 99;
+}
+
+.web3-oauth__modal-box {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  border: 1px solid #bbb;
+  background-color: #fff;
+  border-radius: 35px 35px 0 0;
+  padding: 1.7rem 1.5rem;
+}
+
+.web3-oauth__modal-box > div {
+  width: 100%;
+  max-width: 28rem;
+  margin: 0% auto;
+}
+
+.web3-oauth__modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.web3-oauth__modal-header__title {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.web3-oauth__modal-header__title p {
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.web3-oauth__modal-close svg {
+  width: 1.3rem;
+  height: 1.3rem;
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+.web3-oauth__intro-text {
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.web3-oauth__intro-text h3 {
+  font-weight: 550;
+  margin-bottom: 0.4rem;
+}
+
+.web3-oauth__wallets-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  margin-bottom: 1.4rem;
+}
+
+.web3-oauth__wallet-single {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background-color: #eee;
+  border-radius: 6px;
+  padding: 0.95rem 1rem;
+  cursor: pointer;
+}
+
+.web3-oauth__wallet-single.disabled {
+  opacity: 0.5;
+  cursor: no-drop;
+}
+
+.web3-oauth__wallet-single > div {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.web3-oauth__wallet-single img {
+  width: 2rem;
+  height: 2rem;
+}
+
+.web3-oauth__wallet-single h4 {
+  font-weight: 550;
+}
+
+.web3-oauth__wallet-single > div > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0rem;
+}
+
+.web3-oauth__wallet-single p {
+  text-transform: uppercase;
+  opacity: 0.4;
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
+.web3-oauth__wallet-single svg {
+  width: 1.2rem;
+  height: 1.2rem;
+  opacity: 0.5;
+}
+
+.web3-oauth__thirdweb {
+  text-align: center;
+}
+
+.web3-oauth__thirdweb p {
+  font-size: 0.9rem;
+}
+
+.web3-oauth__thirdweb p strong {
+  font-weight: 550;
+  border-bottom: 2px dotted #000;
+  cursor: pointer;
+}
+
+.web3-oauth.web3-oauth__show {
+  display: block;
+}
+
+.web3-oauth.web3-oauth__hide {
+  display: none;
+}
+
+.web3-oauth__connected-btn {
+  color: #000;
+  border: 1px solid #bbb;
+  outline: none;
+  border-radius: 7px;
+  background-color: #eee;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2.5rem;
+  padding: 1rem 1.3rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.web3-oauth__connected-btn > div {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.web3-oauth__connected-btn > div > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0rem;
+  text-align: start;
+}
+
+.web3-oauth__connected-btn > div > div p {
+  font-size: 0.95rem;
+  font-weight: 550;
+}
+
+.web3-oauth__connected-btn > div > div span {
+  font-size: 0.8rem;
+  font-weight: 400;
+  opacity: 0.7;
+}
+
+.web3-oauth__connected-btn img {
+  width: 2.7rem;
+  height: 2.7rem;
+  border-radius: 6px;
+  background-color: #fff;
+  padding: 0.4rem;
+}
+
+.web3-oauth__connected-btn svg {
+  width: 1rem;
+  height: 1rem;
+  opacity: 0.6;
+}
+
+.web3-oauth__position-relative {
+  position: relative;
+  width: max-content;
+}
+
+.web3-oauth__connected-wallet-details.connected-wallet-details__show {
+  display: flex;
+}
+
+.web3-oauth__connected-wallet-details.connected-wallet-details__hide {
+  display: none;
+}
+
+.web3-oauth__connected-wallet-details {
+  position: absolute;
+  width: 18rem;
+  background-color: #eee;
+  border: 1px solid #bbb;
+  border-radius: 7px;
+  left: 0;
+  top: 5.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.3rem;
+  padding: 1rem;
+  z-index: 9;
+}
+
+.web3-oauth__connected-wallet-details .connection-status {
+  background-color: #fff;
+  border: 1px solid #bbb;
+  width: max-content;
+  padding: 0.4rem 1rem;
+  border-radius: 100px;
+  font-size: 0.7rem;
+  font-weight: 550;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.web3-oauth__connected-wallet-details .connection-status span {
+  width: 0.5rem;
+  height: 0.5rem;
+  background-color: green;
+  border-radius: 50%;
+  display: block;
+}
+
+.web3-oauth__connected-wallet-details .wallet-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.web3-oauth__connected-wallet-details .wallet-info img {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 6px;
+  background-color: #fff;
+  padding: 0.4rem;
+}
+
+.web3-oauth__connected-wallet-details .wallet-info > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.web3-oauth__connected-wallet-details .wallet-info > div p {
+  font-size: 0.9rem;
+  font-weight: 550;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.web3-oauth__connected-wallet-details .wallet-info > div p svg {
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+.web3-oauth__connected-wallet-details .wallet-info > div > span {
+  font-size: 0.8rem;
+  font-weight: 400;
+  opacity: 0.7;
+}
+
+.web3-oauth__connected-wallet-details .disconnect-btn,
+.web3-oauth__connected-wallet-details .logout-btn {
+  width: 100%;
+  border: 1px solid #bbb;
+  text-align: center;
+  font-weight: 500;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  padding: 0.7rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.web3-oauth__connected-wallet-details .logout-btn {
+  color: rgb(230, 96, 96);
+  border: 1px solid rgb(230, 96, 96);
+  display: flex;
+  justify-content: center;
+}
+
+.web3-oauth__connected-wallet-details .logout-btn.disabled {
+  opacity: 0.6;
+  cursor: no-drop;
+}
+
+.web3-oauth__cards-list {
+  display: flex;
+  flex-direction: column;
+  max-height: 20rem;
+  overflow-y: auto;
+  gap: 0.8rem;
+  margin: 0.7rem auto;
+  margin-bottom: 1.7rem;
+  border: 1px solid #bbb;
+  padding: 1.5rem;
+  border-radius: 10px;
+}
+
+.wallet-list__button {
+  margin-top: 0.5rem;
+  background-color: green;
+  color: #fff;
+  border-radius: 6px;
+  border: none;
+  padding: 1.05rem 0;
+  width: 100%;
+  font-weight: 600;
+  font-size: 0.98rem;
+  outline: none;
+  display: flex;
+  justify-content: center;
+}
+
+.web3-oauth__single-card.selected {
+  border: 2px solid rgba(0, 128, 0, 0.461);
+}
+
+.web3-oauth__single-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.85rem;
+  border-radius: 8px;
+  background-color: #eee;
+  cursor: pointer;
+}
+
+.web3-oauth__single-card img {
+  width: 4.5rem;
+  height: 4.5rem;
+  background-color: #f4ce9b;
+  border-radius: 50%;
+}
+
+.web3-oauth__single-card > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.web3-oauth__single-card > div h4 {
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.web3-oauth__single-card > div p {
+  font-size: 0.9rem;
+  font-weight: 400;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  padding-right: 0.9rem;
+  line-height: 150%;
+  opacity: 0.4;
+}
+
+@media screen and (min-width: 768px) {
+  .web3-oauth__modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .web3-oauth__modal-box {
+    position: relative;
+    width: 85%;
+    max-width: 40rem;
+    border: 1px solid #bbb;
+    background-color: #fff;
+    border-radius: 20px;
+    padding: 1.7rem 1.5rem;
+    -webkit-animation-name: comeDown;
+    -webkit-animation-duration: 0.6s;
+    animation-name: comeDown;
+    animation-duration: 0.6s;
+  }
+}
+
+@keyframes comeUp {
+  from {
+    bottom: -300px;
+  }
+  to {
+    bottom: 0;
+  }
+}
+
+@-webkit-keyframes comeUp {
+  from {
+    bottom: -300px;
+  }
+  to {
+    bottom: 0;
+  }
+}
+
+@keyframes comeDown {
+  from {
+    top: -300px;
+  }
+  to {
+    top: 0;
+  }
+}
+
+@-webkit-keyframes comeDown {
+  from {
+    top: -300px;
+  }
+  to {
+    top: 0;
+  }
+}
+
+.web3-oauth__dark.web3-oauth__connect-btn {
+  border: 1px solid #bbb;
+  color: #fff;
+  background-color: rgb(18, 18, 19);
+}
+
+.web3-oauth__dark.web3-oauth__connect-btn span {
+  border-bottom: 2px dotted #fff;
+}
+
+.web3-oauth__dark.web3-oauth__connect-btn svg {
+  color: #aaa;
+}
+
+.web3-oauth__dark .web3-oauth__modal-box {
+  border: 1px solid #bbb;
+  background-color: rgb(18, 18, 19);
+}
+
+.web3-oauth__dark .web3-oauth__modal-header {
+  color: #fff;
+}
+
+.web3-oauth__dark .web3-oauth__modal-header svg {
+  color: #aaa;
+}
+
+.web3-oauth__dark .web3-oauth__intro-text {
+  color: #fff;
+}
+
+.web3-oauth__dark .web3-oauth__wallet-single {
+  background-color: #242424;
+  color: #fff;
+}
+
+.web3-oauth__dark .web3-oauth__thirdweb {
+  color: #fff;
+}
+
+.web3-oauth__dark .web3-oauth__thirdweb p strong {
+  border-bottom: 2px dotted #fff;
+}
+
+.web3-oauth__dark .web3-oauth__connected-btn {
+  color: #fff;
+  border: 1px solid #bbb;
+  background-color: rgb(18, 18, 19);
+}
+
+.web3-oauth__dark .web3-oauth__connected-btn img {
+  background-color: #353535;
+}
+
+.web3-oauth__dark .web3-oauth__connected-wallet-details {
+  color: #fff;
+  background-color: rgb(18, 18, 19);
+}
+
+.web3-oauth__dark .web3-oauth__connected-wallet-details .connection-status {
+  background-color: #242424;
+}
+
+.web3-oauth__dark .web3-oauth__connected-wallet-details .wallet-info img {
+  background-color: #353535;
+}
+
+.web3-oauth__dark .wallet-list__button {
+  background-color: rgb(62, 161, 62);
+  color: #fff;
+}
+
+.web3-oauth__dark .web3-oauth__single-card.selected {
+  border: 2px solid rgb(62, 161, 62);
+}
+
+.web3-oauth__dark .web3-oauth__single-card {
+  background-color: #353535;
+  color: #fff;
+}
