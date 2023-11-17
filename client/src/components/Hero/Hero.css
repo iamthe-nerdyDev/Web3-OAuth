@@ -49,7 +49,13 @@
 
 .hero-content a {
   display: block;
-  width: max-content;
+  width: 100%;
+}
+
+@media screen and (min-width: 768px) {
+  .hero-content a {
+    width: max-content;
+  }
 }
 
 .hero-content .docs {

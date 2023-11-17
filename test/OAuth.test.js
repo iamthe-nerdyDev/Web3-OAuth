@@ -25,6 +25,8 @@ describe("Contracts", () => {
       _id: 1,
       _domain: "https://my-dapp-url.com",
       _accessToken: "xxxx-xxxx-xxxx",
+      _domain_2: "https://my-dapp-url.com-2",
+      _accessToken_2: "xxxx-xxxx-xxxx-2",
     },
     update_dapp: {
       _domain: "https://my-dapp-url-updated.com",
@@ -34,13 +36,24 @@ describe("Contracts", () => {
     },
   };
 
-  let provider, contract, result, signature, owner, user1, messageHash;
+  let provider,
+    contract,
+    contractAddress,
+    result,
+    signature,
+    owner,
+    user1,
+    messageHash;
 
   beforeEach(async () => {
     [owner, user1] = await ethers.getSigners();
 
     const Contract = await ethers.getContractFactory("OAuth");
     contract = await Contract.connect(owner).deploy();
+
+    await contract.waitForDeployment();
+
+    contractAddress = contract.target; //storing the CA
   });
 
   describe("Card Management", () => {
@@ -71,7 +84,7 @@ describe("Contracts", () => {
           TEST_DATA.card._emailAddress,
           TEST_DATA.card._bio
         ),
-        "Username must not be empty"
+        "username required"
       );
 
       //empty pfp
@@ -82,7 +95,7 @@ describe("Contracts", () => {
           TEST_DATA.card._emailAddress,
           TEST_DATA.card._bio
         ),
-        "PFP must not be empty"
+        "pfp required"
       );
 
       //empty email address
@@ -93,7 +106,7 @@ describe("Contracts", () => {
           "",
           TEST_DATA.card._bio
         ),
-        "Email address must not be empty"
+        "email required"
       );
 
       //empty bio
@@ -104,7 +117,7 @@ describe("Contracts", () => {
           TEST_DATA.card._emailAddress,
           ""
         ),
-        "Bio must not be empty"
+        "bio required"
       );
     });
 
@@ -120,7 +133,7 @@ describe("Contracts", () => {
             TEST_DATA.update_card._emailAddress,
             TEST_DATA.update_card._bio
           ),
-        "Unauthorized"
+        "unauthorized"
       );
 
       //in case of wrong cardId
@@ -132,7 +145,7 @@ describe("Contracts", () => {
           TEST_DATA.update_card._emailAddress,
           TEST_DATA.update_card._bio
         ),
-        "Card not found"
+        "not found"
       );
 
       result = await contract.updateCard(
@@ -160,7 +173,7 @@ describe("Contracts", () => {
           TEST_DATA.update_card._emailAddress,
           TEST_DATA.update_card._bio
         ),
-        "Username must not be empty"
+        "username required"
       );
 
       //pfp is empty
@@ -172,7 +185,7 @@ describe("Contracts", () => {
           TEST_DATA.update_card._emailAddress,
           TEST_DATA.update_card._bio
         ),
-        "PFP must not be empty"
+        "pfp required"
       );
 
       //email address is empty
@@ -184,7 +197,7 @@ describe("Contracts", () => {
           "",
           TEST_DATA.update_card._bio
         ),
-        "Email address must not be empty"
+        "email required"
       );
 
       //bio is empty
@@ -196,7 +209,7 @@ describe("Contracts", () => {
           TEST_DATA.update_card._emailAddress,
           ""
         ),
-        "Bio must not be empty"
+        "bio required"
       );
     });
 
@@ -207,11 +220,11 @@ describe("Contracts", () => {
       //incase of wrong user
       await expectRevert(
         contract.connect(user1).deleteCard(TEST_DATA.card._id),
-        "Unauthorized"
+        "unauthorized"
       );
 
       //in case of wrong cardId
-      await expectRevert(contract.deleteCard(2), "Card not found");
+      await expectRevert(contract.deleteCard(2), "not found");
 
       await contract.deleteCard(TEST_DATA.card._id);
 
@@ -240,32 +253,56 @@ describe("Contracts", () => {
       expect(result.domain).to.be.equal(TEST_DATA.dapp._domain);
       expect(result.accessToken).to.be.equal(TEST_DATA.dapp._accessToken);
 
+      //duplicate accessToken
+      await expectRevert(
+        contract.registerDapp(
+          TEST_DATA.dapp._domain_2,
+          TEST_DATA.dapp._accessToken
+        ),
+        "token exist"
+      );
+
+      //duplicate domain
+      await expectRevert(
+        contract.registerDapp(
+          TEST_DATA.dapp._domain,
+          TEST_DATA.dapp._accessToken_2
+        ),
+        "domain exist"
+      );
+
       //empty domain
       await expectRevert(
         contract.registerDapp("", TEST_DATA.dapp._accessToken),
-        "Domain must not be empty"
+        "domain required"
       );
 
       //empty access token
       await expectRevert(
         contract.registerDapp(TEST_DATA.dapp._domain, ""),
-        "Access Token must not be empty"
+        "token required"
       );
     });
 
     it("Should verify that a dApp can be modified!", async () => {
+      //duplicate domain
+      await expectRevert(
+        contract.modifyDapp(TEST_DATA.dapp._id, TEST_DATA.dapp._domain),
+        "domain exist"
+      );
+
       //incase of wrong user
       await expectRevert(
         contract
           .connect(user1)
           .modifyDapp(TEST_DATA.dapp._id, TEST_DATA.update_dapp._domain),
-        "Unauthorized"
+        "unauthorized"
       );
 
       //in case of wrong dappId
       await expectRevert(
         contract.modifyDapp(2, TEST_DATA.update_dapp._domain),
-        "dApp not registered"
+        "not found"
       );
 
       result = await contract.modifyDapp(
@@ -279,7 +316,7 @@ describe("Contracts", () => {
       //domain is empty
       await expectRevert(
         contract.modifyDapp(TEST_DATA.dapp._id, ""),
-        "Domain must not be empty"
+        "domain required"
       );
     });
 
@@ -288,7 +325,13 @@ describe("Contracts", () => {
       expect(result).to.have.lengthOf(1);
 
       //in case of wrong dappId
-      await expectRevert(contract.deleteDapp(2), "dApp not registered");
+      await expectRevert(contract.deleteDapp(2), "not found");
+
+      //in case of wrong dappId
+      await expectRevert(
+        contract.connect(user1).deleteDapp(TEST_DATA.dapp._id),
+        "unauthorized"
+      );
 
       await contract.deleteDapp(TEST_DATA.dapp._id);
 
@@ -297,6 +340,49 @@ describe("Contracts", () => {
 
       result = await contract.connect(owner).getDapp(TEST_DATA.dapp._id);
       expect(result.isDeleted).to.be.equal(true);
+    });
+  });
+
+  describe("Payments", () => {
+    it("Should verify contract can accept payment", async () => {
+      const ethersToSend = ethers.parseEther("0.1");
+
+      //transfer..
+      const tx = await owner.sendTransaction({
+        to: contractAddress,
+        value: ethersToSend,
+      });
+
+      await tx.wait();
+
+      result = await contract.connect(owner).getBalance();
+      expect(ethers.formatUnits(result, "ether")).to.be.equal("0.1");
+    });
+
+    it("Should verify that withdrawal can be made", async () => {
+      const ethersToSend = ethers.parseEther("0.1");
+      const ethersToWithdraw = ethers.parseEther("0.1");
+
+      //trying to withdraw on empty balance...
+      await expectRevert(
+        contract.connect(owner).withdraw(user1.address, ethersToWithdraw),
+        "failed"
+      );
+
+      //add ethers now...
+      const tx = await owner.sendTransaction({
+        to: contractAddress,
+        value: ethersToSend,
+      });
+
+      await tx.wait();
+
+      //then withdraw...
+      await contract.connect(owner).withdraw(user1.address, ethersToWithdraw);
+
+      //checking balance
+      result = await contract.connect(owner).getBalance();
+      expect(ethers.formatUnits(result, "ether")).to.be.equal("0.0");
     });
   });
 
@@ -365,7 +451,7 @@ describe("Contracts", () => {
             TEST_DATA.session._message,
             signature
           ),
-        "Card does not exist"
+        "not found"
       );
 
       //wrong dappId
@@ -379,7 +465,7 @@ describe("Contracts", () => {
             TEST_DATA.session._message,
             signature
           ),
-        "dApp not registered"
+        "dApp not found"
       );
 
       //wrong owner of card
@@ -393,7 +479,7 @@ describe("Contracts", () => {
             TEST_DATA.session._message,
             signature
           ),
-        "Access denied"
+        "unauthorized"
       );
 
       //wrong signature, sign with user1 pass owner as the signer
@@ -412,7 +498,7 @@ describe("Contracts", () => {
             TEST_DATA.session._message,
             signature
           ),
-        "Unable to validate signature"
+        "unable to verify sig"
       );
     });
 
@@ -448,6 +534,4 @@ describe("Contracts", () => {
       );
     });
   });
-
-  //check for events..
 });

@@ -10,7 +10,6 @@ interface Props {
 
 const Middleware = ({ ignore = false, children }: Props) => {
   const navigate = useNavigate();
-
   const { isMounting, isLoggedIn, theme } = useContext(StateContext)!;
 
   useEffect(() => {

@@ -5,8 +5,12 @@ import StateContext from "@/utils/context/StateContext";
 import { LoaderIcon, Trash } from "@/icons";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAddress, useSigner } from "@thirdweb-dev/react";
-import { ICardStruct } from "@/interface";
-import { deleteCard, getUserCard } from "@/utils/helper";
+import { ICardStruct, IDAppStruct } from "@/interface";
+import {
+  deleteCard,
+  getDappsConnectedToCard,
+  getUserCard,
+} from "@/utils/helper";
 import { NotFound } from "..";
 import { toast } from "react-toastify";
 
@@ -25,6 +29,9 @@ const CardDetails = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isDeleteLoading, setIsDeleteLoading] = useState<boolean>(false);
   const [card, setCard] = useState<ICardStruct | null>(null);
+  const [connectedDapps, setConnectedDapps] = useState<IDAppStruct[] | null>(
+    null
+  );
 
   useEffect(() => {
     if (!isMounting) {
@@ -33,6 +40,13 @@ const CardDetails = () => {
 
         try {
           const _card = await getUserCard(parseInt(cardId!), signer);
+          const _dApps = await getDappsConnectedToCard(
+            address,
+            parseInt(cardId!),
+            signer
+          );
+
+          setConnectedDapps(_dApps);
           setCard(_card);
         } catch (e: any) {
           console.error(e);
@@ -161,11 +175,29 @@ const CardDetails = () => {
             <div className="px-2">
               <div className="connected-sites">
                 <span className="mb-2 d-block">Connected Sites</span>
-                <div className="empty-result align-items-center py-4 d-flex flex-column">
-                  <img src={emptyResultImage} alt="empty result" />
-                  <p>Nothing found</p>
-                </div>
-                <div className="sites"></div>
+
+                {connectedDapps === null ? (
+                  <div className="py-5 px-3">
+                    <LoaderIcon />
+                  </div>
+                ) : connectedDapps.length > 0 ? (
+                  <div className="connected-sites-ist py-4 ps-3">
+                    {connectedDapps.map((sites, i) => (
+                      <a
+                        href={`//${sites.domain}`}
+                        key={`site-${i}`}
+                        target="_blank"
+                      >
+                        <span>{sites.domain.charAt(0)}</span>
+                      </a>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="empty-result align-items-center py-4 d-flex flex-column">
+                    <img src={emptyResultImage} alt="empty result" />
+                    <p>Nothing found</p>
+                  </div>
+                )}
               </div>
             </div>
           </div>

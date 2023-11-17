@@ -1,10 +1,8 @@
-//no 2 dapps should have same name and owner should be able to delete dapp from domain!
 // SPDX-License-Identifier: MIT
 
 pragma solidity >=0.7.0 <0.9.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 /**
  * @title OAuth
@@ -14,7 +12,7 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
  * and managing session tokens for authentication and authorization purposes.
  * @notice Implements OAuth authorization flows and data storage
  */
-contract OAuth is ReentrancyGuard, Ownable {
+contract OAuth is Ownable {
     uint256 private _totalCardsCount;
     uint256 private _totalProviderDappCount;
     uint256 private _totalSessionTokensCount;
@@ -98,6 +96,7 @@ contract OAuth is ReentrancyGuard, Ownable {
 
     mapping(uint256 => bool) doesProviderDappExist;
     mapping(uint256 => ProviderDappStruct) providerDapps;
+    mapping(string => uint256) domainToProviderID;
 
     mapping(string => uint256) tokenProviderDapps;
     mapping(address => uint256[]) userProviderDapps;
@@ -125,10 +124,11 @@ contract OAuth is ReentrancyGuard, Ownable {
         address _signer,
         bytes memory _signature
     ) private pure returns (bool) {
-        bytes32 messageHash = getMessageHash(_message);
-        bytes32 ethSignedMessageHash = getEthSignedMessageHash(messageHash);
-
-        return recover(ethSignedMessageHash, _signature) == _signer;
+        return
+            recover(
+                getEthSignedMessageHash(getMessageHash(_message)),
+                _signature
+            ) == _signer;
     }
 
     /**
@@ -180,7 +180,7 @@ contract OAuth is ReentrancyGuard, Ownable {
     function _split(
         bytes memory _signature
     ) private pure returns (bytes32 r, bytes32 s, uint8 v) {
-        require(_signature.length == 65, "Invalid signature length");
+        require(_signature.length == 65);
 
         assembly {
             r := mload(add(_signature, 32))
@@ -203,13 +203,10 @@ contract OAuth is ReentrancyGuard, Ownable {
         string memory _emailAddress,
         string memory _bio
     ) public {
-        require(bytes(_username).length > 0, "Username must not be empty");
-        require(bytes(_pfp).length > 0, "PFP must not be empty");
-        require(
-            bytes(_emailAddress).length > 0,
-            "Email address must not be empty"
-        );
-        require(bytes(_bio).length > 0, "Bio must not be empty");
+        require(bytes(_username).length > 0, "username required");
+        require(bytes(_pfp).length > 0, "pfp required");
+        require(bytes(_emailAddress).length > 0, "email required");
+        require(bytes(_bio).length > 0, "bio required");
 
         CardStruct memory card;
 
@@ -227,7 +224,7 @@ contract OAuth is ReentrancyGuard, Ownable {
         userCards[msg.sender].push(card.id);
         userCardCount[msg.sender] += 1;
 
-        emit CardAction(card.id, "Created Card", msg.sender, _time());
+        emit CardAction(card.id, "created", msg.sender, _time());
     }
 
     /**
@@ -247,15 +244,12 @@ contract OAuth is ReentrancyGuard, Ownable {
         string memory _emailAddress,
         string memory _bio
     ) public {
-        require(doesCardExist[_cardId], "Card not found");
-        require(cards[_cardId].owner == msg.sender, "Unauthorized");
-        require(bytes(_username).length > 0, "Username must not be empty");
-        require(bytes(_pfp).length > 0, "PFP must not be empty");
-        require(
-            bytes(_emailAddress).length > 0,
-            "Email address must not be empty"
-        );
-        require(bytes(_bio).length > 0, "Bio must not be empty");
+        require(doesCardExist[_cardId], "not found");
+        require(cards[_cardId].owner == msg.sender, "unauthorized");
+        require(bytes(_username).length > 0, "username required");
+        require(bytes(_pfp).length > 0, "pfp required");
+        require(bytes(_emailAddress).length > 0, "email required");
+        require(bytes(_bio).length > 0, "bio required");
 
         cards[_cardId].username = _username;
         cards[_cardId].pfp = _pfp;
@@ -263,7 +257,7 @@ contract OAuth is ReentrancyGuard, Ownable {
         cards[_cardId].bio = _bio;
         cards[_cardId].updatedAt = _time();
 
-        emit CardAction(_cardId, "Updated Card", msg.sender, _time());
+        emit CardAction(_cardId, "updated", msg.sender, _time());
     }
 
     /**
@@ -273,14 +267,14 @@ contract OAuth is ReentrancyGuard, Ownable {
      * @dev Emits a CardAction event
      */
     function deleteCard(uint256 _id) public {
-        require(doesCardExist[_id], "Card not found");
-        require(cards[_id].owner == msg.sender, "Unauthorized");
+        require(doesCardExist[_id], "not found");
+        require(cards[_id].owner == msg.sender, "unauthorized");
 
         doesCardExist[_id] = false;
         cards[_id].isDeleted = true;
         cards[_id].updatedAt = _time();
 
-        emit CardAction(_id, "Deleted Card", msg.sender, _time());
+        emit CardAction(_id, "delete", msg.sender, _time());
     }
 
     /**
@@ -336,15 +330,13 @@ contract OAuth is ReentrancyGuard, Ownable {
         string memory _domain,
         string memory _accessToken
     ) public {
-        require(bytes(_domain).length > 0, "Domain must not be empty");
-        require(
-            bytes(_accessToken).length > 0,
-            "Access Token must not be empty"
-        );
+        require(bytes(_domain).length > 0, "domain required");
+        require(bytes(_accessToken).length > 0, "token required");
         require(
             !doesProviderDappExist[tokenProviderDapps[_accessToken]],
-            "Access token assigned to a dApp already"
+            "token exist"
         );
+        require(domainToProviderID[_domain] == 0, "domain exist");
 
         ProviderDappStruct memory providerDapp;
 
@@ -354,19 +346,15 @@ contract OAuth is ReentrancyGuard, Ownable {
         providerDapp.owner = msg.sender;
         providerDapp.createdAt = _time();
         providerDapp.updatedAt = _time();
-
         providerDapps[providerDapp.id] = providerDapp;
         doesProviderDappExist[providerDapp.id] = true;
         tokenProviderDapps[_accessToken] = providerDapp.id;
+        domainToProviderID[_domain] = providerDapp.id;
+
         userProviderDapps[msg.sender].push(providerDapp.id);
         userProviderDappCount[msg.sender] += 1;
 
-        emit ProviderAction(
-            providerDapp.id,
-            "Registered dApp",
-            msg.sender,
-            _time()
-        );
+        emit ProviderAction(providerDapp.id, "registered", msg.sender, _time());
     }
 
     /**
@@ -377,14 +365,15 @@ contract OAuth is ReentrancyGuard, Ownable {
      * @dev Emits a ProviderAction event
      */
     function modifyDapp(uint256 _id, string memory _domain) public {
-        require(doesProviderDappExist[_id], "dApp not registered");
-        require(providerDapps[_id].owner == msg.sender, "Unauthorized");
-        require(bytes(_domain).length > 0, "Domain must not be empty");
+        require(doesProviderDappExist[_id], "not found");
+        require(providerDapps[_id].owner == msg.sender, "unauthorized");
+        require(bytes(_domain).length > 0, "domain required");
+        require(domainToProviderID[_domain] == 0, "domain exist");
 
         providerDapps[_id].domain = _domain;
         providerDapps[_id].updatedAt = _time();
 
-        emit ProviderAction(_id, "Updated dApp", msg.sender, _time());
+        emit ProviderAction(_id, "update", msg.sender, _time());
     }
 
     /**
@@ -394,16 +383,29 @@ contract OAuth is ReentrancyGuard, Ownable {
      * @dev Emits a ProviderAction event
      */
     function deleteDapp(uint256 _id) public {
-        require(doesProviderDappExist[_id], "dApp not registered");
-        require(providerDapps[_id].owner == msg.sender, "Unauthorized");
+        require(doesProviderDappExist[_id], "not found");
+        require(providerDapps[_id].owner == msg.sender, "unauthorized");
 
         doesProviderDappExist[_id] = false;
         providerDapps[_id].isDeleted = true;
         providerDapps[_id].updatedAt = _time();
 
+        domainToProviderID[providerDapps[_id].domain] = 0;
+
         deactivateSessionTokensForDapp(_id);
 
-        emit ProviderAction(_id, "Deleted dApp", msg.sender, _time());
+        emit ProviderAction(_id, "deleted", msg.sender, _time());
+    }
+
+    /**
+     * @notice Gets dapp ID from the provided domain
+     * @param _domain Domain
+     * @return uint256
+     */
+    function getDappIdFromDomain(
+        string memory _domain
+    ) public view onlyOwner returns (uint256) {
+        return domainToProviderID[_domain];
     }
 
     /**
@@ -501,13 +503,12 @@ contract OAuth is ReentrancyGuard, Ownable {
      */
     function deactivateSessionTokensForDapp(uint256 _dappId) private {
         for (uint256 i = 0; i < dAppSessionTokenCount[_dappId]; i++) {
-            uint256 _sessionId = dAppSessionTokens[_dappId][i];
-
             if (
-                sessionTokens[_sessionId].dappId == _dappId &&
-                sessionTokens[_sessionId].isActive
+                sessionTokens[dAppSessionTokens[_dappId][i]].dappId ==
+                _dappId &&
+                sessionTokens[dAppSessionTokens[_dappId][i]].isActive
             ) {
-                deactivateSessionToken(_sessionId);
+                deactivateSessionToken(dAppSessionTokens[_dappId][i]);
             }
         }
     }
@@ -522,12 +523,7 @@ contract OAuth is ReentrancyGuard, Ownable {
         sessionTokens[_id].updatedAt = _time();
         isSessionTokenActive[_id] = false;
 
-        emit SessionTokenAction(
-            _id,
-            "Deactivated Session Token",
-            msg.sender,
-            _time()
-        );
+        emit SessionTokenAction(_id, "deactivated", msg.sender, _time());
     }
 
     /**
@@ -545,20 +541,19 @@ contract OAuth is ReentrancyGuard, Ownable {
         string memory _message,
         bytes memory _signature
     ) public view onlyOwner returns (bytes32, CardStruct[] memory Cards) {
-        require(_signature.length == 65, "Invalid signature length");
-        require(
-            verify(_message, _user, _signature),
-            "Unable to validate signature"
-        );
+        require(verify(_message, _user, _signature), "unable to verify sig");
 
-        uint256 sessionId = getActiveSessionId(_user, _dappId);
-
-        if (sessionId == 0) {
+        if (getActiveSessionId(_user, _dappId) == 0) {
             return (
                 0x0000000000000000000000000000000000000000000000000000000000000000,
                 getUserCards(_user)
             );
-        } else return (sessionTokens[sessionId].token, new CardStruct[](0));
+        } else {
+            return (
+                sessionTokens[getActiveSessionId(_user, _dappId)].token,
+                new CardStruct[](0)
+            );
+        }
     }
 
     /**
@@ -572,14 +567,12 @@ contract OAuth is ReentrancyGuard, Ownable {
         uint256 _dappId
     ) private view returns (uint256) {
         for (uint256 i = 0; i < dAppSessionTokenCount[_dappId]; i++) {
-            uint256 _sessionId = dAppSessionTokens[_dappId][i];
-
             if (
-                sessionTokens[_sessionId].owner == _user &&
-                sessionTokens[_sessionId].isActive &&
-                sessionTokens[_sessionId].dappId == _dappId
+                sessionTokens[dAppSessionTokens[_dappId][i]].owner == _user &&
+                sessionTokens[dAppSessionTokens[_dappId][i]].isActive &&
+                sessionTokens[dAppSessionTokens[_dappId][i]].dappId == _dappId
             ) {
-                return _sessionId;
+                return dAppSessionTokens[_dappId][i];
             }
         }
 
@@ -603,13 +596,10 @@ contract OAuth is ReentrancyGuard, Ownable {
         string memory _message,
         bytes memory _signature
     ) public onlyOwner returns (bytes32) {
-        require(doesCardExist[_cardId], "Card does not exist");
-        require(cards[_cardId].owner == _user, "Access denied");
-        require(doesProviderDappExist[_dappId], "dApp not registered");
-        require(
-            verify(_message, _user, _signature),
-            "Unable to validate signature"
-        );
+        require(doesCardExist[_cardId], "not found");
+        require(cards[_cardId].owner == _user, "unauthorized");
+        require(doesProviderDappExist[_dappId], "dApp not found");
+        require(verify(_message, _user, _signature), "unable to verify sig");
 
         bytes32 _token = keccak256(abi.encodePacked(_cardId, _user, _dappId));
 
@@ -633,7 +623,7 @@ contract OAuth is ReentrancyGuard, Ownable {
 
         emit SessionTokenAction(
             sessionToken.id,
-            "Created Session Token",
+            "created",
             msg.sender,
             _time()
         );
@@ -649,13 +639,11 @@ contract OAuth is ReentrancyGuard, Ownable {
     function getSessionIdFromToken(
         bytes32 _token
     ) private view returns (uint256) {
-        uint256 sessionId = tokenSessionTokenId[_token];
-
         if (
-            sessionTokens[sessionId].isActive &&
-            sessionTokens[sessionId].token == _token
+            sessionTokens[tokenSessionTokenId[_token]].isActive &&
+            sessionTokens[tokenSessionTokenId[_token]].token == _token
         ) {
-            return sessionId;
+            return tokenSessionTokenId[_token];
         }
 
         return 0;
@@ -667,10 +655,7 @@ contract OAuth is ReentrancyGuard, Ownable {
      * @dev Requires that the token is not invalid or expired
      */
     function deactivateSessionFromToken(bytes32 _token) public onlyOwner {
-        require(
-            getSessionIdFromToken(_token) != 0,
-            "Invalid or Expired token provided"
-        );
+        require(getSessionIdFromToken(_token) != 0, "invalid token");
 
         deactivateSessionToken(getSessionIdFromToken(_token));
     }
@@ -684,13 +669,10 @@ contract OAuth is ReentrancyGuard, Ownable {
     function fetchUserInfo(
         bytes32 _token
     ) public view returns (CardStruct memory Card) {
-        require(
-            getSessionIdFromToken(_token) != 0,
-            "Invalid or Expired token provided"
-        );
+        require(getSessionIdFromToken(_token) != 0, "invalid token");
         require(
             doesCardExist[sessionTokens[getSessionIdFromToken(_token)].cardId],
-            "Card not found!"
+            "not found"
         );
 
         return cards[sessionTokens[getSessionIdFromToken(_token)].cardId];
@@ -712,14 +694,11 @@ contract OAuth is ReentrancyGuard, Ownable {
      * @dev Can be called by only contract owner
      * @dev Emits a Withdraw event
      */
-    function withdraw(
-        address receiver,
-        uint256 amount
-    ) public onlyOwner nonReentrant {
-        require(address(this).balance <= amount, "Insufficient funds");
+    function withdraw(address receiver, uint256 amount) public onlyOwner {
+        require(address(this).balance <= amount, "low balance");
 
         (bool success, ) = payable(receiver).call{value: amount}("");
-        if (!success) revert("Payment failed");
+        if (!success) revert("failed");
 
         emit Withdraw(receiver, amount, _time());
     }

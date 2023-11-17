@@ -1,7 +1,7 @@
 {
-  "name": "web3-oauth",
+  "name": "web3-oauth-react",
   "private": false,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Official React Library for Web3 OAuth",
   "main": "lib/index.umd.js",
   "module": "lib/index.mjs",

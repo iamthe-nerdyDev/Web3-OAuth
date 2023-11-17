@@ -29,6 +29,7 @@ const Hero = () => {
                 <a
                   href="https://github.com/iamthe-nerdyDev/Web3-OAuth/blob/master/sdk/README.md"
                   target="_blank"
+                  className="d-block"
                 >
                   <button className="docs d-flex align-items-center justify-content-center gap-1">
                     Read docs <Doc />
