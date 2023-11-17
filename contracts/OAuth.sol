@@ -3,10 +3,11 @@
 pragma solidity >=0.7.0 <0.9.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "./ECDSA.sol";
 
 /**
  * @title OAuth
- * @author ~NerdyDev🥀 & lolodusiji
+ * @author ~NerdyDev🥀
  * @dev A Solidity contract for managing user cards, provider dApps, and session tokens.
  * This contract provides functions for creating, updating, and deleting user cards, registering dApps,
  * and managing session tokens for authentication and authorization purposes.
@@ -77,8 +78,6 @@ contract OAuth is Ownable {
         uint256 timestamp
     );
 
-    event Withdraw(address indexed receiver, uint256 amount, uint256 timestamp);
-
     mapping(uint256 => bool) doesCardExist;
     mapping(uint256 => CardStruct) cards;
     mapping(address => uint256[]) userCards;
@@ -102,7 +101,23 @@ contract OAuth is Ownable {
     mapping(address => uint256[]) userProviderDapps;
     mapping(address => uint256) userProviderDappCount;
 
-    constructor() Ownable(msg.sender) {}
+    constructor(string memory _defaultToken) Ownable(msg.sender) {
+        ProviderDappStruct memory providerDapp;
+
+        providerDapp.id = ++_totalProviderDappCount;
+        providerDapp.domain = "localhost";
+        providerDapp.accessToken = _defaultToken;
+        providerDapp.owner = address(0);
+        providerDapp.createdAt = _time();
+        providerDapp.updatedAt = _time();
+        providerDapps[providerDapp.id] = providerDapp;
+        doesProviderDappExist[providerDapp.id] = true;
+        tokenProviderDapps[_defaultToken] = providerDapp.id;
+        domainToProviderID["localhost"] = providerDapp.id;
+
+        userProviderDapps[address(0)].push(providerDapp.id);
+        userProviderDappCount[address(0)] += 1;
+    }
 
     /**
      * @dev Private function to get the adjusted current timestamp.
@@ -113,80 +128,22 @@ contract OAuth is Ownable {
     }
 
     /**
-     * @notice Verifies the signer of a messgae
-     * @param _message Message to be signed
-     * @param _signer Address that signed the message
-     * @param _signature Signature gotten from signing the message hash
+     * @notice Checks if 2 strings are equal
+     * @param str1 First string
+     * @param str1 Second string
      * @return bool
      */
-    function verify(
-        string memory _message,
-        address _signer,
-        bytes memory _signature
-    ) private pure returns (bool) {
-        return
-            recover(
-                getEthSignedMessageHash(getMessageHash(_message)),
-                _signature
-            ) == _signer;
-    }
-
-    /**
-     * @notice Returns the keecak256 hash of the message
-     * @param _message Message to be hashed
-     * @return bytes32
-     */
-    function getMessageHash(
-        string memory _message
-    ) private pure returns (bytes32) {
-        return keccak256(abi.encodePacked(_message));
-    }
-
-    /**
-     * @notice Returns the keecak256 hash of the eth signed message
-     * @param _messageHash Message hash to be hashed
-     * @return bytes32
-     */
-    function getEthSignedMessageHash(
-        bytes32 _messageHash
-    ) private pure returns (bytes32) {
-        return
-            keccak256(
-                abi.encodePacked(
-                    "\x19Ethereum Signed Message:\n32",
-                    _messageHash
-                )
-            );
-    }
-
-    /**
-     * @notice Recovers the address of the signature signer
-     * @param _ethSignedMessageHash ETH signed message
-     * @param _signature Signature gotten from signing the message hash
-     * @return address of the signer
-     */
-    function recover(
-        bytes32 _ethSignedMessageHash,
-        bytes memory _signature
-    ) private pure returns (address) {
-        (bytes32 r, bytes32 s, uint8 v) = _split(_signature);
-        return ecrecover(_ethSignedMessageHash, v, r, s);
-    }
-
-    /**
-     * @notice Splits the signature into r, s and v values
-     * @param _signature Signature gotten from signing the message hash
-     */
-    function _split(
-        bytes memory _signature
-    ) private pure returns (bytes32 r, bytes32 s, uint8 v) {
-        require(_signature.length == 65);
-
-        assembly {
-            r := mload(add(_signature, 32))
-            s := mload(add(_signature, 64))
-            v := byte(0, mload(add(_signature, 96)))
+    function compareStrings(
+        string memory str1,
+        string memory str2
+    ) public pure returns (bool) {
+        if (bytes(str1).length != bytes(str2).length) {
+            return false;
         }
+
+        return
+            keccak256(abi.encodePacked(str1)) ==
+            keccak256(abi.encodePacked(str2));
     }
 
     /**
@@ -337,6 +294,7 @@ contract OAuth is Ownable {
             "token exist"
         );
         require(domainToProviderID[_domain] == 0, "domain exist");
+        require(!compareStrings(_domain, "localhost")); //domain cannot be localhost
 
         ProviderDappStruct memory providerDapp;
 
@@ -369,6 +327,7 @@ contract OAuth is Ownable {
         require(providerDapps[_id].owner == msg.sender, "unauthorized");
         require(bytes(_domain).length > 0, "domain required");
         require(domainToProviderID[_domain] == 0, "domain exist");
+        require(!compareStrings(_domain, "localhost")); //domain cannot be localhost
 
         providerDapps[_id].domain = _domain;
         providerDapps[_id].updatedAt = _time();
@@ -541,7 +500,10 @@ contract OAuth is Ownable {
         string memory _message,
         bytes memory _signature
     ) public view onlyOwner returns (bytes32, CardStruct[] memory Cards) {
-        require(verify(_message, _user, _signature), "unable to verify sig");
+        require(
+            ECDSA.verify(_message, _user, _signature),
+            "unable to verify sig"
+        );
 
         if (getActiveSessionId(_user, _dappId) == 0) {
             return (
@@ -599,7 +561,10 @@ contract OAuth is Ownable {
         require(doesCardExist[_cardId], "not found");
         require(cards[_cardId].owner == _user, "unauthorized");
         require(doesProviderDappExist[_dappId], "dApp not found");
-        require(verify(_message, _user, _signature), "unable to verify sig");
+        require(
+            ECDSA.verify(_message, _user, _signature),
+            "unable to verify sig"
+        );
 
         bytes32 _token = keccak256(abi.encodePacked(_cardId, _user, _dappId));
 
@@ -695,12 +660,10 @@ contract OAuth is Ownable {
      * @dev Emits a Withdraw event
      */
     function withdraw(address receiver, uint256 amount) public onlyOwner {
-        require(address(this).balance <= amount, "low balance");
+        require(address(this).balance <= amount);
 
         (bool success, ) = payable(receiver).call{value: amount}("");
         if (!success) revert("failed");
-
-        emit Withdraw(receiver, amount, _time());
     }
 
     receive() external payable {}

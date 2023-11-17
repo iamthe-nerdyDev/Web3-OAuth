@@ -7,10 +7,7 @@ const BASE_URL = "https://web3-oauth.onrender.com/v1";
 export const getDomain = (): string => {
   if (!window) throw new Error("window not defined!");
 
-  const domain = window.location.hostname;
-
-  if (domain === "localhost") return "*";
-  else return domain;
+  return window.location.hostname;
 };
 
 export const truncateAddress = (address?: string): string => {

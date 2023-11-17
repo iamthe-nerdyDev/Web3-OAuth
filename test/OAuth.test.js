@@ -49,7 +49,7 @@ describe("Contracts", () => {
     [owner, user1] = await ethers.getSigners();
 
     const Contract = await ethers.getContractFactory("OAuth");
-    contract = await Contract.connect(owner).deploy();
+    contract = await Contract.connect(owner).deploy("xxxx-test-key-xxxx"); //setting the _defaultToken value
 
     await contract.waitForDeployment();
 

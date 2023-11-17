@@ -4,7 +4,7 @@ const fs = require("fs");
 
 async function main() {
   const Contract = await hre.ethers.getContractFactory("OAuth");
-  const contract = await Contract.deploy();
+  const contract = await Contract.deploy("xxxx-localhost-key-xxxx"); //_defaultToken for localhost
 
   await contract.waitForDeployment();
 
