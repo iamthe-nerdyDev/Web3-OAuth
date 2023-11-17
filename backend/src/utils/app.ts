@@ -15,7 +15,7 @@ function createServer() {
       "Origin, X-Requested-Width, Content-Type, Accept, Authorization, cache"
     );
 
-    res.header("Access-Control-Allow-Headers", "POST, PATCH, GET");
+    res.header("Access-Control-Allow-Methods", "POST, PATCH, GET");
 
     if (req.method === "OPTIONS") return res.status(200).end();
     
