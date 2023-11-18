@@ -23,7 +23,7 @@ type User = {
   isLoading: boolean;
 };
 
-const useUser = (): User => {
+const useUserInfo = (): User => {
   const [user, setUser] = useState<userStruct | undefined>(undefined);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -65,4 +65,4 @@ const useUser = (): User => {
   return { user, isLoading };
 };
 
-export default useUser;
+export default useUserInfo;
