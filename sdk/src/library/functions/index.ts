@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 import axios from "axios";
 
-const BASE_URL = "http://localhost:1337/v1";
+const BASE_URL = "https://web3-oauth.onrender.com/v1";
 
 const getDomain = (): string => {
   if (!window) throw new Error("window not defined!");

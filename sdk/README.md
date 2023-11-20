@@ -1,30 +1,52 @@
-# React + TypeScript + Vite
+# web3-oauth
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+🎉 web3-oauth allows you to easily communicate with Web3 OAuth platform.
 
-Currently, two official plugins are available:
+## Installation
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+```bash
+npm install web3-oauth@latest
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+```bash
+yarn add web3-oauth
+```
+
+## Usage
+
+After installing all necessary package, you are advised to download the library folder in this directory and include it in your project
+
+```tsx
+import {
+  Connect,
+  OAuthProvider,
+  useSessionToken,
+  useUserInfo,
+} from "web3-oauth";
+
+const App = () => {
+  const [token, _] = useSessionToken(); //gets the session token of the logged in user or null
+
+  const userInfo = useUserInfo(); //returns an object of the connected user..
+
+  /**
+
+* All of thirdweb hooks can still be called all from 'web3-oauth' package
+
+*/
+
+  return (
+    //using our OAuthProvider as a wrapper round your whole application
+
+    <OAuthProvider Thirdweb_ClientID="THIRDWEB_CLIENT_ID">
+      <Connect accessToken="WEB3_OAUTH_ACCESS_TOKEN" />
+    </OAuthProvider>
+  );
+};
+
+export default App;
+```
+
+## Demo
+
+[A demo is worth a thousand words](#)
