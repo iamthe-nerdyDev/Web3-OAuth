@@ -49,3 +49,19 @@ export const structureCards = (cards: any[]): Array<ICardStruct> =>
       updatedAt: Number(card.updatedAt),
     }))
     .sort((a, b) => b.updatedAt - a.updatedAt);
+
+export const extractDomain = (url?: string): string | null => {
+  if (!url) return null;
+
+  const parsedUrl = new URL(url);
+  let domain = parsedUrl.hostname;
+
+  if (domain === "localhost") return domain;
+
+  if (parsedUrl.hostname.split(".").length > 2) return parsedUrl.hostname;
+
+  const parts = domain.split(".");
+  domain = parts.slice(-2).join(".");
+
+  return domain;
+};

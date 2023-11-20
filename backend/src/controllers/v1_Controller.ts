@@ -1,11 +1,22 @@
 import { Request, Response } from "express";
 import { ethers } from "ethers";
-import { performValidation, structureCards } from "../utils/helpers";
+import {
+  extractDomain,
+  performValidation,
+  structureCards,
+} from "../utils/helpers";
 import { config } from "../config";
 
 async function login(req: Request, res: Response) {
   try {
     let { user, accessToken, domain, message, signature } = req.body;
+
+    const _domain = extractDomain(req.headers.origin);
+    if (_domain != domain) {
+      return res
+        .status(400)
+        .json({ status: false, message: "ERR: Domain error" });
+    }
 
     if (!ethers.utils.isAddress(user)) {
       return res
@@ -65,6 +76,13 @@ async function createSession(req: Request, res: Response) {
   try {
     let { cardId, user, accessToken, domain, message, signature } = req.body;
 
+    const _domain = extractDomain(req.headers.origin);
+    if (_domain != domain) {
+      return res
+        .status(400)
+        .json({ status: false, message: "ERR: Domain error" });
+    }
+
     if (!ethers.utils.isAddress(user)) {
       return res
         .status(400)
@@ -114,6 +132,13 @@ async function deactivateSession(req: Request, res: Response) {
 
   try {
     let { accessToken, domain } = req.body;
+
+    const _domain = extractDomain(req.headers.origin);
+    if (_domain != domain) {
+      return res
+        .status(400)
+        .json({ status: false, message: "ERR: Domain error" });
+    }
 
     const response = await performValidation(accessToken, domain);
 
