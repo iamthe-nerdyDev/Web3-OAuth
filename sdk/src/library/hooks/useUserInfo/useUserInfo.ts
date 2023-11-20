@@ -6,63 +6,57 @@ import { ethers } from "ethers";
 import { useSigner } from "@thirdweb-dev/react";
 
 type userStruct = {
-  user?: {
-    address: string;
-    username: string;
-    image: string;
-    emailAddress: string;
-    bio: string;
-    createdAt: number;
-    updatedAt: number;
-  };
-  error?: string;
+  address: string;
+  username: string;
+  image: string;
+  emailAddress: string;
+  bio: string;
+  createdAt: number;
+  updatedAt: number;
 };
 
 type User = {
   user: userStruct | undefined;
+  error?: string;
   isLoading: boolean;
 };
 
 const useUserInfo = (): User => {
   const [user, setUser] = useState<userStruct | undefined>(undefined);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | undefined>(undefined);
 
   const signer = useSigner();
-  const sessionToken = useSessionToken();
+  const [token, _] = useSessionToken();
 
   const getInfoFromToken = async (sessionToken: string) => {
-    setIsLoading(true);
-
-    const contract = new ethers.Contract(contractAddress, abi, signer);
-
     try {
+      const contract = new ethers.Contract(contractAddress, abi, signer);
       const result = await contract.fetchUserInfo(sessionToken);
 
       setUser({
-        user: {
-          address: result.owner,
-          username: result.username,
-          image: result.pfp,
-          emailAddress: result.emailAddress,
-          bio: result.bio,
-          createdAt: Number(result.createdAt),
-          updatedAt: Number(result.updatedAt),
-        },
+        address: result.owner,
+        username: result.username,
+        image: result.pfp,
+        emailAddress: result.emailAddress,
+        bio: result.bio,
+        createdAt: Number(result.createdAt),
+        updatedAt: Number(result.updatedAt),
       });
     } catch (e: any) {
       console.error(e);
 
-      setUser({ error: e.message });
+      setError(e.message);
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    if (sessionToken) getInfoFromToken(sessionToken);
-  }, [sessionToken]);
+    if (token && signer) getInfoFromToken(token);
+  }, [token, signer]);
 
-  return { user, isLoading };
+  return { user, isLoading, error };
 };
 
 export default useUserInfo;

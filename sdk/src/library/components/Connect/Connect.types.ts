@@ -12,20 +12,22 @@ export interface ThemeProps {
 
 export interface ILoggedInBtn {
   accessToken: string;
-  address: string;
-  requiresSignIn: boolean | null;
   theme: Theme;
-  connectionStatus: "unknown" | "connected" | "disconnected" | "connecting";
-  setRequiresSignIn: React.Dispatch<React.SetStateAction<boolean | null>>;
 }
 
 export interface ISignInBtn extends ThemeProps {
   accessToken: string;
-  address: string;
+  setNewToken: (newToken: string) => void;
 }
 
-export interface ICardsProps {
+export interface ICardsProps extends ISignInBtn {
   cards: any[] | null;
   message: string;
   signature: string;
+  displayCardModal: boolean;
+  setDisplayCardModal: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export interface IConnectBtn extends ThemeProps {
+  className?: string;
 }

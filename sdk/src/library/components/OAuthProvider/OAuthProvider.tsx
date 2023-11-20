@@ -10,9 +10,6 @@ import {
 import { TelosEvmTestnet } from "@thirdweb-dev/chains";
 import { IWeb3OAuthProvider } from "./OAuthProvider.types";
 
-import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer } from "react-toastify";
-
 const OAuthProvider: React.FC<IWeb3OAuthProvider> = (props) => {
   return (
     <ThirdwebProvider
@@ -35,18 +32,6 @@ const OAuthProvider: React.FC<IWeb3OAuthProvider> = (props) => {
         isDarkMode: true,
       }}
     >
-      <ToastContainer
-        position="bottom-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme={props.theme || "light"}
-      />
       {props.children}
     </ThirdwebProvider>
   );

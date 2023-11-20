@@ -1,7 +1,13 @@
 import { ethers } from "ethers";
 import axios from "axios";
 
-const BASE_URL = "https://web3-oauth.onrender.com/v1";
+const BASE_URL = "http://localhost:1337/v1";
+
+const getDomain = (): string => {
+  if (!window) throw new Error("window not defined!");
+
+  return window.location.hostname;
+};
 
 export const truncateAddress = (
   address?: string,
@@ -21,16 +27,10 @@ export const truncateAddress = (
   return truncated;
 };
 
-export const getDomain = (): string => {
-  if (!window) throw new Error("window not defined!");
-
-  return window.location.hostname;
-};
-
 export const SignIn = async (accessToken: string, address: string) => {
   if (!window.ethereum) return false;
 
-  const messageToSign = `Hello, ${address}! This is a message to sign to ensure you are the real owner of this wallet.`;
+  const messageToSign = `Hello, ${address}! This is a message to sign to ensure you are the real owner of this wallet.${new Date().getDate()}`;
 
   const messageHash = ethers.utils.solidityKeccak256(
     ["string"],
@@ -88,7 +88,7 @@ export const createSession = async (
       accessToken,
     });
 
-    if (data?.status) return data?.token ?? null;
+    if (data?.status) return data?.token ?? false;
   } catch (e) {
     console.error(e);
   }
