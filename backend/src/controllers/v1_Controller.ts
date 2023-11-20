@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { ethers } from "ethers";
-import { performValidation } from "../utils/helpers";
+import { performValidation, structureCards } from "../utils/helpers";
 import { config } from "../config";
 
 async function login(req: Request, res: Response) {
@@ -45,7 +45,7 @@ async function login(req: Request, res: Response) {
       //return all the cards
       return res.status(200).json({
         status: true,
-        token: _login[1],
+        token: structureCards(_login[1]),
         message: "Cards fetched successfully!",
       });
     }
@@ -86,13 +86,19 @@ async function createSession(req: Request, res: Response) {
       signature
     );
 
+    console.log("Session:", _session);
+
     const receipt = await _session.wait();
+    console.log("Receipt:", receipt);
+
     const token = receipt.events[0].args[0];
+    console.log("Token:", token);
 
     return res
-      .json(200)
+      .status(200)
       .json({ status: true, message: "Session created", token });
   } catch (e: any) {
+    console.error(e);
     return res.status(500).json({ status: false, message: e.message });
   }
 }
@@ -119,7 +125,7 @@ async function deactivateSession(req: Request, res: Response) {
     const _tx = await Contract.deactivateSessionFromToken(token);
     await _tx.wait();
 
-    return res.json(200).json({ status: true, message: "Token deactivated" });
+    return res.status(200).json({ status: true, message: "Token deactivated" });
   } catch (e: any) {
     return res.status(500).json({ status: false, message: e.message });
   }

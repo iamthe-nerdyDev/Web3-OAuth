@@ -26,3 +26,15 @@ export interface ISignIn {
   message: string;
   signature: string;
 }
+
+export interface ICardStruct {
+  id: number;
+  owner: string;
+  username: string;
+  pfp: string;
+  emailAddress: string;
+  bio: string;
+  isDeleted: boolean;
+  createdAt: number;
+  updatedAt: number;
+}
