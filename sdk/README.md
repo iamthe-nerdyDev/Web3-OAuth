@@ -1,15 +1,15 @@
-# web3-oauth
+# web3-oauth-lib
 
-🎉 web3-oauth allows you to easily communicate with Web3 OAuth platform.
+🎉 web3-oauth-lib allows you to easily communicate with Web3 OAuth platform.
 
 ## Installation
 
 ```bash
-npm install web3-oauth@latest
+npm install web3-oauth-lib@latest
 ```
 
 ```bash
-yarn add web3-oauth
+yarn add web3-oauth-lib
 ```
 
 ## Usage
@@ -22,7 +22,7 @@ import {
   OAuthProvider,
   useSessionToken,
   useUserInfo,
-} from "web3-oauth";
+} from "web3-oauth-lib";
 
 const App = () => {
   const [token, _] = useSessionToken(); //gets the session token of the logged in user or null

@@ -1,8 +1,8 @@
 {
-  "name": "web3-oauth",
+  "name": "web3-oauth-lib",
   "description": "Official react npm library for Web3 OAuth",
   "private": false,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "main": "dist/index.umd.js",
   "module": "dist/index.es.js",
@@ -14,6 +14,12 @@
       "types": "./dist/index.d.ts"
     }
   },
+  "keywords": [
+    "web3",
+    "web3-oauth",
+    "oauth",
+    "identity"
+  ],
   "files": [
     "/dist"
   ],
