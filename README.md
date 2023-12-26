@@ -1,4 +1,4 @@
-![Web3 OAuth](https://iili.io/JCDdtRe.png)
+![Web3 OAuth](https://github.com/iamthe-nerdyDev/Web3-OAuth/assets/141498118/1f647cb9-8164-4f22-aa0c-29f2cbca3db7)
 
 ## Introduction
 
