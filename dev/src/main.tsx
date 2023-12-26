@@ -10,10 +10,10 @@ import {
   walletConnect,
 } from "@thirdweb-dev/react";
 
-import { TelosEvmTestnet } from "@thirdweb-dev/chains";
-
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+
+import customNetwork from "../custom-network.json";
 
 //@ts-ignore
 const CLIENT_ID = import.meta.env.VITE_THIRDWEB_CLIENT_ID;
@@ -27,8 +27,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         coinbaseWallet(),
         walletConnect(),
       ]}
-      activeChain={TelosEvmTestnet}
-      supportedChains={[TelosEvmTestnet]}
+      activeChain={customNetwork}
       autoSwitch={true}
       clientId={CLIENT_ID}
     >

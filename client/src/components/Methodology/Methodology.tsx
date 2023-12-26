@@ -31,8 +31,8 @@ const Methodology = () => {
                         <ul>
                           <li>
                             Our system will be built on the&nbsp;
-                            <span>Telos EVM blockchain</span>, utilizing various
-                            web3 libraries to ensure security and efficiency.
+                            <span>EVM blockchain</span>, utilizing various web3
+                            libraries to ensure security and efficiency.
                           </li>
                         </ul>
                       </div>

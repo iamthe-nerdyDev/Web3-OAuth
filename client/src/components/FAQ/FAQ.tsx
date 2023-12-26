@@ -13,7 +13,7 @@ const FAQ = () => {
     {
       question: "Can I create more than one profile card?",
       answer:
-        "Absolutely! You can create as many cards as possible. It won't be nice if there are some kind of restrictions attached right?",
+        "Absolutely! You can create as many cards as possible. Atleast for now.",
     },
     {
       question: "Can I connect more than one website to a card?",
@@ -22,12 +22,13 @@ const FAQ = () => {
     },
     {
       question: "Which EVM is powering Web3 OAuth",
-      answer: "Currently, Web3 OAuth is running on the Telos EVM Testnet",
+      answer:
+        "Currently, Web3 OAuth can run on any EVM Compatible chain but currently running on the FON Smart Chain",
     },
     {
       question: "Can NFTs be used as PFP when creating cards?",
       answer:
-        "100% possible. We tried to make it as easy as possible. You can always select your favourite NFT as a PFP",
+        "100% possible. We tried to make it as easy as possible. You can always select your favourite NFT as a PFP or even generate an image with help of our integrted AI",
     },
   ];
 

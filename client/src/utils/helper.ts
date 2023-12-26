@@ -26,7 +26,7 @@ export const truncateAddress = (address?: string): string => {
 };
 
 export const getContract = (_signer?: ethers.Signer): ethers.Contract => {
-  const RPC_URL = "https://testnet.telos.net/evm";
+  const RPC_URL = "https://fsc-dataseed1.fonscan.io";
   const provider = new ethers.providers.JsonRpcProvider(RPC_URL);
 
   const Contract = new ethers.Contract(

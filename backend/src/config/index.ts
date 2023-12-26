@@ -11,8 +11,8 @@ const contractABI = abi.abi;
 
 const EVM = {
   localhost: "http://localhost:8545",
-  testnet: "https://testnet.telos.net/evm",
-  mainnet: "https://mainnet.telos.net/evm",
+  testnet: "#",
+  mainnet: "https://fsc-dataseed1.fonscan.io",
 };
 
 const NETWORK_TYPE = process.env.NETWORK_TYPE;
@@ -21,6 +21,8 @@ if (!NETWORK_TYPE) throw new Error(".env variable not found: NETWORK_TYPE");
 let key: string | undefined;
 
 if (NETWORK_TYPE === "testnet") {
+  if (EVM.testnet === "#") throw new Error("Invalid testnet RPC URL");
+
   if (!process.env.TESTNET_PRIVATE_KEY) {
     throw new Error(".env variable not found: TESTNET_PRIVATE_KEY");
   }
