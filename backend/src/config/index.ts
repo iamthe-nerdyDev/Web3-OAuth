@@ -77,4 +77,8 @@ export const config: IConfig = {
     Contract,
     Wallet,
   },
+  keys: {
+    deepai: process.env.DEEPAI_KEY ?? "",
+    freeimage: process.env.FREEIMAGE_KEY ?? "",
+  },
 };

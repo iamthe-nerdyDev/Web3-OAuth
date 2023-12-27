@@ -9,12 +9,12 @@ module.exports = {
       url: "http://127.0.0.1:8545",
     },
     testnet: {
-      url: "https://testnet.telos.net/evm",
-      accounts: [process.env.TESTNET_PRIVATE_KEY],
+      url: "#",
+      accounts: [process.env.PRIVATE_KEY],
     },
     mainnet: {
-      url: "https://mainnet.telos.net/evm",
-      accounts: [process.env.MAINNET_PRIVATE_KEY],
+      url: "https://fsc-dataseed1.fonscan.io",
+      accounts: [process.env.PRIVATE_KEY],
     },
   },
   solidity: {

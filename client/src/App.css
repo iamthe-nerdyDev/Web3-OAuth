@@ -96,3 +96,11 @@ button:disabled {
 .disable-scroll {
   overflow: hidden !important;
 }
+
+.bu-2 {
+  border-bottom: 2px dotted #000;
+}
+
+.fw-bold {
+  font-weight: 500;
+}

@@ -13,3 +13,4 @@ export { default as Preview } from "./Preview";
 export { default as Loader } from "./Loader";
 export { default as AnchorLink } from "./AnchorLink";
 export { default as ImagePicker } from "./ImagePicker";
+export { default as ImageGenerator } from "./ImageGenerator";

@@ -16,6 +16,7 @@ export interface IConfig {
     Contract: ethers.Contract;
     Wallet: ethers.Wallet;
   };
+  keys: { deepai: string; freeimage: string };
 }
 
 export interface ISignIn {

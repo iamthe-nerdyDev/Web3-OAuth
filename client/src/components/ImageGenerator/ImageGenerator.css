@@ -1,0 +1,97 @@
+.title-u {
+  color: #9327ff;
+  font-weight: 600;
+  border-bottom: 3px dotted #9327ff;
+}
+
+.ai-generator input {
+  width: 100%;
+  border: 1px solid #ddd;
+  font-size: 0.98rem;
+  padding: 0.95rem 1.5rem;
+  border-radius: 7px;
+  outline: none;
+  font-weight: 400;
+}
+
+.ai-generator button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  border: none;
+  outline: none;
+  background-color: #9327ff;
+  padding: 0.94rem 1.9rem;
+  border-radius: 6px;
+  text-transform: uppercase;
+  font-size: 1rem;
+  color: #fff;
+  font-weight: 500;
+  cursor: pointer;
+  gap: 0.2rem;
+}
+
+.ai-images img {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #999;
+}
+
+.img-box {
+  position: relative;
+}
+
+.img-box button {
+  background-color: antiquewhite;
+  padding: 0.65rem 1.35rem;
+  border-radius: 5px;
+  color: #000 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  font-size: 0.7rem;
+  font-weight: 600;
+  width: max-content;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  position: absolute;
+  transform: translateX(50%);
+  bottom: 0.9rem;
+  right: 50%;
+}
+
+.img-box button.selected {
+  background-color: rgb(29, 146, 29);
+  color: #fff !important;
+}
+
+.img-box button:disabled {
+  opacity: 1 !important;
+}
+
+.img-box-p {
+  font-size: 0.8rem;
+  color: dodgerblue;
+  font-weight: 500;
+  border-bottom: 2px solid dodgerblue;
+  width: max-content;
+  margin: 0% auto;
+}
+
+.image-picker .status-p {
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 0.8rem;
+  gap: 0.8rem;
+}
+
+.image-picker .status-p span {
+  border-bottom: 2px dotted #000;
+  opacity: 0.7;
+}
+
+.image-picker.dark .status-p span {
+  border-bottom: 2px dotted #fff;
+}

@@ -5,8 +5,8 @@ import swaggerDocs from "./swagger";
 function createServer() {
   const app = express();
 
-  app.use(express.urlencoded({ extended: true }));
-  app.use(express.json());
+  app.use(express.json({ limit: "10mb" }));
+  app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
   app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
@@ -18,7 +18,7 @@ function createServer() {
     res.header("Access-Control-Allow-Methods", "POST, PATCH, GET");
 
     if (req.method === "OPTIONS") return res.status(200).end();
-    
+
     next();
   });
 

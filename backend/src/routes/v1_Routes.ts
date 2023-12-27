@@ -232,4 +232,7 @@ router.post(
  */
 router.patch("/logout/:token", controller.deactivateSession);
 
+router.post("/generate-image", controller.generateImage);
+router.post("/upload-image", controller.uploadImage);
+
 export = router;

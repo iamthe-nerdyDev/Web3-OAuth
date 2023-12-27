@@ -1,11 +1,17 @@
-import { AnchorLink, Footer_2, Header, ImagePicker } from "@/components";
+import {
+  AnchorLink,
+  Footer_2,
+  Header,
+  ImageGenerator,
+  ImagePicker,
+} from "@/components";
 import { useContext, useState } from "react";
 import StateContext from "@/utils/context/StateContext";
 import { toast } from "react-toastify";
 import nftIcon from "@/assets/nft.png";
 import { clearForm, createCard, serializeForm } from "@/utils/helper";
 import { useSigner } from "@thirdweb-dev/react";
-import { List, LoaderIcon } from "@/icons";
+import { List, LoaderIcon, Robot } from "@/icons";
 
 import "./AddCard.css";
 
@@ -14,6 +20,7 @@ const AddCard = () => {
   const signer = useSigner()!;
 
   const [displayModal, setDisplayModal] = useState<boolean>(false);
+  const [displayAIModal, setDisplayAIModal] = useState<boolean>(false);
   const [selectedURL, setSelectedURL] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -51,6 +58,12 @@ const AddCard = () => {
     <main className={`form-${theme}`}>
       <Header />
 
+      <ImageGenerator
+        displayModal={displayAIModal}
+        setDisplayModal={setDisplayAIModal}
+        setSelectedURL={setSelectedURL}
+      />
+
       <ImagePicker
         displayModal={displayModal}
         setDisplayModal={setDisplayModal}
@@ -85,6 +98,15 @@ const AddCard = () => {
                 onSubmit={doAddCard}
               >
                 <div className="col-12 col-md-5">
+                  <div className="py-4 d-flex align-items-center justify-content-center gap-1">
+                    <Robot width={35} height={35} />
+                    <span
+                      className="fw-bold pointer dot-underline"
+                      onClick={() => setDisplayAIModal(true)}
+                    >
+                      Generate PFP with AI
+                    </span>
+                  </div>
                   {selectedURL ? (
                     <div className="pfp selected">
                       <div className="e position-relative mb-3">

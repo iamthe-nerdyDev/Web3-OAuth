@@ -2,12 +2,13 @@ import {
   AnchorLink,
   Footer_2,
   Header,
+  ImageGenerator,
   ImagePicker,
   Loader,
 } from "@/components";
 import { useContext, useEffect, useState } from "react";
 import StateContext from "@/utils/context/StateContext";
-import { List, LoaderIcon, Revert } from "@/icons";
+import { List, LoaderIcon, Revert, Robot } from "@/icons";
 import { useParams } from "react-router-dom";
 import { ICardStruct } from "@/interface";
 import { useAddress, useSigner } from "@thirdweb-dev/react";
@@ -47,6 +48,7 @@ const AddCard = () => {
   }, [isMounting, address]);
 
   const [displayModal, setDisplayModal] = useState<boolean>(false);
+  const [displayAIModal, setDisplayAIModal] = useState<boolean>(false);
   const [selectedURL, setSelectedURL] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -104,6 +106,12 @@ const AddCard = () => {
     <main className={`form-${theme}`}>
       <Header />
 
+      <ImageGenerator
+        displayModal={displayAIModal}
+        setDisplayModal={setDisplayAIModal}
+        setSelectedURL={setSelectedURL}
+      />
+
       <ImagePicker
         displayModal={displayModal}
         setDisplayModal={setDisplayModal}
@@ -139,6 +147,16 @@ const AddCard = () => {
               >
                 <input type="hidden" name="pfp" id="pfp" />
                 <div className="col-12 col-md-5">
+                  <div className="py-4 d-flex align-items-center justify-content-center gap-1">
+                    <Robot width={35} height={35} />
+                    <span
+                      className="fw-bold pointer dot-underline"
+                      onClick={() => setDisplayAIModal(true)}
+                    >
+                      Generate PFP with AI
+                    </span>
+                  </div>
+
                   <div className="pfp selected">
                     <div className="e position-relative mb-3">
                       <img src={selectedURL ?? card.pfp} alt="NFT Sample" />

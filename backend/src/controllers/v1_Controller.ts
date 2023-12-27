@@ -6,6 +6,73 @@ import {
   structureCards,
 } from "../utils/helpers";
 import { config } from "../config";
+import request from "request";
+
+async function uploadImage(req: Request, res: Response) {
+  try {
+    const { image } = req.body;
+
+    if (!image) return res.sendStatus(400);
+
+    const formdata = new FormData();
+    formdata.append("key", config.keys.freeimage);
+    formdata.append("action", "upload");
+    formdata.append("source", image);
+    formdata.append("format", "json");
+
+    const response = await fetch("https://freeimage.host/api/1/upload", {
+      method: "POST",
+      body: formdata,
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) return res.sendStatus(response.status);
+
+    if (data?.status_code === 200 && data?.success?.code === 200) {
+      return res.status(200).json({
+        status: true,
+        url: (data?.image?.file?.resource?.chain?.image as string) ?? null,
+      });
+    }
+
+    return res.sendStatus(409);
+  } catch (e: any) {
+    console.error(e);
+
+    return res.sendStatus(500);
+  }
+}
+
+async function generateImage(req: Request, res: Response) {
+  const { text } = req.body as { text: string };
+
+  const endpoint = "https://api.deepai.org/api/cyberpunk-portrait-generator";
+
+  try {
+    const headers = new Headers();
+    headers.append("api-key", config.keys.deepai);
+    headers.append("Content-Type", "application/json");
+
+    const body = JSON.stringify({ text });
+
+    const response = await fetch(endpoint, { method: "POST", headers, body });
+
+    const data = await response.json();
+
+    if (!response.ok) return res.sendStatus(response.status);
+
+    if (data.output_url) {
+      const url = data.output_url;
+
+      request.get(url).pipe(res);
+    } else return res.sendStatus(400);
+  } catch (e: any) {
+    console.error(e);
+
+    return res.sendStatus(500);
+  }
+}
 
 async function login(req: Request, res: Response) {
   try {
@@ -156,4 +223,10 @@ async function deactivateSession(req: Request, res: Response) {
   }
 }
 
-export default { login, createSession, deactivateSession };
+export default {
+  login,
+  createSession,
+  deactivateSession,
+  uploadImage,
+  generateImage,
+};
