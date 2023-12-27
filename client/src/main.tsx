@@ -11,7 +11,7 @@ import {
 } from "@thirdweb-dev/react";
 
 import StateProvider from "./utils/context/StateProvider.tsx";
-import customNetwork from "../custom-network.json";
+import customNetwork from "./custom-network.json";
 
 //@ts-ignore
 const CLIENT_ID = import.meta.env.VITE_THIRDWEB_CLIENT_ID;

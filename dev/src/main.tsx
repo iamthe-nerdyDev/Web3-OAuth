@@ -13,7 +13,7 @@ import {
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 
-import customNetwork from "../custom-network.json";
+import customNetwork from "./custom-network.json";
 
 //@ts-ignore
 const CLIENT_ID = import.meta.env.VITE_THIRDWEB_CLIENT_ID;
