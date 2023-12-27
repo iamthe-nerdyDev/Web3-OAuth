@@ -180,10 +180,18 @@ export const newNFTObj = (data: OwnedNftsResponse): INewNFT[] => {
     if (metaData && metaData.image) {
       newArr.push({
         name: metaData.name ?? "undefined",
-        image: metaData.image,
+        image: getValidURLIfIPFS(metaData.image),
       });
     }
   }
 
   return newArr;
+};
+
+const getValidURLIfIPFS = (url: string) => {
+  if (url.startsWith("ipfs://")) {
+    return `https://ipfs.io/ipfs/${url.substring("ipfs://".length)}`;
+  }
+
+  return url;
 };

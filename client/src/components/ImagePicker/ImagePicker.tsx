@@ -23,16 +23,40 @@ const ImagePicker = ({
   const [currentTab, setCurrentTab] = useState<"one" | "two">("one");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [nfts, setNfts] = useState<INewNFT[]>([]);
+  const [chain, setChain] = useState<string>();
+  const [network, setNetwork] = useState<Network>();
 
-  const config = {
-    apiKey: import.meta.env.VITE_ALCHEMY_KEY!,
-    network: Network.ETH_MAINNET,
-  };
-
-  const alchemy = new Alchemy(config);
+  useEffect(() => {
+    if (chain) {
+      if (chain === "arb_geo") setNetwork(Network.ARB_GOERLI);
+      if (chain === "arb_main") setNetwork(Network.ARB_MAINNET);
+      if (chain === "arb_sep") setNetwork(Network.ARB_SEPOLIA);
+      if (chain === "astar_main") setNetwork(Network.ASTAR_MAINNET);
+      if (chain === "base_geo") setNetwork(Network.BASE_GOERLI);
+      if (chain === "base_main") setNetwork(Network.BASE_MAINNET);
+      if (chain === "eth_geo") setNetwork(Network.ETH_GOERLI);
+      if (chain === "eth_main") setNetwork(Network.ETH_MAINNET);
+      if (chain === "eth_sep") setNetwork(Network.ETH_SEPOLIA);
+      if (chain === "matic_main") setNetwork(Network.MATIC_MAINNET);
+      if (chain === "matic_mumbai") setNetwork(Network.MATIC_MUMBAI);
+      if (chain === "opt_geo") setNetwork(Network.OPT_GOERLI);
+      if (chain === "opt_main") setNetwork(Network.OPT_MAINNET);
+      if (chain === "polygon_main") setNetwork(Network.POLYGONZKEVM_MAINNET);
+      if (chain === "polygon_test") setNetwork(Network.POLYGONZKEVM_TESTNET);
+    } else setChain("eth_main");
+  }, [chain]);
 
   const getAllNFTS = async () => {
     if (!address) return;
+
+    const config = {
+      apiKey: import.meta.env.VITE_ALCHEMY_KEY!,
+      network,
+    };
+
+    const alchemy = new Alchemy(config);
+
+    setIsLoading(true);
 
     try {
       const _nfts = await alchemy.nft.getNftsForOwner(address);
@@ -40,6 +64,8 @@ const ImagePicker = ({
       return newNFTObj(_nfts);
     } catch (e: any) {
       toast.error("Unable to fetch NFTs");
+    } finally {
+      setIsLoading(false);
     }
 
     return [];
@@ -52,7 +78,7 @@ const ImagePicker = ({
     }
 
     init();
-  }, []);
+  }, [network]);
 
   const onlineURL = (e: any) => {
     e.preventDefault();
@@ -111,6 +137,32 @@ const ImagePicker = ({
             currentTab === "one" ? "d-block" : "d-none"
           }`}
         >
+          <div className="entries">
+            <select
+              defaultValue={chain}
+              onChange={(e) => setChain(e.target.value)}
+            >
+              <option value="" disabled>
+                -- select chain --
+              </option>
+              <option value="arb_geo">Arbitrium (Georli)</option>
+              <option value="arb_main">Arbitrium (Mainnet)</option>
+              <option value="arb_sep">Arbitrium (Sepolia)</option>
+              <option value="astar_main">Astar (Mainnet)</option>
+              <option value="base_geo">Base (Georli)</option>
+              <option value="base_main">Base (Mainnet)</option>
+              <option value="eth_geo">Ethereum (Georli)</option>
+              <option value="eth_main">Ethereum (Mainnet)</option>
+              <option value="eth_sep">Ethereum (Sepolia)</option>
+              <option value="matic_main">Matic (Mainnet)</option>
+              <option value="matic_mumbai">Matic (Mumbai)</option>
+              <option value="opt_geo">Optimism (Georli)</option>
+              <option value="opt_main">Optimism (Mainnet)</option>
+              <option value="polygon_test">Polygon zkEVM (Testnet)</option>
+              <option value="polygon_main">Polygon zkEVM (Mainnet)</option>
+            </select>
+          </div>
+
           {isLoading ? (
             <div className="py-5">
               <LoaderIcon />
