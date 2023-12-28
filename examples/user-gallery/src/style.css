@@ -1,0 +1,382 @@
+* {
+  font-family: "Montserrat", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --tw-gradient-to: #9333ea;
+  --tw-gradient-from: #86efac;
+  --tw-gradient-stops: var(--tw-gradient-from), #3b82f6,
+    var(--tw-gradient-to, rgba(59, 130, 246, 0));
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+body {
+  background-color: #000;
+  color: #fff;
+}
+
+nav {
+  color: #000;
+  background-color: #000;
+  border-bottom: 1px solid #222;
+}
+
+nav .menu {
+  color: #fff;
+  font-size: 1.5rem;
+  background-color: #111;
+  width: 3.5rem;
+  height: 3rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  border: 1px solid #222;
+}
+
+.desktop-box {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.desktop-box > div:first-child {
+  width: 26rem;
+  border-right: 1px solid #222;
+}
+
+.desktop-box > div:last-child {
+  width: calc(100vw - 26rem);
+  overflow-y: auto;
+}
+
+.mobile-sidebar {
+  position: fixed;
+  width: 85%;
+  max-width: 27rem;
+  z-index: 99;
+  border-right: 1px solid #222;
+  animation-name: slideIn;
+  animation-duration: 0.6s;
+  -webkit-animation-name: slideIn;
+  -webkit-animation-duration: 0.6s;
+}
+
+@keyframes slideIn {
+  from {
+    left: -300px;
+  }
+  to {
+    left: 0;
+  }
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 9;
+}
+
+.overlay .close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  color: #fff;
+  font-size: 1.3rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  z-index: 99999;
+}
+
+.sidebar {
+  background-color: #000;
+  color: #fff;
+  width: 100%;
+  height: 100vh;
+}
+
+.sidebar .logo {
+  background-color: #111;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 5px;
+  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #222;
+}
+
+.sidebar .head {
+  border-bottom: 1px solid #222;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.sidebar .head p {
+  opacity: 0.5;
+  font-size: 0.95rem;
+}
+
+.sidebar .head p span {
+  border-bottom: 2px solid #fff;
+  font-weight: 600;
+  padding: 0.1rem 0.15rem;
+}
+
+.sidebar .body {
+  height: 100%;
+  overflow-y: auto;
+  padding-bottom: 18rem;
+}
+
+.sidebar .body ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0 1rem;
+  margin-bottom: 1rem;
+}
+
+.sidebar .body ul li.list {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  border-bottom: 1px solid #333;
+  padding: 1.15rem 0;
+}
+
+.sidebar .body .header {
+  background-color: #111;
+  border-top: 1px solid #222;
+  border-bottom: 1px solid #222;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+}
+
+.sidebar .body ul li.list:last-child {
+  border-bottom: none;
+}
+
+.sidebar .body ul li.list img {
+  width: 3.8rem;
+  height: 3.8rem;
+  border-radius: 50%;
+}
+
+.sidebar .body ul li.list > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  line-height: 0;
+}
+
+.sidebar .body ul li.list > div p {
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.sidebar .body ul li.list > div p svg {
+  fill: dodgerblue;
+}
+
+.sidebar .body ul li.list > div span {
+  font-weight: 500;
+  opacity: 0.6;
+  font-size: 0.8rem;
+}
+
+.welcome-box {
+  height: 88vh;
+  margin: 0% auto;
+  width: 100%;
+  max-width: 35rem;
+  gap: 0.4rem;
+}
+
+.welcome-box h1 {
+  font-weight: 700;
+}
+
+.welcome-box h1 span {
+  border-bottom: 4px solid #0aa889;
+  color: #0aa889;
+  padding: 0 0.2rem;
+}
+
+.welcome-box img {
+  width: 10rem;
+}
+
+.welcome-box p {
+  line-height: 230%;
+  font-size: 0.9rem;
+  font-weight: 400;
+  opacity: 0.5;
+  z-index: -1;
+}
+
+.welcome-box > div {
+  color: #000;
+  gap: 1.5rem;
+}
+
+.welcome-box > div a {
+  color: dodgerblue;
+  text-transform: uppercase;
+  font-weight: 600;
+  border-bottom: 2px solid dodgerblue;
+  padding: 0rem 1rem;
+  padding-bottom: 0.35rem;
+  font-size: 0.9rem;
+}
+
+.user .bg {
+  background-image: linear-gradient(to right, var(--tw-gradient-stops));
+  width: 100%;
+  height: 10rem;
+}
+
+.user .header {
+  position: relative;
+  margin-bottom: 7rem;
+}
+
+.user .header img {
+  width: 6.5rem;
+  height: 6.5rem;
+  border-radius: 50%;
+}
+
+.user .header .d-flex {
+  gap: 1.4rem;
+  position: absolute;
+  bottom: -8rem;
+  left: 1.5rem;
+}
+
+.user .header .d-flex h2 {
+  font-weight: 600;
+}
+
+@media screen and (min-width: 768px) {
+  .user .header img {
+    width: 7.5rem;
+    height: 7.5rem;
+  }
+
+  .user .header .d-flex {
+    bottom: -5rem;
+    gap: 1.2rem;
+  }
+
+  .user .header .d-flex h2 {
+    padding-top: 2.3rem;
+  }
+}
+
+.user .header .d-flex svg {
+  fill: dodgerblue;
+}
+
+.user .info {
+  border: 1px solid #333;
+  background-color: #111;
+  border-radius: 5px;
+  padding: 2rem 1.8rem;
+}
+
+.user .info ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.7rem;
+}
+
+.user .info ul li {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.user .info ul li > div {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.user .info ul li > div svg {
+  font-size: 1.3rem;
+}
+
+.user .info ul li > div span {
+  font-size: 0.9rem;
+  border-bottom: 1px solid #fff;
+  padding: 0.1rem 0.2rem;
+}
+
+.user .info ul li > svg {
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.user .details hr {
+  background-color: #888;
+  width: 4rem;
+  height: 1px;
+  opacity: 0.4;
+}
+
+.user .details p {
+  font-size: 0.95rem;
+  line-height: 210%;
+  opacity: 0.5;
+  font-weight: 400;
+}
+
+.user .details .email {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #111;
+  border: 1px solid #555;
+  padding: 0.9rem 1rem;
+  border-radius: 5px;
+}
+
+.user .details .email span {
+  font-size: 0.95rem;
+}
+
+.user .details .email svg {
+  cursor: pointer;
+}
+
+.powered {
+  font-size: 0.9rem;
+  font-weight: 400;
+}
+
+.powered strong {
+  border-bottom: 2px solid dodgerblue;
+  font-weight: 400;
+  color: dodgerblue;
+  padding: 0.2rem 0.1rem;
+}
