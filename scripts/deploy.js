@@ -3,8 +3,17 @@ const hre = require("hardhat");
 const fs = require("fs");
 
 async function main() {
-  const Contract = await hre.ethers.getContractFactory("OAuth");
-  const contract = await Contract.deploy("xxxx-localhost-key-xxxx"); //_defaultToken for localhost
+  const Utils = await hre.ethers.getContractFactory("Utils");
+  const util = await Utils.deploy();
+
+  await util.waitForDeployment();
+
+  const Contract = await hre.ethers.getContractFactory("OAuth", {
+    libraries: {
+      Utils: util.target,
+    },
+  });
+  const contract = await Contract.deploy();
 
   await contract.waitForDeployment();
 

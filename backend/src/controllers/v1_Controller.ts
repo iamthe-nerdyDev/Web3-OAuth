@@ -8,7 +8,11 @@ import {
 import { config } from "../config";
 import request from "request";
 
+const CLIENT_URL = "https://web3-o-auth.vercel.app/";
+
 async function uploadImage(req: Request, res: Response) {
+  res.setHeader("Access-Control-Allow-Origin", CLIENT_URL);
+
   try {
     const { image } = req.body;
 
@@ -45,6 +49,8 @@ async function uploadImage(req: Request, res: Response) {
 }
 
 async function generateImage(req: Request, res: Response) {
+  res.setHeader("Access-Control-Allow-Origin", CLIENT_URL);
+
   const { text } = req.body as { text: string };
 
   const endpoint = "https://api.deepai.org/api/cyberpunk-portrait-generator";
