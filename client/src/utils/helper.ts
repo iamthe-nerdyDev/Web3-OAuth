@@ -4,9 +4,9 @@ import { abi } from "../contracts/OAuth.json";
 import { ICardParams, ICardStruct, IDAppStruct, INewNFT } from "@/interface";
 import { OwnedNftsResponse } from "alchemy-sdk";
 
-const logError = (e: any) => {
-  console.error("Err:", e);
-};
+const logError = (e: any) => console.error("Err:", e);
+
+const formatTimestamp = (input: number) => input * 1000 + 1000;
 
 export const truncateAddress = (address?: string): string => {
   if (!address) return "null";
@@ -38,14 +38,10 @@ export const getContract = (_signer?: ethers.Signer): ethers.Contract => {
   return Contract;
 };
 
-export const getDappsConnectedToCard = async (
-  address: string,
-  cardId: number,
-  signer: ethers.Signer
-) => {
-  const Contract = getContract(signer);
+export const getDappsConnectedToCard = async (cardId: number) => {
+  const Contract = getContract();
 
-  const result = await Contract.getDappsConnectedToCard(address, cardId);
+  const result = await Contract.getdAppsConnectedToCard(cardId);
 
   return structureDApps(result);
 };
@@ -61,7 +57,7 @@ export const getUserCards = async (address: string) => {
 export const getUserCard = async (cardId: number, signer: ethers.Signer) => {
   const Contract = getContract(signer);
 
-  const result = await Contract.getUserCard(cardId);
+  const result = await Contract.getCard(cardId);
 
   return structureCards([result])[0];
 };
@@ -128,11 +124,11 @@ const structureCards = (cards: any[]): Array<ICardStruct> =>
       owner: card.owner,
       username: card.username,
       pfp: card.pfp,
-      emailAddress: card.emailAddress,
+      emailAddress: card.email,
       bio: card.bio,
       isDeleted: card.isDeleted,
-      createdAt: Number(card.createdAt),
-      updatedAt: Number(card.updatedAt),
+      createdAt: formatTimestamp(Number(card.createdAt)),
+      updatedAt: formatTimestamp(Number(card.updatedAt)),
     }))
     .sort((a, b) => b.updatedAt - a.updatedAt);
 

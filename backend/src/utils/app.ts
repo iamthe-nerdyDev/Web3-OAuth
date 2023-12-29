@@ -1,6 +1,7 @@
 import express from "express";
-import v1Routes from "../routes/v1_Routes";
-import swaggerDocs from "./swagger";
+import cors from "cors";
+import Routes from "../routes/Routes";
+import { config } from "../config";
 
 function createServer() {
   const app = express();
@@ -8,29 +9,32 @@ function createServer() {
   app.use(express.json({ limit: "10mb" }));
   app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
+  app.use(
+    cors({
+      origin: config.mode.isDev
+        ? "http://localhost:5174"
+        : "https://web3-o-auth.vercel.app",
+      methods: ["GET", "POST"],
+      allowedHeaders: [
+        "Origin",
+        "X-Requested-With",
+        "Content-Type",
+        "Accept",
+        "Authorization",
+        "cache",
+      ],
+    })
+  );
+
   app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header(
-      "Access-Control-Allow-Headers",
-      "Origin, X-Requested-Width, Content-Type, Accept, Authorization, cache"
-    );
-
-    res.header("Access-Control-Allow-Methods", "POST, PATCH, GET");
-
-    if (req.method === "OPTIONS") return res.status(200).end();
+    if (req.method === "OPTIONS") return res.sendStatus(200);
 
     next();
   });
 
-  app.use("/v1", v1Routes);
+  app.use("/v1/", Routes);
 
-  swaggerDocs(app); //starting docs server..
-
-  app.use((req, res) => {
-    return res
-      .status(404)
-      .json({ status: false, mesage: "endpoint not found!" });
-  });
+  app.use((_, res) => res.status(500).send("Oops! Something ain't right"));
 
   return app;
 }

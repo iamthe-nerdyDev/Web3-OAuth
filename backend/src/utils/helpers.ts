@@ -1,39 +1,16 @@
-import { config } from "../config";
-import { ICardStruct } from "../interface";
+import { OwnedNftsResponse } from "alchemy-sdk";
 
-async function getDappInfoFromToken(accessToken: string) {
-  const Contract = config.contract.Contract;
-
-  if (!Contract || !accessToken) return false;
-
-  try {
-    const result = await Contract.getDappFromToken(accessToken);
-
-    return result;
-  } catch (e: any) {
-    console.error(e);
-    return e.message;
-  }
-}
-
-export async function performValidation(accessToken: string, domain: string) {
-  try {
-    const response = await getDappInfoFromToken(accessToken);
-
-    if (typeof response === "string") return response;
-
-    if (!response) return "dApp not found";
-
-    if (response.id == 0) return "Invalid access token";
-
-    if (response.domain != domain) return "ERR: Domain not registered to token";
-
-    return response;
-  } catch (e: any) {
-    console.error(e);
-    return e.message;
-  }
-}
+type ICardStruct = {
+  id: number;
+  owner: string;
+  username: string;
+  pfp: string;
+  emailAddress: string;
+  bio: string;
+  isDeleted: boolean;
+  createdAt: number;
+  updatedAt: number;
+};
 
 export const structureCards = (cards: any[]): Array<ICardStruct> =>
   cards
@@ -50,18 +27,41 @@ export const structureCards = (cards: any[]): Array<ICardStruct> =>
     }))
     .sort((a, b) => b.updatedAt - a.updatedAt);
 
-export const extractDomain = (url?: string): string | null => {
-  if (!url) return null;
+type IDAppStruct = { domain: string };
 
-  const parsedUrl = new URL(url);
-  let domain = parsedUrl.hostname;
+export const structureDApps = (dApps: any[]): Array<IDAppStruct> =>
+  dApps
+    .map((dApp) => ({ domain: dApp.domain }))
+    .sort((a, b) => b.domain - a.domain);
 
-  if (domain === "localhost") return domain;
+type INewNFT = {
+  name: string;
+  image: string;
+};
 
-  if (parsedUrl.hostname.split(".").length > 2) return parsedUrl.hostname;
+export const newNFTObj = (data: OwnedNftsResponse): INewNFT[] => {
+  const newArr = [];
 
-  const parts = domain.split(".");
-  domain = parts.slice(-2).join(".");
+  for (let i in data.ownedNfts) {
+    let _data = data.ownedNfts[i];
 
-  return domain;
+    const metaData = _data.rawMetadata;
+
+    if (metaData && metaData.image) {
+      newArr.push({
+        name: metaData.name ?? "undefined",
+        image: getValidURLIfIPFS(metaData.image),
+      });
+    }
+  }
+
+  return newArr;
+};
+
+const getValidURLIfIPFS = (url: string) => {
+  if (url.startsWith("ipfs://")) {
+    return `https://ipfs.io/ipfs/${url.substring("ipfs://".length)}`;
+  }
+
+  return url;
 };

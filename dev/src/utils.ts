@@ -27,21 +27,6 @@ export const truncateAddress = (address?: string): string => {
   return truncated;
 };
 
-export const getUniqueString = () => {
-  let length = 32;
-
-  const charset =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  let result = "";
-
-  for (let i = 0; i < length; i++) {
-    const randomIndex = Math.floor(Math.random() * charset.length);
-    result += charset.charAt(randomIndex);
-  }
-
-  return result;
-};
-
 export const getDApps = async (signer: ethers.Signer) => {
   const Contract = getContract(signer);
 

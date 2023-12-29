@@ -40,11 +40,8 @@ const CardDetails = () => {
 
         try {
           const _card = await getUserCard(parseInt(cardId!), signer);
-          const _dApps = await getDappsConnectedToCard(
-            address,
-            parseInt(cardId!),
-            signer
-          );
+          console.log(_card);
+          const _dApps = await getDappsConnectedToCard(parseInt(cardId!));
 
           setConnectedDapps(_dApps);
           setCard(_card);

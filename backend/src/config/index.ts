@@ -1,74 +1,50 @@
 import dotenv from "dotenv";
-import { IConfig } from "../interface";
 import abi from "../contracts/OAuth.json";
 import address from "../contracts/contractAddress.json";
 import { ethers } from "ethers";
 
 dotenv.config();
 
+type IConfig = {
+  mode: { mode: "prod" | "dev"; isProd: boolean; isDev: boolean };
+  network: { pk: string; rpc_url: string };
+  server: {
+    port: number;
+  };
+  contract: {
+    address: string;
+    abi: any;
+    Provider: ethers.providers.JsonRpcProvider;
+    Contract: ethers.Contract;
+    Wallet: ethers.Wallet;
+  };
+  keys: { deepai?: string; freeimage?: string; alchemy?: string };
+};
+
 const contractAddress = address.address;
 const contractABI = abi.abi;
 
-const EVM = {
-  localhost: "http://localhost:8545",
-  testnet: "#",
-  mainnet: "https://fsc-dataseed1.fonscan.io",
-};
+const rpc_url = "https://fsc-dataseed1.fonscan.io";
 
-const NETWORK_TYPE = process.env.NETWORK_TYPE;
-if (!NETWORK_TYPE) throw new Error(".env variable not found: NETWORK_TYPE");
+const key = process.env.PRIVATE_KEY;
+if (!key) throw new Error(".env variable missing: PRIVATE_KEY");
 
-let key: string | undefined;
-
-if (NETWORK_TYPE === "testnet") {
-  if (EVM.testnet === "#") throw new Error("Invalid testnet RPC URL");
-
-  if (!process.env.TESTNET_PRIVATE_KEY) {
-    throw new Error(".env variable not found: TESTNET_PRIVATE_KEY");
-  }
-
-  key = process.env.TESTNET_PRIVATE_KEY;
+const mode = process.env.MODE || "dev";
+if (mode !== "prod" && mode !== "dev") {
+  throw new Error(".env variable `MODE` should be either prod or dev");
 }
-
-if (NETWORK_TYPE === "mainnet") {
-  if (!process.env.MAINNET_PRIVATE_KEY) {
-    throw new Error(".env variable not found: MAINNET_PRIVATE_KEY");
-  }
-
-  key = process.env.MAINNET_PRIVATE_KEY;
-}
-
-if (NETWORK_TYPE === "localhost") {
-  if (!process.env.LOCALHOST_PRIVATE_KEY) {
-    throw new Error(".env variable not found: LOCALHOST_PRIVATE_KEY");
-  }
-
-  key = process.env.LOCALHOST_PRIVATE_KEY;
-}
-
-if (!key) throw new Error("key not found");
 
 const SERVER_PORT = process.env.SERVER_PORT
   ? parseInt(process.env.SERVER_PORT)
   : 1337;
 
-const evm =
-  NETWORK_TYPE == "localhost"
-    ? EVM.localhost
-    : NETWORK_TYPE == "mainnet"
-    ? EVM.mainnet
-    : EVM.testnet;
-
-const Provider = new ethers.providers.JsonRpcProvider(evm);
+const Provider = new ethers.providers.JsonRpcProvider(rpc_url);
 const Wallet = new ethers.Wallet(key, Provider);
 const Contract = new ethers.Contract(contractAddress, contractABI, Wallet);
 
 export const config: IConfig = {
-  network: {
-    key,
-    NETWORK_TYPE,
-    EVM: evm,
-  },
+  mode: { mode, isProd: mode === "prod", isDev: mode === "dev" },
+  network: { pk: key, rpc_url },
   server: { port: SERVER_PORT },
   contract: {
     address: contractAddress,
@@ -78,7 +54,8 @@ export const config: IConfig = {
     Wallet,
   },
   keys: {
-    deepai: process.env.DEEPAI_KEY ?? "",
-    freeimage: process.env.FREEIMAGE_KEY ?? "",
+    deepai: process.env.DEEPAI_KEY,
+    freeimage: process.env.FREEIMAGE_KEY,
+    alchemy: process.env.ALCHEMY_KEY,
   },
 };
