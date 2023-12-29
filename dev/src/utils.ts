@@ -8,9 +8,7 @@ const getContract = (_signer: ethers.Signer): ethers.Contract => {
   return Contract;
 };
 
-const logError = (e: any) => {
-  console.error("Err:", e);
-};
+const logError = (e: any) => console.error("Err:", e);
 
 export const truncateAddress = (address?: string): string => {
   if (!address) return "null";
@@ -44,10 +42,10 @@ export const getUniqueString = () => {
   return result;
 };
 
-export const getDApps = async (address: string, signer: ethers.Signer) => {
+export const getDApps = async (signer: ethers.Signer) => {
   const Contract = getContract(signer);
 
-  const result = await Contract.getDapps(address);
+  const result = await Contract.getdApps();
 
   return structureDApps(result);
 };
@@ -56,28 +54,7 @@ export const registerDApp = async (domain: string, signer: ethers.Signer) => {
   try {
     const Contract = getContract(signer);
 
-    const token = getUniqueString();
-
-    const _tx = await Contract.registerDapp(domain, token);
-
-    await _tx.wait();
-
-    return Promise.resolve(_tx);
-  } catch (e: any) {
-    logError(e);
-    return Promise.reject(e);
-  }
-};
-
-export const modifyDApp = async (
-  id: number,
-  domain: string,
-  signer: ethers.Signer
-) => {
-  try {
-    const Contract = getContract(signer);
-
-    const _tx = await Contract.modifyDapp(id, domain);
+    const _tx = await Contract.registerdApp(domain);
 
     await _tx.wait();
 
@@ -92,7 +69,7 @@ export const deleteDApp = async (id: number, signer: ethers.Signer) => {
   try {
     const Contract = getContract(signer);
 
-    const _tx = await Contract.deleteDapp(id);
+    const _tx = await Contract.deletedApp(id);
 
     await _tx.wait();
 
@@ -103,16 +80,18 @@ export const deleteDApp = async (id: number, signer: ethers.Signer) => {
   }
 };
 
+const formatTimestamp = (input: number) => input * 1000 + 1000;
+
 const structureDApps = (dApps: any[]) =>
   dApps
     .map((dApp) => ({
       id: Number(dApp.id),
-      owner: dApp.owner,
-      accessToken: dApp.accessToken,
       domain: dApp.domain,
+      accessToken: dApp.accessToken,
+      owner: dApp.owner,
       isDeleted: dApp.isDeleted,
-      createdAt: Number(dApp.createdAt),
-      updatedAt: Number(dApp.updatedAt),
+      createdAt: formatTimestamp(Number(dApp.createdAt)),
+      updatedAt: formatTimestamp(Number(dApp.updatedAt)),
     }))
     .sort((a, b) => b.updatedAt - a.updatedAt);
 

@@ -113,7 +113,7 @@ const DashboardComponent = ({
     setIsLoading(true);
 
     try {
-      const _dApps = await getDApps(address, signer!);
+      const _dApps = await getDApps(signer!);
       setdApps(_dApps);
     } catch (e: any) {
       console.error(e);
@@ -128,10 +128,16 @@ const DashboardComponent = ({
 
   return (
     <main className="dashboard">
-      <nav className="py-4 mb-3">
+      <nav className="py-4 mb-5">
         <div className="container">
           <div className="row">
             <div className="col-12">
+              <img
+                src="/logo.png"
+                alt="Web3 OAuth logo"
+                style={{ width: "3rem", height: "3rem" }}
+                className="mb-1"
+              />
               <p>Web3 OAuth</p>
             </div>
           </div>
@@ -199,7 +205,7 @@ const DashboardComponent = ({
                       <tr key={`dapp-${i}`}>
                         <td>{i + 1}</td>
                         <td>{dApp.domain}</td>
-                        <td>{dApp.accessToken}</td>
+                        <td>{dApp.accessToken.substring(2)}</td>
                         <td className="d-flex align-items-center">
                           {isBtnLoading ? (
                             <LoaderIcon />
@@ -231,6 +237,12 @@ const WelcomeComponent = () => {
         <div className="d-flex flex-column align-items-center justify-content-center h-100">
           <div className="col-12 col-md-10 col-lg-8 mx-auto">
             <div className="px-2">
+              <img
+                src="/logo.png"
+                alt="Web3 OAuth logo"
+                style={{ width: "5.5rem", height: "5.5rem" }}
+                className="mb-3"
+              />
               <h1>
                 <span>Web3 OAuth</span> developers dashboard
               </h1>

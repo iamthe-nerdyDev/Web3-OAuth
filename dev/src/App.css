@@ -2,7 +2,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+  font-family: "Josefin Sans", sans-serif;
 }
 
 body {
@@ -29,11 +29,13 @@ hr {
 .welcome h1 {
   font-size: calc(2.8rem + 1vw);
   margin-bottom: 1rem;
-  line-height: 140%;
+  line-height: 150%;
+  font-weight: 300;
 }
 
 .welcome h1 span {
   border-bottom: 4px dotted #000;
+  font-weight: 700;
 }
 
 .welcome p {
@@ -191,7 +193,8 @@ button:disabled {
   border: 1px solid #ccc;
   cursor: pointer;
   outline: none;
-  padding: 1rem 1.8rem;
+  padding: 1.2rem 2rem;
   border-radius: 100px;
   font-weight: 600;
+  padding-bottom: 1.05rem;
 }

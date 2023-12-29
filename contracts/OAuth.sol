@@ -298,7 +298,7 @@ contract OAuth is EIP712 {
      * @dev Requires the dApp is registered and msg.sender is the owner
      * @dev Emits DeletedApp event
      */
-    function deleteDapp(uint256 id) public {
+    function deletedApp(uint256 id) public {
         require(DoesdAppExist[id], "dApp not found");
         require(
             dApps[id].owner == msg.sender || msg.sender == owner,
@@ -322,7 +322,7 @@ contract OAuth is EIP712 {
      * @dev Can be called by only contract owner
      * @return dApp
      */
-    function getDappFromToken(
+    function getdAppFromToken(
         bytes32 token
     ) public view onlyOwner returns (dApp memory) {
         uint256 id = TokenTodAppId[token];
@@ -334,11 +334,11 @@ contract OAuth is EIP712 {
     }
 
     /**
-     * @notice Gets dapp ID from the provided domain
+     * @notice Gets dApp ID from the provided domain
      * @param domain:   Domain({domain.ltd})
      * @return uint256
      */
-    function getDappIdFromDomain(
+    function getdAppIdFromDomain(
         string memory domain
     ) public view onlyOwner returns (uint256) {
         uint256 id = DomainTodAppId[domain];
@@ -355,7 +355,7 @@ contract OAuth is EIP712 {
      * @dev Can be called by only the contract owner
      * @return dApp
      */
-    function getDapp(uint256 id) public view onlyOwner returns (dApp memory) {
+    function getdApp(uint256 id) public view onlyOwner returns (dApp memory) {
         require(DoesdAppExist[id], "dApp not found");
 
         return dApps[id];
@@ -366,7 +366,7 @@ contract OAuth is EIP712 {
      * @dev Gets all dApps registered by the msg.sender
      * @return dApp[]
      */
-    function getDapps() public view returns (dApp[] memory) {
+    function getdApps() public view returns (dApp[] memory) {
         uint256[] storage dAppsId = UserdApps[msg.sender];
 
         uint256 available;
@@ -392,7 +392,7 @@ contract OAuth is EIP712 {
      * @dev Can be called by only the contract owner
      * @return dApp[]
      */
-    function getDappsConnectedToCard(
+    function getdAppsConnectedToCard(
         uint256 cardId
     ) public view onlyOwner returns (dApp[] memory) {
         require(DoesCardExist[cardId], "Card not found");
