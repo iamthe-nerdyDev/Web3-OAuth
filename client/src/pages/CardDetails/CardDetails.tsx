@@ -36,11 +36,10 @@ const CardDetails = () => {
   useEffect(() => {
     if (!isMounting) {
       async function init() {
-        if (!address || !signer) return;
+        if (!address) return;
 
         try {
-          const _card = await getUserCard(parseInt(cardId!), signer);
-          console.log(_card);
+          const _card = await getUserCard(parseInt(cardId!));
           const _dApps = await getDappsConnectedToCard(parseInt(cardId!));
 
           setConnectedDapps(_dApps);

@@ -19,7 +19,7 @@ export const structureCards = (cards: any[]): Array<ICardStruct> =>
       owner: card.owner,
       username: card.username,
       pfp: card.pfp,
-      emailAddress: card.emailAddress,
+      emailAddress: card.email,
       bio: card.bio,
       isDeleted: card.isDeleted,
       createdAt: Number(card.createdAt),

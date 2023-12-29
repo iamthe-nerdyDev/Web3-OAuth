@@ -10,6 +10,7 @@ import { useAddress } from "@thirdweb-dev/react";
 import axios from "axios";
 
 import "./Dashboard.css";
+import { toast } from "react-toastify";
 
 const Dashboard = () => {
   const { theme, isMounting } = useContext(StateContext)!;
@@ -55,6 +56,8 @@ const Dashboard = () => {
           setCards(_cards);
         } catch (e: any) {
           console.error(e);
+
+          toast.error("Err: Unable to retrieve cards");
         } finally {
           if (fact) setIsLoading(false);
         }

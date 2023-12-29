@@ -3,9 +3,9 @@ import StateContext from "@/utils/context/StateContext";
 import { IImagePicker } from "@/interface";
 import { ChevronRight, Close, LoaderIcon } from "@/icons";
 import { toast } from "react-toastify";
-import axios from "axios";
 
 import "./ImageGenerator.css";
+import axiosInstance from "@/utils/axiosInstance";
 
 const ImagePicker = ({
   displayModal,
@@ -23,8 +23,6 @@ const ImagePicker = ({
   const [imageThree, setImageThree] = useState<string>();
   const [imageFour, setImageFour] = useState<string>();
   const [selectedIndex, setSelectedIndex] = useState<1 | 2 | 3 | 4>();
-
-  const endpoint = "http://localhost:1337/v1";
 
   const cropImages = (data: Blob | MediaSource) => {
     const canvas = document.createElement("canvas");
@@ -87,8 +85,8 @@ const ImagePicker = ({
     clearImages();
 
     try {
-      const { data } = await axios.post(
-        `${endpoint}/generate-image`,
+      const { data } = await axiosInstance.post(
+        "/generate-image",
         { text },
         { responseType: "blob" }
       );
@@ -127,7 +125,7 @@ const ImagePicker = ({
 
     try {
       const _image = base64.substring("data:image/png;base64,".length);
-      const { data } = await axios.post(`${endpoint}/upload-image`, {
+      const { data } = await axiosInstance.post("/upload-image", {
         image: _image,
       });
 

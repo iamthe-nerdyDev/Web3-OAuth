@@ -1,12 +1,10 @@
 import { ethers } from "ethers";
 import { address as contractAddress } from "../contracts/contractAddress.json";
 import { abi } from "../contracts/OAuth.json";
-import { ICardParams, ICardStruct, IDAppStruct, INewNFT } from "@/interface";
-import { OwnedNftsResponse } from "alchemy-sdk";
+import { ICardParams, ICardStruct, IDAppStruct } from "@/interface";
+import axiosInstance from "./axiosInstance";
 
 const logError = (e: any) => console.error("Err:", e);
-
-const formatTimestamp = (input: number) => input * 1000 + 1000;
 
 export const truncateAddress = (address?: string): string => {
   if (!address) return "null";
@@ -25,41 +23,38 @@ export const truncateAddress = (address?: string): string => {
   return truncated;
 };
 
-export const getContract = (_signer?: ethers.Signer): ethers.Contract => {
-  const RPC_URL = "https://fsc-dataseed1.fonscan.io";
-  const provider = new ethers.providers.JsonRpcProvider(RPC_URL);
-
-  const Contract = new ethers.Contract(
-    contractAddress,
-    abi,
-    _signer ?? new ethers.Wallet(import.meta.env.VITE_DEPLOYER_KEY, provider)
-  );
-
-  return Contract;
+export const getContract = (signer: ethers.Signer): ethers.Contract => {
+  return new ethers.Contract(contractAddress, abi, signer);
 };
 
 export const getDappsConnectedToCard = async (cardId: number) => {
-  const Contract = getContract();
+  try {
+    const { data } = await axiosInstance.get(`/dApps-to-cards/${cardId}`);
 
-  const result = await Contract.getdAppsConnectedToCard(cardId);
-
-  return structureDApps(result);
+    return data.data as unknown as IDAppStruct[];
+  } catch (e: any) {
+    throw new Error(e);
+  }
 };
 
 export const getUserCards = async (address: string) => {
-  const Contract = getContract();
+  try {
+    const { data } = await axiosInstance.get(`/user-cards/${address}`);
 
-  const result = await Contract.getUserCards(address);
-
-  return structureCards(result);
+    return data.data as unknown as ICardStruct[];
+  } catch (e: any) {
+    throw new Error(e);
+  }
 };
 
-export const getUserCard = async (cardId: number, signer: ethers.Signer) => {
-  const Contract = getContract(signer);
+export const getUserCard = async (cardId: number) => {
+  try {
+    const { data } = await axiosInstance.get(`/card/${cardId}`);
 
-  const result = await Contract.getCard(cardId);
-
-  return structureCards([result])[0];
+    return data.data as unknown as ICardStruct;
+  } catch (e: any) {
+    throw new Error(e);
+  }
 };
 
 export const createCard = async (data: ICardParams, signer: ethers.Signer) => {
@@ -117,26 +112,6 @@ export const deleteCard = async (cardId: number, signer: ethers.Signer) => {
   }
 };
 
-const structureCards = (cards: any[]): Array<ICardStruct> =>
-  cards
-    .map((card) => ({
-      id: Number(card.id),
-      owner: card.owner,
-      username: card.username,
-      pfp: card.pfp,
-      emailAddress: card.email,
-      bio: card.bio,
-      isDeleted: card.isDeleted,
-      createdAt: formatTimestamp(Number(card.createdAt)),
-      updatedAt: formatTimestamp(Number(card.updatedAt)),
-    }))
-    .sort((a, b) => b.updatedAt - a.updatedAt);
-
-const structureDApps = (dApps: any[]): Array<IDAppStruct> =>
-  dApps
-    .map((dApp) => ({ domain: dApp.domain }))
-    .sort((a, b) => b.domain - a.domain);
-
 export const serializeForm = (form: HTMLFormElement) => {
   const formData: Record<string, string> = {};
   const elements = form.elements;
@@ -163,31 +138,4 @@ export const clearForm = (form: HTMLFormElement) => {
   }
 
   return;
-};
-
-export const newNFTObj = (data: OwnedNftsResponse): INewNFT[] => {
-  const newArr = [];
-
-  for (let i in data.ownedNfts) {
-    let _data = data.ownedNfts[i];
-
-    const metaData = _data.rawMetadata;
-
-    if (metaData && metaData.image) {
-      newArr.push({
-        name: metaData.name ?? "undefined",
-        image: getValidURLIfIPFS(metaData.image),
-      });
-    }
-  }
-
-  return newArr;
-};
-
-const getValidURLIfIPFS = (url: string) => {
-  if (url.startsWith("ipfs://")) {
-    return `https://ipfs.io/ipfs/${url.substring("ipfs://".length)}`;
-  }
-
-  return url;
 };

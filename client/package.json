@@ -18,7 +18,6 @@
     "@thirdweb-dev/chains": "^0.1.58",
     "@thirdweb-dev/react": "^4.1.2",
     "@thirdweb-dev/sdk": "^4.0.11",
-    "alchemy-sdk": "^2.11.0",
     "axios": "^1.6.2",
     "ethers": "^5.7.2",
     "react": "^18.2.0",

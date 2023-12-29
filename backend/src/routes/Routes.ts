@@ -30,11 +30,7 @@ router.get(
 );
 
 /** Get card route */
-router.get(
-  "/cards/:cardId",
-  validate(getCardSchema),
-  controller.getCardHandler
-);
+router.get("/card/:cardId", validate(getCardSchema), controller.getCardHandler);
 
 /** Getting all dApps connected to card route */
 router.get(

@@ -3,10 +3,10 @@ import StateContext from "@/utils/context/StateContext";
 import { IImagePicker, INewNFT } from "@/interface";
 import emptyResultImage from "@/assets/empty-result.png";
 import { Close, LoaderIcon } from "@/icons";
-import { newNFTObj, serializeForm } from "@/utils/helper";
-import { Alchemy, Network } from "alchemy-sdk";
+import { serializeForm } from "@/utils/helper";
 import { useAddress } from "@thirdweb-dev/react";
 import { toast } from "react-toastify";
+import axiosInstance from "@/utils/axiosInstance";
 
 import "./ImagePicker.css";
 
@@ -23,46 +23,20 @@ const ImagePicker = ({
   const [currentTab, setCurrentTab] = useState<"one" | "two">("one");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [nfts, setNfts] = useState<INewNFT[]>([]);
-  const [chain, setChain] = useState<string>();
-  const [network, setNetwork] = useState<Network>();
-
-  useEffect(() => {
-    if (chain) {
-      if (chain === "arb_geo") setNetwork(Network.ARB_GOERLI);
-      if (chain === "arb_main") setNetwork(Network.ARB_MAINNET);
-      if (chain === "arb_sep") setNetwork(Network.ARB_SEPOLIA);
-      if (chain === "astar_main") setNetwork(Network.ASTAR_MAINNET);
-      if (chain === "base_geo") setNetwork(Network.BASE_GOERLI);
-      if (chain === "base_main") setNetwork(Network.BASE_MAINNET);
-      if (chain === "eth_geo") setNetwork(Network.ETH_GOERLI);
-      if (chain === "eth_main") setNetwork(Network.ETH_MAINNET);
-      if (chain === "eth_sep") setNetwork(Network.ETH_SEPOLIA);
-      if (chain === "matic_main") setNetwork(Network.MATIC_MAINNET);
-      if (chain === "matic_mumbai") setNetwork(Network.MATIC_MUMBAI);
-      if (chain === "opt_geo") setNetwork(Network.OPT_GOERLI);
-      if (chain === "opt_main") setNetwork(Network.OPT_MAINNET);
-      if (chain === "polygon_main") setNetwork(Network.POLYGONZKEVM_MAINNET);
-      if (chain === "polygon_test") setNetwork(Network.POLYGONZKEVM_TESTNET);
-    } else setChain("eth_main");
-  }, [chain]);
+  const [chain, setChain] = useState<string>("");
 
   const getAllNFTS = async () => {
-    if (!address) return;
-
-    const config = {
-      apiKey: import.meta.env.VITE_ALCHEMY_KEY!,
-      network,
-    };
-
-    const alchemy = new Alchemy(config);
+    if (!address || !chain || chain.length == 0) return;
 
     setIsLoading(true);
 
     try {
-      const _nfts = await alchemy.nft.getNftsForOwner(address);
+      const { data } = await axiosInstance.get(`/nft/${chain}/${address}`);
 
-      return newNFTObj(_nfts);
+      if (data.status) return data.data;
     } catch (e: any) {
+      console.error(e);
+
       toast.error("Unable to fetch NFTs");
     } finally {
       setIsLoading(false);
@@ -78,7 +52,7 @@ const ImagePicker = ({
     }
 
     init();
-  }, [network]);
+  }, [chain]);
 
   const onlineURL = (e: any) => {
     e.preventDefault();
@@ -164,7 +138,7 @@ const ImagePicker = ({
           </div>
 
           {isLoading ? (
-            <div className="py-5">
+            <div className="py-5 mt-5 mb-4 d-flex align-items-center justify-content-center">
               <LoaderIcon />
             </div>
           ) : nfts.length === 0 ? (
@@ -179,7 +153,10 @@ const ImagePicker = ({
                   <div
                     className="col-6 col-sm-4 col-md-3"
                     key={`nft-${i}`}
-                    onClick={() => setSelectedURL(nft.image)}
+                    onClick={() => {
+                      setSelectedURL(nft.image);
+                      setDisplayModal(false);
+                    }}
                   >
                     <div
                       className={`single-nft ${

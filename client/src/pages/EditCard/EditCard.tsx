@@ -31,10 +31,10 @@ const AddCard = () => {
   useEffect(() => {
     if (!isMounting) {
       async function init() {
-        if (!address || !signer) return;
+        if (!address) return;
 
         try {
-          const _card = await getUserCard(parseInt(cardId!), signer);
+          const _card = await getUserCard(parseInt(cardId!));
           setCard(_card);
         } catch (e: any) {
           console.error(e);
