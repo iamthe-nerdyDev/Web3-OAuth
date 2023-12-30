@@ -4,7 +4,6 @@ pragma solidity ^0.8.0;
 
 /**
  * @title EIP712 Library for Web3 OAuth Signature Verification
- * @author ~NerdyDev🥀
  * @dev Provides functions to verify signatures using EIP712 standard.
  */
 abstract contract EIP712 {

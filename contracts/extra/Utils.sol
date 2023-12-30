@@ -4,7 +4,6 @@ pragma solidity ^0.8.0;
 
 /**
  * @title Utility Library for Web3 OAuth Contract
- * @author ~NerdyDev🥀
  * @dev Provides reusable functions
  */
 library Utils {

@@ -1,7 +1,10 @@
 // SPDX-License-Identifier: MIT
 
 import "./EIP712.sol";
-import "./Utils.sol";
+import "./extra/Utils.sol";
+import "./app/CardLibrary.sol";
+import "./app/dAppLibrary.sol";
+import "./app/TokenLibrary.sol";
 
 pragma solidity ^0.8.0;
 
@@ -52,50 +55,17 @@ contract OAuth is EIP712 {
     /// @dev event emitted when a token is deleted
     event DeleteToken(address indexed user, uint256 timestamp);
 
-    struct Card {
-        uint256 id;
-        address owner;
-        string username;
-        string pfp;
-        string email;
-        string bio;
-        bool isDeleted;
-        uint256 createdAt;
-        uint256 updatedAt;
-    }
-
-    Card[] private Cards;
+    CARD.Card[] private Cards;
     mapping(address => uint256[]) UserCards;
     mapping(uint256 => bool) DoesCardExist;
 
-    struct dApp {
-        uint256 id;
-        string domain;
-        bytes32 accessToken;
-        address owner;
-        bool isDeleted;
-        uint256 createdAt;
-        uint256 updatedAt;
-    }
-
-    dApp[] private dApps;
+    DAPP.dApp[] private dApps;
     mapping(address => uint256[]) UserdApps;
     mapping(string => uint256) DomainTodAppId;
     mapping(uint256 => bool) DoesdAppExist;
     mapping(bytes32 => uint256) TokenTodAppId;
 
-    struct Token {
-        uint256 id;
-        uint256 cardId;
-        uint256 dAppId;
-        address user;
-        bytes32 token;
-        bool isDeleted;
-        uint256 createdAt;
-        uint256 updatedAt;
-    }
-
-    Token[] private Tokens;
+    TOKEN.Token[] private Tokens;
     mapping(uint256 => bool) DoesTokenExist;
     mapping(bytes32 => uint256) TokenToTokenId;
     mapping(address => mapping(uint256 => uint256)) UserTodAppToToken;
@@ -122,33 +92,27 @@ contract OAuth is EIP712 {
         string memory email,
         string memory bio
     ) public {
-        if (bytes(username).length == 0) revert("username is required");
-        if (bytes(pfp).length == 0) revert("pfp is required");
-        if (bytes(email).length == 0) revert("email is required");
-        if (bytes(bio).length == 0) revert("bio is required");
-
-        uint256 id = totalCards;
-
-        Cards.push(
-            Card(
-                id,
-                msg.sender,
-                username,
-                pfp,
-                email,
-                bio,
-                false,
-                block.timestamp,
-                block.timestamp
-            )
+        require(
+            bytes(username).length > 0 &&
+                bytes(pfp).length > 0 &&
+                bytes(email).length > 0 &&
+                bytes(bio).length > 0
         );
 
-        UserCards[msg.sender].push(id);
-        DoesCardExist[id] = true;
+        CARD.createCard(
+            Cards,
+            UserCards,
+            DoesCardExist,
+            msg.sender,
+            username,
+            pfp,
+            email,
+            bio
+        );
 
         totalCards++;
 
-        emit CreateCard(id, msg.sender, block.timestamp);
+        emit CreateCard(totalCards - 1, msg.sender, block.timestamp);
     }
 
     /**
@@ -168,21 +132,23 @@ contract OAuth is EIP712 {
         string memory email,
         string memory bio
     ) public {
-        require(DoesCardExist[id], "Card not found");
-        require(Cards[id].owner == msg.sender, "Unauthorized");
+        require(
+            bytes(username).length > 0 &&
+                bytes(pfp).length > 0 &&
+                bytes(email).length > 0 &&
+                bytes(bio).length > 0
+        );
 
-        if (bytes(username).length == 0) revert("username is required");
-        if (bytes(pfp).length == 0) revert("pfp is required");
-        if (bytes(email).length == 0) revert("email is required");
-        if (bytes(bio).length == 0) revert("bio is required");
-
-        Card storage card = Cards[id];
-
-        card.username = username;
-        card.pfp = pfp;
-        card.email = email;
-        card.bio = bio;
-        card.updatedAt = block.timestamp;
+        CARD.updateCard(
+            Cards,
+            DoesCardExist,
+            msg.sender,
+            id,
+            username,
+            pfp,
+            email,
+            bio
+        );
 
         emit UpdateCard(id, msg.sender, block.timestamp);
     }
@@ -194,15 +160,7 @@ contract OAuth is EIP712 {
      * @dev Emits DeleteCard event
      */
     function deleteCard(uint256 id) public {
-        require(DoesCardExist[id], "Card not found");
-        require(Cards[id].owner == msg.sender, "Unauthorized");
-
-        Card storage card = Cards[id];
-
-        card.isDeleted = true;
-        card.updatedAt = block.timestamp;
-
-        DoesCardExist[id] = false;
+        CARD.deleteCard(Cards, DoesCardExist, msg.sender, id);
 
         emit DeleteCard(id, msg.sender, block.timestamp);
     }
@@ -213,10 +171,12 @@ contract OAuth is EIP712 {
      * @dev Can be called by only the owner of contract
      * @return Card
      */
-    function getCard(uint256 id) public view onlyOwner returns (Card memory) {
-        require(DoesCardExist[id], "Card not found");
+    function getCard(
+        uint256 id
+    ) public view onlyOwner returns (CARD.Card memory) {
+        require(DoesCardExist[id], "not found");
 
-        return Cards[id];
+        return CARD.getCard(Cards, id);
     }
 
     /**
@@ -227,24 +187,8 @@ contract OAuth is EIP712 {
      */
     function getUserCards(
         address user
-    ) public view onlyOwner returns (Card[] memory) {
-        uint256[] storage cardsId = UserCards[user];
-
-        uint256 available;
-
-        for (uint256 i = 0; i < cardsId.length; i++) {
-            if (DoesCardExist[cardsId[i]]) available++;
-        }
-
-        Card[] memory cards = new Card[](available);
-
-        for (uint256 i = 0; i < cardsId.length; i++) {
-            uint256 cardId = cardsId[i];
-
-            if (DoesCardExist[cardId]) cards[i] = Cards[cardId];
-        }
-
-        return cards;
+    ) public view onlyOwner returns (CARD.Card[] memory) {
+        return CARD.getUserCards(Cards, UserCards, DoesCardExist, user);
     }
 
     /**
@@ -255,38 +199,25 @@ contract OAuth is EIP712 {
     function registerdApp(string memory domain) public {
         if (bytes(domain).length == 0) revert("domain is required");
 
-        require(DomainTodAppId[domain] == 0, "dupicate domain entry");
-
         bool isLocalhost = Utils.compareStrings(domain, "localhost");
+        if (isLocalhost && isLocalhostdAppRegistered) revert("bad request");
+        else isLocalhostdAppRegistered = true;
 
-        if (isLocalhost && isLocalhostdAppRegistered) {
-            revert("refer to docs for localhost configuration");
-        } else isLocalhostdAppRegistered = true;
-
-        uint256 id = totaldApps;
-        bytes32 hash = Utils.generateHash(domain);
-
-        dApps.push(
-            dApp(
-                id,
-                domain,
-                hash,
-                isLocalhost ? address(0) : msg.sender,
-                false,
-                block.timestamp,
-                block.timestamp
-            )
+        DAPP.registerdApp(
+            dApps,
+            UserdApps,
+            DomainTodAppId,
+            DoesdAppExist,
+            TokenTodAppId,
+            msg.sender,
+            domain,
+            isLocalhost
         );
-
-        DomainTodAppId[domain] = id;
-        DoesdAppExist[id] = true;
-        UserdApps[isLocalhost ? address(0) : msg.sender].push(id);
-        TokenTodAppId[hash] = id;
 
         totaldApps++;
 
         emit RegisterdApp(
-            id,
+            totaldApps - 1,
             isLocalhost ? address(0) : msg.sender,
             block.timestamp
         );
@@ -299,17 +230,13 @@ contract OAuth is EIP712 {
      * @dev Emits DeletedApp event
      */
     function deletedApp(uint256 id) public {
-        require(DoesdAppExist[id], "dApp not found");
+        require(DoesdAppExist[id], "not found");
         require(
             dApps[id].owner == msg.sender || msg.sender == owner,
-            "Unauthorized"
+            "unauthorized"
         );
 
-        DomainTodAppId[dApps[id].domain] = 0;
-        DoesdAppExist[id] = false;
-
-        dApps[id].isDeleted = true;
-        dApps[id].updatedAt = block.timestamp;
+        DAPP.deletedApp(dApps, DomainTodAppId, DoesdAppExist, id);
 
         deletedAppTokens(id); // delete all tokens linked to the dApp
 
@@ -324,17 +251,14 @@ contract OAuth is EIP712 {
      */
     function getdAppFromToken(
         bytes32 token
-    ) public view onlyOwner returns (dApp memory) {
+    ) public view onlyOwner returns (DAPP.dApp memory) {
         uint256 id = TokenTodAppId[token];
 
-        require(DoesdAppExist[id], "dApp not found");
-        require(dApps[id].accessToken == token, "Bad request");
-
-        return dApps[id];
+        return DAPP.getdAppFromToken(dApps, DoesdAppExist, id, token);
     }
 
     /**
-     * @notice Gets dApp ID from the provided domain
+     * @notice Gets dapp ID from the provided domain
      * @param domain:   Domain({domain.ltd})
      * @return uint256
      */
@@ -343,10 +267,7 @@ contract OAuth is EIP712 {
     ) public view onlyOwner returns (uint256) {
         uint256 id = DomainTodAppId[domain];
 
-        require(DoesdAppExist[id], "dApp not found");
-        require(Utils.compareStrings(dApps[id].domain, domain), "Bad request");
-
-        return id;
+        return DAPP.getdAppIdFromDomain(dApps, DoesdAppExist, domain, id);
     }
 
     /**
@@ -355,10 +276,10 @@ contract OAuth is EIP712 {
      * @dev Can be called by only the contract owner
      * @return dApp
      */
-    function getdApp(uint256 id) public view onlyOwner returns (dApp memory) {
-        require(DoesdAppExist[id], "dApp not found");
-
-        return dApps[id];
+    function getdApp(
+        uint256 id
+    ) public view onlyOwner returns (DAPP.dApp memory) {
+        return DAPP.getdApp(dApps, DoesdAppExist, id);
     }
 
     /**
@@ -366,24 +287,8 @@ contract OAuth is EIP712 {
      * @dev Gets all dApps registered by the msg.sender
      * @return dApp[]
      */
-    function getdApps() public view returns (dApp[] memory) {
-        uint256[] storage dAppsId = UserdApps[msg.sender];
-
-        uint256 available;
-
-        for (uint256 i = 0; i < dAppsId.length; i++) {
-            if (DoesdAppExist[dAppsId[i]]) available++;
-        }
-
-        dApp[] memory dapps = new dApp[](available);
-
-        for (uint256 i = 0; i < dAppsId.length; i++) {
-            uint256 dAppId = dAppsId[i];
-
-            if (DoesdAppExist[dAppId]) dapps[i] = dApps[dAppId];
-        }
-
-        return dapps;
+    function getdApps() public view returns (DAPP.dApp[] memory) {
+        return DAPP.getdApps(dApps, UserdApps, DoesdAppExist, msg.sender);
     }
 
     /**
@@ -394,11 +299,11 @@ contract OAuth is EIP712 {
      */
     function getdAppsConnectedToCard(
         uint256 cardId
-    ) public view onlyOwner returns (dApp[] memory) {
-        require(DoesCardExist[cardId], "Card not found");
+    ) public view onlyOwner returns (DAPP.dApp[] memory) {
+        require(DoesCardExist[cardId], "not found");
         require(
             Cards[cardId].owner == msg.sender || msg.sender == owner,
-            "Unauthorized"
+            "unauthorized"
         );
 
         uint256 available;
@@ -407,12 +312,17 @@ contract OAuth is EIP712 {
             if (DoesdAppExist[CardIdTodAppIds[cardId][i]]) available++;
         }
 
-        dApp[] memory dapps = new dApp[](available);
+        DAPP.dApp[] memory dapps = new DAPP.dApp[](available);
+
+        uint256 index;
 
         for (uint256 i = 0; i < CardIdTodAppIds[cardId].length; i++) {
             uint256 dAppId = CardIdTodAppIds[cardId][i];
 
-            if (DoesdAppExist[dAppId]) dapps[i] = dApps[dAppId];
+            if (DoesdAppExist[dAppId]) {
+                dapps[index] = dApps[dAppId];
+                index++;
+            }
         }
 
         return dapps;
@@ -435,39 +345,38 @@ contract OAuth is EIP712 {
         uint256 nonce,
         bytes memory signature
     ) public onlyOwner {
-        if (!verify(nonce, signature, signer)) {
-            revert("Unable to verify signature");
-        }
+        require(verify(nonce, signature, signer));
 
-        require(DoesCardExist[cardId], "Card not found");
-        require(DoesdAppExist[dAppId], "dApp not found");
-        require(Cards[cardId].owner == signer, "Unauthorized");
-
-        uint256 id = totalTokens;
-        bytes32 token = keccak256(abi.encodePacked(cardId, signer, dAppId));
-
-        Tokens.push(
-            Token(
-                id,
-                cardId,
-                dAppId,
-                signer,
-                token,
-                false,
-                block.timestamp,
-                block.timestamp
-            )
+        TOKEN.createToken(
+            Tokens,
+            DoesTokenExist,
+            TokenToTokenId,
+            UserTodAppToToken,
+            CardIdTodAppIds,
+            dAppIdToTokenIds,
+            DoesCardExist,
+            DoesdAppExist,
+            Cards,
+            cardId,
+            dAppId,
+            signer
         );
-
-        DoesTokenExist[id] = true;
-        TokenToTokenId[token] = id;
-        UserTodAppToToken[signer][dAppId] = id;
-        CardIdTodAppIds[cardId].push(dAppId);
-        dAppIdToTokenIds[dAppId].push(id);
 
         totalTokens++;
 
         emit CreateToken(signer, block.timestamp);
+    }
+
+    /**
+     * @notice Gets token details from id
+     * @param id:    Session Token ID
+     * @dev Can only be called by contract owner
+     * @return Token
+     */
+    function getTokenDetails(
+        uint256 id
+    ) public view onlyOwner returns (TOKEN.Token memory) {
+        return TOKEN.getTokenDetails(Tokens, DoesTokenExist, id);
     }
 
     /**
@@ -476,10 +385,13 @@ contract OAuth is EIP712 {
      * @return uint256
      */
     function getTokenIdFromToken(bytes32 token) private view returns (uint256) {
-        require(DoesTokenExist[TokenToTokenId[token]], "invalid/deleted token");
-        require(Tokens[TokenToTokenId[token]].token == token, "Bad request");
-
-        return TokenToTokenId[token];
+        return
+            TOKEN.getTokenIdFromToken(
+                Tokens,
+                DoesTokenExist,
+                TokenToTokenId,
+                token
+            );
     }
 
     /**
@@ -490,10 +402,10 @@ contract OAuth is EIP712 {
      */
     function fetchUserInfoFromToken(
         bytes32 token
-    ) public view returns (Card memory) {
+    ) public view returns (CARD.Card memory) {
         uint256 tokenId = getTokenIdFromToken(token);
 
-        require(DoesCardExist[Tokens[tokenId].cardId], "Card not found");
+        require(DoesCardExist[Tokens[tokenId].cardId], "not found");
 
         return Cards[Tokens[tokenId].cardId];
     }
@@ -505,8 +417,8 @@ contract OAuth is EIP712 {
      */
     function fetchUserInfoFromTokens(
         bytes32[] memory tokens
-    ) public view returns (Card[] memory) {
-        Card[] memory cards = new Card[](tokens.length);
+    ) public view returns (CARD.Card[] memory) {
+        CARD.Card[] memory cards = new CARD.Card[](tokens.length);
 
         uint256 index;
 
@@ -541,12 +453,7 @@ contract OAuth is EIP712 {
      * @dev Emits DeleteToken event
      */
     function _deleteToken(uint256 tokenId) internal {
-        require(DoesTokenExist[tokenId], "invalid/deleted token");
-
-        DoesTokenExist[tokenId] = false;
-
-        Tokens[tokenId].isDeleted = true;
-        Tokens[tokenId].updatedAt = block.timestamp;
+        TOKEN.deleteToken(Tokens, DoesTokenExist, tokenId);
 
         emit DeleteToken(Tokens[tokenId].user, block.timestamp);
     }
@@ -595,14 +502,12 @@ contract OAuth is EIP712 {
         uint256 dAppId,
         uint256 nonce,
         bytes memory signature
-    ) public view onlyOwner returns (bytes32, Card[] memory) {
-        if (!verify(nonce, signature, signer)) {
-            revert("Unable to verify signature");
-        }
+    ) public view onlyOwner returns (bytes32, CARD.Card[] memory) {
+        require(verify(nonce, signature, signer));
 
         (bool status, uint256 tokenId) = getActiveTokenId(signer, dAppId);
 
-        if (status) return (Tokens[tokenId].token, new Card[](0));
+        if (status) return (Tokens[tokenId].token, new CARD.Card[](0));
         else return (0, getUserCards(signer));
     }
 }

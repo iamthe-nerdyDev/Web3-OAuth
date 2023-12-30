@@ -1,537 +1,296 @@
-//verify it can receive funds and also withdraw it!
-
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
-const { expectRevert } = require("@openzeppelin/test-helpers");
-
-const JSON_RPC_PROVIDER = "http://localhost:8545";
 
 describe("Contracts", () => {
-  const TEST_DATA = {
-    card: {
-      _id: 1,
-      _username: "JohnDoe",
-      _pfp: "https://url-to-pfp.com/pfp.png",
-      _emailAddress: "user@example.com",
-      _bio: "I love my job :-)",
-    },
-    update_card: {
-      _username: "iam_JohnDoe",
-      _pfp: "https://url-to-pfp.com/pfp.png-updated",
-      _emailAddress: "user.updated@example.com",
-      _bio: "I love my job :-) - Updated",
-    },
-    dapp: {
-      _id: 1,
-      _domain: "https://my-dapp-url.com",
-      _accessToken: "xxxx-xxxx-xxxx",
-      _domain_2: "https://my-dapp-url.com-2",
-      _accessToken_2: "xxxx-xxxx-xxxx-2",
-    },
-    update_dapp: {
-      _domain: "https://my-dapp-url-updated.com",
-    },
-    session: {
-      _message: "Test message to sign!",
-    },
-  };
-
-  let provider,
-    contract,
-    contractAddress,
-    result,
-    signature,
-    owner,
-    user1,
-    messageHash;
+  let contract, contractAddress, result, signature, owner, user1, user2;
 
   beforeEach(async () => {
-    [owner, user1] = await ethers.getSigners();
+    [owner, user1, user2] = await ethers.getSigners();
 
-    const Contract = await ethers.getContractFactory("OAuth");
-    contract = await Contract.connect(owner).deploy("xxxx-test-key-xxxx"); //setting the _defaultToken value
+    /** Deploying the utils library used first... */
+    const Utils = await ethers.getContractFactory("Utils");
+    const util = await Utils.deploy();
+
+    await util.waitForDeployment();
+
+    /** Deploying the contract */
+    const Contract = await ethers.getContractFactory("OAuth", {
+      libraries: { Utils: util.target },
+    });
+
+    contract = await Contract.connect(owner).deploy();
 
     await contract.waitForDeployment();
 
     contractAddress = contract.target; //storing the CA
   });
 
-  describe("Card Management", () => {
-    beforeEach(async () => {
-      await contract.createCard(
-        TEST_DATA.card._username,
-        TEST_DATA.card._pfp,
-        TEST_DATA.card._emailAddress,
-        TEST_DATA.card._bio
-      );
+  describe("Card(s) Management", () => {
+    describe("Card Creation", () => {
+      it("Should revert if username not passed", async () => {
+        await expect(
+          contract.createCard("", "pfp_url", "user@domain.ltd", "short bio")
+        ).to.be.reverted;
+      });
+
+      it("Should revert if pfp not passed", async () => {
+        await expect(
+          contract.createCard("username", "", "user@domain.ltd", "short bio")
+        ).to.be.reverted;
+      });
+
+      it("Should revert if email not passed", async () => {
+        await expect(
+          contract.createCard("username", "pfp_url", "", "short bio")
+        ).to.be.reverted;
+      });
+
+      it("Should revert if bio not passed", async () => {
+        await expect(
+          contract.createCard("username", "pfp_url", "user@domain.ltd", "")
+        ).to.be.reverted;
+      });
+
+      it("Should verify that card can be created successfully!", async () => {
+        await contract
+          .connect(user1)
+          .createCard("username", "pfp_url", "user@domain.ltd", "short bio");
+
+        result = await contract.connect(owner).getUserCards(user1.address);
+        expect(result).to.have.lengthOf(1);
+
+        result = await contract.connect(owner).getCard(0);
+        expect(result.username).to.be.equal("username");
+        expect(result.pfp).to.be.equal("pfp_url");
+        expect(result.email).to.be.equal("user@domain.ltd");
+        expect(result.bio).to.be.equal("short bio");
+      });
     });
 
-    it("Should verify that cards can be created successfully!", async () => {
-      result = await contract.connect(owner).getUserCards(owner.address);
-      expect(result).to.have.lengthOf(1);
+    describe("Card Update", () => {
+      beforeEach(async () => {
+        await contract
+          .connect(user1)
+          .createCard("username", "pfp_url", "user@domain.ltd", "short bio");
+      });
 
-      result = await contract.connect(owner).getUserCard(TEST_DATA.card._id);
-      expect(result.username).to.be.equal(TEST_DATA.card._username);
-      expect(result.pfp).to.be.equal(TEST_DATA.card._pfp);
-      expect(result.emailAddress).to.be.equal(TEST_DATA.card._emailAddress);
-      expect(result.bio).to.be.equal(TEST_DATA.card._bio);
+      it("Should revert if username not passed", async () => {
+        await expect(
+          contract
+            .connect(user1)
+            .updateCard(0, "", "pfp_url", "user@domain.ltd", "short bio")
+        ).to.be.reverted;
+      });
 
-      //empty username
-      await expectRevert(
-        contract.createCard(
-          "",
-          TEST_DATA.card._pfp,
-          TEST_DATA.card._emailAddress,
-          TEST_DATA.card._bio
-        ),
-        "username required"
-      );
+      it("Should revert if pfp not passed", async () => {
+        await expect(
+          contract
+            .connect(user1)
+            .updateCard(0, "username", "", "user@domain.ltd", "short bio")
+        ).to.be.reverted;
+      });
 
-      //empty pfp
-      await expectRevert(
-        contract.createCard(
-          TEST_DATA.card._username,
-          "",
-          TEST_DATA.card._emailAddress,
-          TEST_DATA.card._bio
-        ),
-        "pfp required"
-      );
+      it("Should revert if email not passed", async () => {
+        await expect(
+          contract
+            .connect(user1)
+            .updateCard(0, "username", "pfp_url", "", "short bio")
+        ).to.be.reverted;
+      });
 
-      //empty email address
-      await expectRevert(
-        contract.createCard(
-          TEST_DATA.card._username,
-          TEST_DATA.card._pfp,
-          "",
-          TEST_DATA.card._bio
-        ),
-        "email required"
-      );
+      it("Should revert if bio not passed", async () => {
+        await expect(
+          contract
+            .connect(user1)
+            .updateCard(0, "username", "pfp_url", "user@domain.ltd", "")
+        ).to.be.reverted;
+      });
 
-      //empty bio
-      await expectRevert(
-        contract.createCard(
-          TEST_DATA.card._username,
-          TEST_DATA.card._pfp,
-          TEST_DATA.card._emailAddress,
-          ""
-        ),
-        "bio required"
-      );
-    });
+      it("Should expect a revert if card is not found", async () => {
+        await expect(
+          contract
+            .connect(user1)
+            .updateCard(
+              100,
+              "username",
+              "pfp_url",
+              "user@domain.ltd",
+              "short bio"
+            )
+        ).to.be.revertedWith("not found");
+      });
 
-    it("Should verify that a card can be updated successfully!", async () => {
-      //incase of wrong user
-      await expectRevert(
-        contract
+      it("Should expect a revert if another user tries modifying a card that's not his", async () => {
+        await expect(
+          contract
+            .connect(user2)
+            .updateCard(
+              0,
+              "username",
+              "pfp_url",
+              "user@domain.ltd",
+              "short bio"
+            )
+        ).to.be.revertedWith("unauthorized");
+      });
+
+      it("Should verify that card can be updated successfully", async () => {
+        await contract
           .connect(user1)
           .updateCard(
-            TEST_DATA.card._id,
-            TEST_DATA.update_card._username,
-            TEST_DATA.update_card._pfp,
-            TEST_DATA.update_card._emailAddress,
-            TEST_DATA.update_card._bio
-          ),
-        "unauthorized"
-      );
+            0,
+            "username-2",
+            "pfp_url-2",
+            "user@domain.ltd-2",
+            "short bio-2"
+          );
 
-      //in case of wrong cardId
-      await expectRevert(
-        contract.updateCard(
-          2,
-          TEST_DATA.update_card._username,
-          TEST_DATA.update_card._pfp,
-          TEST_DATA.update_card._emailAddress,
-          TEST_DATA.update_card._bio
-        ),
-        "not found"
-      );
-
-      result = await contract.updateCard(
-        TEST_DATA.card._id,
-        TEST_DATA.update_card._username,
-        TEST_DATA.update_card._pfp,
-        TEST_DATA.update_card._emailAddress,
-        TEST_DATA.update_card._bio
-      );
-
-      result = await contract.getUserCard(TEST_DATA.card._id);
-      expect(result.username).to.be.equal(TEST_DATA.update_card._username);
-      expect(result.pfp).to.be.equal(TEST_DATA.update_card._pfp);
-      expect(result.emailAddress).to.be.equal(
-        TEST_DATA.update_card._emailAddress
-      );
-      expect(result.bio).to.be.equal(TEST_DATA.update_card._bio);
-
-      //username is empty
-      await expectRevert(
-        contract.updateCard(
-          TEST_DATA.card._id,
-          "",
-          TEST_DATA.update_card._pfp,
-          TEST_DATA.update_card._emailAddress,
-          TEST_DATA.update_card._bio
-        ),
-        "username required"
-      );
-
-      //pfp is empty
-      await expectRevert(
-        contract.updateCard(
-          TEST_DATA.card._id,
-          TEST_DATA.update_card._username,
-          "",
-          TEST_DATA.update_card._emailAddress,
-          TEST_DATA.update_card._bio
-        ),
-        "pfp required"
-      );
-
-      //email address is empty
-      await expectRevert(
-        contract.updateCard(
-          TEST_DATA.card._id,
-          TEST_DATA.update_card._username,
-          TEST_DATA.update_card._pfp,
-          "",
-          TEST_DATA.update_card._bio
-        ),
-        "email required"
-      );
-
-      //bio is empty
-      await expectRevert(
-        contract.updateCard(
-          TEST_DATA.card._id,
-          TEST_DATA.update_card._username,
-          TEST_DATA.update_card._pfp,
-          TEST_DATA.update_card._emailAddress,
-          ""
-        ),
-        "bio required"
-      );
+        result = await contract.connect(owner).getCard(0);
+        expect(result.username).to.be.equal("username-2");
+        expect(result.pfp).to.be.equal("pfp_url-2");
+        expect(result.email).to.be.equal("user@domain.ltd-2");
+        expect(result.bio).to.be.equal("short bio-2");
+      });
     });
 
-    it("Should verify that cards can be deleted!", async () => {
-      result = await contract.connect(owner).getUserCards(owner.address);
-      expect(result).to.have.lengthOf(1);
-
-      //incase of wrong user
-      await expectRevert(
-        contract.connect(user1).deleteCard(TEST_DATA.card._id),
-        "unauthorized"
-      );
-
-      //in case of wrong cardId
-      await expectRevert(contract.deleteCard(2), "not found");
-
-      await contract.deleteCard(TEST_DATA.card._id);
-
-      result = await contract.connect(owner).getUserCards(owner.address);
-      expect(result).to.have.lengthOf(0);
-
-      result = await contract.connect(owner).getUserCard(TEST_DATA.card._id);
-      expect(result.isDeleted).to.be.equal(true);
-    });
-  });
-
-  describe("Dapp Management", () => {
-    beforeEach(async () => {
-      await contract.registerDapp(
-        TEST_DATA.dapp._domain,
-        TEST_DATA.dapp._accessToken
-      );
-    });
-
-    it("Should verify that dApps can be registered successfully!", async () => {
-      result = await contract.getDapps(owner.address);
-      expect(result).to.have.lengthOf(1);
-
-      result = await contract.getDapp(TEST_DATA.dapp._id);
-      expect(result.id).to.be.equal(TEST_DATA.dapp._id);
-      expect(result.domain).to.be.equal(TEST_DATA.dapp._domain);
-      expect(result.accessToken).to.be.equal(TEST_DATA.dapp._accessToken);
-
-      //duplicate accessToken
-      await expectRevert(
-        contract.registerDapp(
-          TEST_DATA.dapp._domain_2,
-          TEST_DATA.dapp._accessToken
-        ),
-        "token exist"
-      );
-
-      //duplicate domain
-      await expectRevert(
-        contract.registerDapp(
-          TEST_DATA.dapp._domain,
-          TEST_DATA.dapp._accessToken_2
-        ),
-        "domain exist"
-      );
-
-      //empty domain
-      await expectRevert(
-        contract.registerDapp("", TEST_DATA.dapp._accessToken),
-        "domain required"
-      );
-
-      //empty access token
-      await expectRevert(
-        contract.registerDapp(TEST_DATA.dapp._domain, ""),
-        "token required"
-      );
-    });
-
-    it("Should verify that a dApp can be modified!", async () => {
-      //duplicate domain
-      await expectRevert(
-        contract.modifyDapp(TEST_DATA.dapp._id, TEST_DATA.dapp._domain),
-        "domain exist"
-      );
-
-      //incase of wrong user
-      await expectRevert(
-        contract
+    describe("Card Deletion", () => {
+      beforeEach(async () => {
+        await contract
           .connect(user1)
-          .modifyDapp(TEST_DATA.dapp._id, TEST_DATA.update_dapp._domain),
-        "unauthorized"
-      );
+          .createCard("username", "pfp_url", "user@domain.ltd", "short bio");
+      });
 
-      //in case of wrong dappId
-      await expectRevert(
-        contract.modifyDapp(2, TEST_DATA.update_dapp._domain),
-        "not found"
-      );
+      it("Should expect a revert if card is not found", async () => {
+        await expect(
+          contract.connect(user1).deleteCard(100)
+        ).to.be.revertedWith("not found");
+      });
 
-      result = await contract.modifyDapp(
-        TEST_DATA.dapp._id,
-        TEST_DATA.update_dapp._domain
-      );
+      it("Should expect a revert if another user tries deleting a card that's not his", async () => {
+        await expect(contract.connect(user2).deleteCard(0)).to.be.revertedWith(
+          "unauthorized"
+        );
+      });
 
-      result = await contract.getDapp(TEST_DATA.dapp._id);
-      expect(result.domain).to.be.equal(TEST_DATA.update_dapp._domain);
+      it("Should verify that card can be deleted successfully", async () => {
+        await contract.connect(user1).deleteCard(0);
 
-      //domain is empty
-      await expectRevert(
-        contract.modifyDapp(TEST_DATA.dapp._id, ""),
-        "domain required"
-      );
-    });
-
-    it("Should verify that dApps can be deleted!", async () => {
-      result = await contract.getDapps(owner.address);
-      expect(result).to.have.lengthOf(1);
-
-      //in case of wrong dappId
-      await expectRevert(contract.deleteDapp(2), "not found");
-
-      //in case of wrong dappId
-      await expectRevert(
-        contract.connect(user1).deleteDapp(TEST_DATA.dapp._id),
-        "unauthorized"
-      );
-
-      await contract.deleteDapp(TEST_DATA.dapp._id);
-
-      result = await contract.connect(owner).getDapps(owner.address);
-      expect(result).to.have.lengthOf(0);
-
-      result = await contract.connect(owner).getDapp(TEST_DATA.dapp._id);
-      expect(result.isDeleted).to.be.equal(true);
+        await expect(contract.connect(owner).getCard(0)).to.be.revertedWith(
+          "not found"
+        );
+      });
     });
   });
 
-  describe("Payments", () => {
-    it("Should verify contract can accept payment", async () => {
-      const ethersToSend = ethers.parseEther("0.1");
-
-      //transfer..
-      const tx = await owner.sendTransaction({
-        to: contractAddress,
-        value: ethersToSend,
+  describe("dApp(s) Management", () => {
+    describe("dApp Registration", () => {
+      it("Should revert if domain is not passed", async () => {
+        await expect(contract.registerdApp("")).to.be.revertedWith(
+          "domain is required"
+        );
       });
 
-      await tx.wait();
+      it("Should revert if domain is already registered", async () => {
+        //register the first...
+        await contract.registerdApp("domain.ltd");
 
-      result = await contract.connect(owner).getBalance();
-      expect(ethers.formatUnits(result, "ether")).to.be.equal("0.1");
+        //trying the second time..
+        await expect(contract.registerdApp("domain.ltd")).to.be.revertedWith(
+          "dupicate domain entry"
+        );
+      });
+
+      it("Should revert if domain is localhost", async () => {
+        await expect(contract.registerdApp("localhost")).to.be.revertedWith(
+          "bad request"
+        );
+      });
+
+      it("Should register a dApp successfully", async () => {
+        await contract.registerdApp("domain.ltd");
+
+        const dAppId = await contract.getdAppIdFromDomain("domain.ltd");
+
+        result = await contract.getdApps();
+        expect(result).to.have.lengthOf(1);
+
+        result = await contract.getdApp(dAppId);
+        expect(result.domain).to.be.equal("domain.ltd");
+      });
     });
 
-    it("Should verify that withdrawal can be made", async () => {
-      const ethersToSend = ethers.parseEther("0.1");
-      const ethersToWithdraw = ethers.parseEther("0.1");
-
-      //trying to withdraw on empty balance...
-      await expectRevert(
-        contract.connect(owner).withdraw(user1.address, ethersToWithdraw),
-        "failed"
-      );
-
-      //add ethers now...
-      const tx = await owner.sendTransaction({
-        to: contractAddress,
-        value: ethersToSend,
+    describe("dApp Deletion", () => {
+      beforeEach(async () => {
+        await contract.connect(user1).registerdApp("domain.ltd");
       });
 
-      await tx.wait();
+      it("Should revert if dApp is not found", async () => {
+        await expect(contract.deletedApp(100)).to.be.rejectedWith("not found");
+      });
 
-      //then withdraw...
-      await contract.connect(owner).withdraw(user1.address, ethersToWithdraw);
+      it("Should revert if msg.sender is not owner of dApp/contract owner", async () => {
+        const dAppId = await contract.getdAppIdFromDomain("domain.ltd");
 
-      //checking balance
-      result = await contract.connect(owner).getBalance();
-      expect(ethers.formatUnits(result, "ether")).to.be.equal("0.0");
+        await expect(
+          contract.connect(user2).deletedApp(dAppId)
+        ).to.be.rejectedWith("unauthorized");
+      });
+
+      it("Should show that contract owner can delete dApp", async () => {
+        const dAppId = await contract.getdAppIdFromDomain("domain.ltd");
+
+        await contract.connect(owner).deletedApp(dAppId);
+
+        await expect(
+          contract.connect(owner).getdApp(dAppId)
+        ).to.be.rejectedWith("not found");
+      });
+
+      it("Should show that dApp can be deleted by owner", async () => {
+        const dAppId = await contract.getdAppIdFromDomain("domain.ltd");
+
+        await contract.connect(user1).deletedApp(dAppId);
+
+        await expect(
+          contract.connect(owner).getdApp(dAppId)
+        ).to.be.rejectedWith("not found");
+      });
     });
   });
 
-  describe("Session Management", () => {
-    beforeEach(async () => {
-      // register dApp
-      await contract.registerDapp(
-        TEST_DATA.dapp._domain,
-        TEST_DATA.dapp._accessToken
-      );
+  describe("Token(s) Management", () => {
+    describe("Login process", () => {
+      beforeEach(async () => {
+        await contract.connect(user1).registerdApp("domain.ltd");
+      });
 
-      // create card
-      await contract.createCard(
-        TEST_DATA.card._username,
-        TEST_DATA.card._pfp,
-        TEST_DATA.card._emailAddress,
-        TEST_DATA.card._bio
-      );
+      it("Should go well", async () => {
+        //first trigger the login....
+        const dAppId = await contract.getdAppIdFromDomain("domain.ltd");
+        const nonce = await user1.getNonce();
 
-      provider = new ethers.JsonRpcProvider(JSON_RPC_PROVIDER);
-
-      messageHash = ethers.solidityPackedKeccak256(
-        ["string"],
-        [TEST_DATA.session._message]
-      );
-
-      signature = await provider.send("personal_sign", [
-        messageHash,
-        owner.address,
-      ]);
-
-      // create session
-      await contract
-        .connect(owner)
-        .createSession(
-          TEST_DATA.card._id,
-          TEST_DATA.dapp._id,
-          owner.address,
-          TEST_DATA.session._message,
-          signature
-        );
-    });
-
-    it("Should verify that session tokens can be created successfully!", async () => {
-      //check that the session was registered
-      result = await contract
-        .connect(owner)
-        .triggerLogin(
-          owner.address,
-          TEST_DATA.dapp._id,
-          TEST_DATA.session._message,
-          signature
+        signature = await user1.signTypedData(
+          {
+            name: "Web3 OAuth",
+            version: "1",
+            chainId: 201022,
+            verifyingContract: contractAddress,
+          },
+          { Message: [{ name: "nonce", type: "uint256" }] },
+          { nonce }
         );
 
-      expect(result[0]).to.not.equal(0);
-      expect(result[1]).to.have.lengthOf(0);
-
-      //wrong cardId
-      await expectRevert(
-        contract
+        result = await contract
           .connect(owner)
-          .createSession(
-            2,
-            TEST_DATA.dapp._id,
-            owner.address,
-            TEST_DATA.session._message,
-            signature
-          ),
-        "not found"
-      );
-
-      //wrong dappId
-      await expectRevert(
-        contract
-          .connect(owner)
-          .createSession(
-            TEST_DATA.card._id,
-            2,
-            owner.address,
-            TEST_DATA.session._message,
-            signature
-          ),
-        "dApp not found"
-      );
-
-      //wrong owner of card
-      await expectRevert(
-        contract
-          .connect(owner)
-          .createSession(
-            TEST_DATA.card._id,
-            TEST_DATA.dapp._id,
+          .triggerLogin(
             user1.address,
-            TEST_DATA.session._message,
+            dAppId,
+            ethers.toNumber(nonce),
             signature
-          ),
-        "unauthorized"
-      );
+          );
 
-      //wrong signature, sign with user1 pass owner as the signer
-      signature = await provider.send("personal_sign", [
-        messageHash,
-        user1.address,
-      ]);
-
-      await expectRevert(
-        contract
-          .connect(owner)
-          .createSession(
-            TEST_DATA.card._id,
-            TEST_DATA.dapp._id,
-            owner.address,
-            TEST_DATA.session._message,
-            signature
-          ),
-        "unable to verify sig"
-      );
-    });
-
-    it("Should verify that session tokens can be deactivated successfully!", async () => {
-      //check that the session was registered
-      result = await contract
-        .connect(owner)
-        .triggerLogin(
-          owner.address,
-          TEST_DATA.dapp._id,
-          TEST_DATA.session._message,
-          signature
-        );
-
-      expect(result[0]).to.not.equal(
-        "0x0000000000000000000000000000000000000000000000000000000000000000"
-      );
-      expect(result[1]).to.have.lengthOf(0);
-
-      await contract.deactivateSessionFromToken(result[0]);
-
-      result = await contract
-        .connect(owner)
-        .triggerLogin(
-          owner.address,
-          TEST_DATA.dapp._id,
-          TEST_DATA.session._message,
-          signature
-        );
-
-      expect(result[0]).to.be.equal(
-        "0x0000000000000000000000000000000000000000000000000000000000000000"
-      );
+        console.debug("Result:", result);
+      });
     });
   });
 });

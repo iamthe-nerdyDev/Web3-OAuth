@@ -9,10 +9,9 @@ async function main() {
   await util.waitForDeployment();
 
   const Contract = await hre.ethers.getContractFactory("OAuth", {
-    libraries: {
-      Utils: util.target,
-    },
+    libraries: { Utils: util.target },
   });
+
   const contract = await Contract.deploy();
 
   await contract.waitForDeployment();
