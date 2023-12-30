@@ -384,7 +384,9 @@ contract OAuth is EIP712 {
      * @param token:    Session Token
      * @return uint256
      */
-    function getTokenIdFromToken(bytes32 token) private view returns (uint256) {
+    function getTokenIdFromToken(
+        bytes32 token
+    ) internal view returns (uint256) {
         return
             TOKEN.getTokenIdFromToken(
                 Tokens,
@@ -483,7 +485,11 @@ contract OAuth is EIP712 {
     ) internal view returns (bool, uint256) {
         uint256 tokenId = UserTodAppToToken[user][dAppId];
 
-        if (Tokens[tokenId].user == user && Tokens[tokenId].dAppId == dAppId) {
+        if (
+            Tokens[tokenId].user == user &&
+            Tokens[tokenId].dAppId == dAppId &&
+            Tokens[tokenId].isDeleted == false
+        ) {
             return (true, tokenId);
         } else return (false, 0);
     }
