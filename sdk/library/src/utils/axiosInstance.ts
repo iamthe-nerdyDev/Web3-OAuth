@@ -4,7 +4,7 @@ import { useOAuthStore } from "../context/OAuthProvider/OAuthProvider";
 const { accessToken } = useOAuthStore();
 
 const axiosInstance = axios.create({
-  baseURL: "https://api.web3-oauth.com",
+  baseURL: "https://api-web3-oauth.onrender.com",
   headers: {
     cache: "no-store",
     "Content-Type": "application/json",
