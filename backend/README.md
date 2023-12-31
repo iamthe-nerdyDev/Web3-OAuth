@@ -2,10 +2,6 @@
 
 API endpoint for Web3 OAuth. Built using Node JS and Express
 
-## Documentation
-
-Full api documentation and playground can be seen [here](https://web3-oauth.onrender.com/docs)
-
 ## Installation & Setup Instructions
 
 Clone down this repository. You will need `node` and `npm` installed globally on your machine.
