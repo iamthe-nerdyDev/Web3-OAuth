@@ -1,10 +1,8 @@
-import { Connect } from "web3-oauth-main";
+import { ConnectWallet } from "@thirdweb-dev/react";
 
 const ConnectBtn = () => {
   return (
-    <>
-      <Connect accessToken="xxxx-localhost-key-xxxx" theme={"dark"} />
-    </>
+    <ConnectWallet modalSize="wide" theme={`dark`} switchToActiveChain={true} />
   );
 };
 

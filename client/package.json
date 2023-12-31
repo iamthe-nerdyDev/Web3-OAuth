@@ -11,10 +11,6 @@
     "host": "vite --host"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^6.4.2",
-    "@fortawesome/free-brands-svg-icons": "^6.4.2",
-    "@fortawesome/free-solid-svg-icons": "^6.4.2",
-    "@fortawesome/react-fontawesome": "^0.2.0",
     "@thirdweb-dev/chains": "^0.1.58",
     "@thirdweb-dev/react": "^4.1.2",
     "@thirdweb-dev/sdk": "^4.0.11",

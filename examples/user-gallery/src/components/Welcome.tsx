@@ -1,8 +1,32 @@
-import { useAddress } from "web3-oauth-main";
+import { useAddress, useSigner } from "@thirdweb-dev/react";
 import { AnchorLink, ConnectBtn } from ".";
+import { useEffect, useState } from "react";
+import { getSingleUser } from "../utils/helper";
 
 const Welcome = () => {
   const address = useAddress();
+  const signer = useSigner();
+
+  const [hasInfo, setHasInfo] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    async function init() {
+      if (!address || !signer) return;
+
+      setIsLoading(true);
+
+      const id = await getSingleUser(address, signer);
+      console.log(id);
+      if (id) setHasInfo(true);
+
+      setIsLoading(false);
+    }
+
+    init();
+  }, [address, signer]);
+
+  useEffect(() => console.log(isLoading), [isLoading]);
 
   return (
     <div className="container">
@@ -19,8 +43,14 @@ const Welcome = () => {
           </p>
           <div className="d-flex align-items-center flex-column flex-md-row">
             <ConnectBtn />
-            {address && (
+            {isLoading ? (
+              <span>....</span>
+            ) : hasInfo ? (
               <AnchorLink to={`/user/${address}`}>My Info</AnchorLink>
+            ) : (
+              <a className="text-primary" style={{ cursor: "pointer" }}>
+                Add Info
+              </a>
             )}
           </div>
         </div>

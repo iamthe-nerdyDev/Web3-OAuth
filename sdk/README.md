@@ -1,6 +1,12 @@
 # 1️⃣ Using Web3 OAuth
 
-**NOTE:** Along the line, a react component library will be created to make things easier and deal with direct communication with our endpoint
+**Web3 OAuth CA &rarr;**
+
+```
+0xfCE8cAAF609F1CD0E7D0F489a2fD474002e2a9B1
+```
+
+**NOTE:** Along the line, a react component library will be created to make things easier and deal with direct communication with our endpoint and contract
 
 > **Endpoint:** https://api-web3-oauth.onrender.com
 
@@ -18,7 +24,7 @@ For the purpose of this documentation, we will be making use of axios, you can i
 
 For authentication purposes, your accessToken gotten from you developers dashboard here, will be set as your `Authorization` header and the window.location.hostname of where you are requesting from as the `X-Origin` header
 
-**NOTE:** The accessToken for localhost site is: `----------`
+**NOTE:** The accessToken for localhost site is: `1c1a26ad51fa75720666336a9b7af297ab8cf1c78a617a65ba779f143a1a398d`
 
 # 3️⃣ Endpoint Routes
 
@@ -28,7 +34,7 @@ type Card = {
   owner: string,
   username: string,
   pfp: string,
-  emailAddress: string,
+  email: string,
   bio: string,
   isDeleted: boolean,
   createdAt: number,
@@ -42,11 +48,11 @@ type Card = {
 
 ```json
 "req":{
-"body":{
-"signer": "0x....",
-"nonce": 1,
-"signature": "0x...."
-}
+    "body":{
+        "signer": "0x....",
+        "nonce": 1,
+        "signature": "0x...."
+    }
 }
 ```
 
@@ -55,7 +61,9 @@ The response will be in two form. If there is an existing token between the user
 
 ```json
 {
-"status": true, "data": Card[], "count": data.length
+  "status": true,
+  "data": "Card[]",
+  "count": "data.length"
 }
 ```
 
@@ -73,12 +81,12 @@ or
 
 ```json
 "req":{
-"body":{
-"cardId": 1,
-"signer": "0x....",
-"nonce": 1,
-"signature": "0x...."
-}
+    "body":{
+        "cardId": 1,
+        "signer": "0x....",
+        "nonce": 1,
+        "signature": "0x...."
+    }
 }
 ```
 
@@ -95,14 +103,19 @@ or
    **SUCCESS RESPONSE**
 
 ```json
-{ "status": true }
+{
+  "status": true
+}
 ```
 
 5. GET: ${endpoint}/user/:token - gets user info from the session token
    **SUCCESS RESPONSE**
 
 ```json
-{ "status": true, "data": Card }
+{
+  "status": true,
+  "data": "Card"
+}
 ```
 
 6. POST: ${endpoint}/user - gets user info from an array of session tokens
@@ -110,16 +123,20 @@ or
 
 ```json
 "req":{
-"body":{
-"tokens": ["0x.....", "0x.....", "...."]
-}
+    "body":{
+        "tokens": ["0x.....", "0x.....", "...."]
+    }
 }
 ```
 
 **SUCCESS RESPONSE**
 
 ```json
-{ "status": true, "data": Card[], "count": data.length }
+{
+  "status": true,
+  "data": "Card[]",
+  "count": "data.length"
+}
 ```
 
 # 4️⃣ Trying out the '/dApp' route
@@ -127,28 +144,25 @@ or
 ```javascript
 import axios from "axios";
 
-const ACCESS_TOKEN = YOUR_ACCESS_TOKEN_HERE;
+const ACCESS_TOKEN = "1c1a26ad51fa75720666336a9b7af297ab8cf1c78a617a65ba779f143a1a398d";
 
 const  axiosInstance  =  axios.create({
-
-baseURL: "https://api-web3-oauth.onrender.com",
-
-headers: {
-"Content-Type": "application/json",
-"Authorization": `Bearer ${ACCESS_TOKEN}`,
-"X-Origin": "localhost"
-},
-
+   baseURL: "https://api-web3-oauth.onrender.com",
+   headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${ACCESS_TOKEN}`,
+      "X-Origin": "localhost"
+   }
 });
 
-async function getdApp():Promise<void>{
-try{
-const {data} = await axiosInstance.get("/dApp");
+async function getdApp(): Promise<void> {
+   try {
+      const {data} = await axiosInstance.get("/dApp");
 
-console.log(data); //log details about the dApp
-}catch(e:any){
-console.error(e);
-}
+      console.log(data); //log details about the dApp
+   } catch (e:any) {
+      console.error(e);
+   }
 }
 ```
 

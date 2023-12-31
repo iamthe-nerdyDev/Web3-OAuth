@@ -19,13 +19,7 @@ contract Directory {
     event Update(address indexed executor, uint256 timestamp);
 
     constructor() {
-        Data.push(
-            DataStruct(
-                address(0),
-                0x0000000000000000000000000000000000000000000000000000000000000000,
-                time()
-            )
-        );
+        Data.push(DataStruct(address(0), 0, time()));
 
         totalData++;
     }
