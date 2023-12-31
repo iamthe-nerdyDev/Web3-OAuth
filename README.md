@@ -1,4 +1,4 @@
-![Web3 OAuth](https://github.com/iamthe-nerdyDev/Web3-OAuth/assets/141498118/1f647cb9-8164-4f22-aa0c-29f2cbca3db7)
+![Web3 OAuth](https://github.com/iamthe-nerdyDev/Web3-OAuth/assets/141498118/2cd7e113-3c73-416e-82c0-116684fa1027)
 
 ## Introduction
 
