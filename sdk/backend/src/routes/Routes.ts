@@ -9,6 +9,8 @@ import {
 
 const router = express.Router();
 
+router.get("/healthcheck", (_, res) => res.sendStatus(200));
+
 router.post("/login", validate(loginSchema), controller.triggerLoginHandler);
 
 router.post(
