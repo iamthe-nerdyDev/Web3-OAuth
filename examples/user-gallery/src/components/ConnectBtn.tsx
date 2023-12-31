@@ -1,4 +1,4 @@
-import { Connect } from "web3-oauth-lib";
+import { Connect } from "web3-oauth-main";
 
 const ConnectBtn = () => {
   return (

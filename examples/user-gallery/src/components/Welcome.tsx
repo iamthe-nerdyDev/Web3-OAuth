@@ -1,4 +1,4 @@
-import { useAddress } from "web3-oauth-lib";
+import { useAddress } from "web3-oauth-main";
 import { AnchorLink, ConnectBtn } from ".";
 
 const Welcome = () => {

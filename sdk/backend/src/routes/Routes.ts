@@ -4,12 +4,12 @@ import validate from "../middleware/ValidateSchema";
 import {
   createSessionSchema,
   deleteSessionSchema,
+  getUserInfoSchema,
+  getUsersInfoSchema,
   loginSchema,
 } from "../utils/schema";
 
 const router = express.Router();
-
-router.get("/healthcheck", (_, res) => res.sendStatus(200));
 
 router.post("/login", validate(loginSchema), controller.triggerLoginHandler);
 
@@ -23,6 +23,18 @@ router.delete(
   "/session/:token",
   validate(deleteSessionSchema),
   controller.deleteSessionHandler
+);
+
+router.get(
+  "/user/:token",
+  validate(getUserInfoSchema),
+  controller.getUserInfoHandler
+);
+
+router.post(
+  "/user",
+  validate(getUsersInfoSchema),
+  controller.getUsersInfosHandler
 );
 
 router.get("/dApp", controller.getdAppInfoHandler);

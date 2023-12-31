@@ -15,7 +15,7 @@
     "react-dom": "^18.2.0",
     "react-icons": "^4.12.0",
     "react-router-dom": "^6.21.1",
-    "web3-oauth-lib": "^2.0.1"
+    "web3-oauth-main": "^1.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.37",

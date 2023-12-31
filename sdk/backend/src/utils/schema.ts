@@ -21,6 +21,21 @@ export const deleteSessionSchema = z.object({
   params: z.object({ token: z.string().regex(/(0x)?[0-9a-fA-F]{64}/) }),
 });
 
+export const getUserInfoSchema = z.object({
+  params: z.object({ token: z.string().regex(/(0x)?[0-9a-fA-F]{64}/) }),
+});
+
+export const getUsersInfoSchema = z.object({
+  body: z.object({
+    tokens: z
+      .string()
+      .regex(/(0x)?[0-9a-fA-F]{64}/)
+      .array(),
+  }),
+});
+
 export type Login = z.TypeOf<typeof loginSchema>;
 export type CreateSession = z.TypeOf<typeof createSessionSchema>;
 export type DeleteSessionn = z.TypeOf<typeof deleteSessionSchema>;
+export type GetUserInfo = z.TypeOf<typeof getUserInfoSchema>;
+export type GetUsersInfo = z.TypeOf<typeof getUsersInfoSchema>;

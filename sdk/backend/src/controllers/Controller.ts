@@ -1,6 +1,18 @@
 import { Request, Response } from "express";
-import { CreateSession, DeleteSessionn, Login } from "../utils/schema";
-import { createSession, deleteSession, triggerLogin } from "../utils/services";
+import {
+  CreateSession,
+  DeleteSessionn,
+  GetUserInfo,
+  GetUsersInfo,
+  Login,
+} from "../utils/schema";
+import {
+  createSession,
+  deleteSession,
+  getUserInfo,
+  getUserInfos,
+  triggerLogin,
+} from "../utils/services";
 
 async function triggerLoginHandler(
   req: Request<{}, {}, Login["body"]>,
@@ -64,6 +76,42 @@ async function deleteSessionHandler(
   }
 }
 
+async function getUserInfoHandler(
+  req: Request<GetUserInfo["params"]>,
+  res: Response
+) {
+  try {
+    const { token } = req.params;
+
+    const response = await getUserInfo(token);
+
+    return res.status(200).json({ status: true, data: response });
+  } catch (e: any) {
+    console.error(e);
+
+    res.sendStatus(500);
+  }
+}
+
+async function getUsersInfosHandler(
+  req: Request<{}, {}, GetUsersInfo["body"]>,
+  res: Response
+) {
+  try {
+    const { tokens } = req.body;
+
+    const response = await getUserInfos(tokens);
+
+    return res
+      .status(200)
+      .json({ status: true, data: response, count: response.length });
+  } catch (e: any) {
+    console.error(e);
+
+    res.sendStatus(500);
+  }
+}
+
 async function getdAppInfoHandler(_: Request, res: Response) {
   try {
     return res.status(200).json({ status: true, data: res.locals.info });
@@ -78,6 +126,7 @@ export default {
   triggerLoginHandler,
   createSessionHandler,
   deleteSessionHandler,
-
+  getUserInfoHandler,
+  getUsersInfosHandler,
   getdAppInfoHandler,
 };
