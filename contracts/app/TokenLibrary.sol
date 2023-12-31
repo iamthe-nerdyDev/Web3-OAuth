@@ -51,7 +51,7 @@ library TOKEN {
     ) internal {
         require(DoesCardExist[cardId], "Card not found");
         require(DoesdAppExist[dAppId], "dApp not found");
-        require(Cards[cardId].owner == signer, "unauthorized");
+        require(Cards[cardId].owner == signer);
 
         uint256 id = Tokens.length;
         bytes32 token = keccak256(abi.encodePacked(cardId, signer, dAppId));
@@ -108,7 +108,7 @@ library TOKEN {
         bytes32 token
     ) internal view returns (uint256) {
         require(DoesTokenExist[TokenToTokenId[token]], "invalid/deleted token");
-        require(Tokens[TokenToTokenId[token]].token == token, "bad request");
+        require(Tokens[TokenToTokenId[token]].token == token);
 
         return TokenToTokenId[token];
     }

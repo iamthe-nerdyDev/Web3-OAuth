@@ -99,7 +99,7 @@ library DAPP {
         bytes32 token
     ) internal view returns (dApp memory) {
         require(DoesdAppExist[id], "not found");
-        require(dApps[id].accessToken == token, "bad request");
+        require(dApps[id].accessToken == token);
 
         return dApps[id];
     }
@@ -119,7 +119,7 @@ library DAPP {
         uint256 id
     ) internal view returns (uint256) {
         require(DoesdAppExist[id], "not found");
-        require(Utils.compareStrings(dApps[id].domain, domain), "bad request");
+        require(Utils.compareStrings(dApps[id].domain, domain));
 
         return id;
     }

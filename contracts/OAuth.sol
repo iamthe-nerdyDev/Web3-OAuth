@@ -231,10 +231,7 @@ contract OAuth is EIP712 {
      */
     function deletedApp(uint256 id) public {
         require(DoesdAppExist[id], "not found");
-        require(
-            dApps[id].owner == msg.sender || msg.sender == owner,
-            "unauthorized"
-        );
+        require(dApps[id].owner == msg.sender || msg.sender == owner);
 
         DAPP.deletedApp(dApps, DomainTodAppId, DoesdAppExist, id);
 
@@ -301,10 +298,7 @@ contract OAuth is EIP712 {
         uint256 cardId
     ) public view onlyOwner returns (DAPP.dApp[] memory) {
         require(DoesCardExist[cardId], "not found");
-        require(
-            Cards[cardId].owner == msg.sender || msg.sender == owner,
-            "unauthorized"
-        );
+        require(Cards[cardId].owner == msg.sender || msg.sender == owner);
 
         uint256 available;
 
@@ -417,7 +411,7 @@ contract OAuth is EIP712 {
      * @param tokens:    Session token[] - an array on tokens
      * @return Card[]
      */
-    function fetchUserInfoFromTokens(
+    function fetchUsersInfoFromTokens(
         bytes32[] memory tokens
     ) public view returns (CARD.Card[] memory) {
         CARD.Card[] memory cards = new CARD.Card[](tokens.length);
@@ -482,7 +476,7 @@ contract OAuth is EIP712 {
     function getActiveTokenId(
         address user,
         uint256 dAppId
-    ) internal view returns (bool, uint256) {
+    ) public view onlyOwner returns (bool, uint256) {
         uint256 tokenId = UserTodAppToToken[user][dAppId];
 
         if (

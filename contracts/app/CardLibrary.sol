@@ -83,7 +83,7 @@ library CARD {
         string memory bio
     ) internal {
         require(DoesCardExist[id], "not found");
-        require(Cards[id].owner == owner, "unauthorized");
+        require(Cards[id].owner == owner);
 
         Card storage card = Cards[id];
 
@@ -108,7 +108,7 @@ library CARD {
         uint256 id
     ) internal {
         require(DoesCardExist[id], "not found");
-        require(Cards[id].owner == owner, "unauthorized");
+        require(Cards[id].owner == owner);
 
         Card storage card = Cards[id];
 
