@@ -4,7 +4,7 @@ import axiosInstance from "../../utils/axiosInstance";
 import { AxiosError } from "axios";
 import { CHAIN_ID } from "../../utils/constants";
 import { switchToChain } from "../../utils";
-import { LoggedInBtn, Button } from "./sub-components";
+import { LoggedInBtn, Button, CardSelector } from "./sub-components";
 
 type ComnectProps = {
   theme?: "dark" | "light";
@@ -29,6 +29,7 @@ const Connect: React.FC<ComnectProps> = (props) => {
 
   React.useEffect(() => {
     if (cards) setDisplayModal(true); //display modal if cards is set
+    else setDisplayModal(false);
   }, [cards]);
 
   React.useEffect(() => {
@@ -57,6 +58,11 @@ const Connect: React.FC<ComnectProps> = (props) => {
 
   return (
     <React.Fragment>
+      <CardSelector
+        displayModal={displayModal}
+        setDisplayModal={setDisplayModal}
+      />
+
       {!address ? (
         // connect wallet button
         <Button btnText="Connect Wallet" handleClick={connectWallet} />

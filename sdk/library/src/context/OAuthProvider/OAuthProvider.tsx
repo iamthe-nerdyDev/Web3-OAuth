@@ -252,6 +252,8 @@ const OAuthProvider = (props: Props) => {
       });
 
       if (data.status) setToken(data.data);
+
+      setCards(undefined); //to hide the card select modal...
     } catch (e: any) {
       Swal.fire({
         title: "Unable to complete request",

@@ -2,7 +2,7 @@ const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
 describe("Contracts", () => {
-  let contract, contractAddress, result, signature, owner, user1, user2;
+  let contract, contractAddress, result, owner, user1, user2;
 
   beforeEach(async () => {
     [owner, user1, user2] = await ethers.getSigners();
@@ -248,39 +248,6 @@ describe("Contracts", () => {
         await expect(
           contract.connect(owner).getdApp(dAppId)
         ).to.be.rejectedWith("not found");
-      });
-    });
-  });
-
-  describe("Token(s) Management", () => {
-    describe("Login process", () => {
-      beforeEach(async () => {
-        await contract.connect(user1).registerdApp("domain.ltd");
-      });
-
-      it("Should go well", async () => {
-        //first trigger the login....
-        // const dAppId = await contract.getdAppIdFromDomain("domain.ltd");
-        // const nonce = await user1.getNonce();
-        // signature = await user1.signTypedData(
-        //   {
-        //     name: "Web3 OAuth",
-        //     version: "1",
-        //     chainId: 201022,
-        //     verifyingContract: contractAddress,
-        //   },
-        //   { Message: [{ name: "nonce", type: "uint256" }] },
-        //   { nonce }
-        // );
-        // result = await contract
-        //   .connect(owner)
-        //   .triggerLogin(
-        //     user1.address,
-        //     dAppId,
-        //     ethers.toNumber(nonce),
-        //     signature
-        //   );
-        // console.debug("Result:", result);
       });
     });
   });
