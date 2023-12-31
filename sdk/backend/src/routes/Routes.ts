@@ -4,8 +4,6 @@ import validate from "../middleware/ValidateSchema";
 import {
   createSessionSchema,
   deleteSessionSchema,
-  getUserInfoSchema,
-  getUsersInfoSchema,
   loginSchema,
 } from "../utils/schema";
 
@@ -23,18 +21,6 @@ router.delete(
   "/session/:token",
   validate(deleteSessionSchema),
   controller.deleteSessionHandler
-);
-
-router.get(
-  "/user/:token",
-  validate(getUserInfoSchema),
-  controller.getUserInfoHandler
-);
-
-router.post(
-  "/user",
-  validate(getUsersInfoSchema),
-  controller.getUsersInfosHandler
 );
 
 router.get("/dApp", controller.getdAppInfoHandler);

@@ -1,6 +1,6 @@
 import { config } from "../config";
 import { ethers } from "ethers";
-import { ICardStruct, structureCards, structureDApps } from "./helpers";
+import { ICardStruct, structureDApps } from "./helpers";
 
 export function getContract(): ethers.Contract {
   const provider = new ethers.providers.JsonRpcProvider(config.network.rpc_url);
@@ -86,30 +86,6 @@ export async function deleteSession(token: string) {
     await tx.wait();
 
     return true;
-  } catch (e: any) {
-    throw new Error(e);
-  }
-}
-
-export async function getUserInfo(token: string) {
-  try {
-    const Contract = getContract();
-
-    const result = await Contract.fetchUserInfoFromToken(token);
-
-    return structureCards([result])[0];
-  } catch (e: any) {
-    throw new Error(e);
-  }
-}
-
-export async function getUserInfos(tokens: string[]) {
-  try {
-    const Contract = getContract();
-
-    const result = await Contract.fetchUsersInfoFromTokens(tokens);
-
-    return structureCards(result);
   } catch (e: any) {
     throw new Error(e);
   }
